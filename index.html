@@ -399,7 +399,7 @@ function normalizeGame(g){
       const player = (i % 2 === 0) ? "黑" : "白";
       const moveText = (String(m.move).toLowerCase()==="pass") ? "PASS" : String(m.move);
       const shortComment = (m.comment || "").trim().replace(/\s+/g," ");
-      const preview = shortComment.length ? shortComment.slice(0, 24) + (shortComment.length>24 ? "…" : "") : " ";
+      const preview = shortComment.length ? shortComment.slice(0, 24) + (shortComment.length>24 ? "…" : "") : "無解說";
 
       item.innerHTML = `
         <div>
@@ -424,7 +424,7 @@ function normalizeGame(g){
     const moveText = (String(m.move).toLowerCase()==="pass") ? "PASS" : String(m.move);
     const comment = (m.comment || "").trim();
     detailBox.textContent =
-      `Step ${step}\n${player}：${moveText}\n\n` + (comment.length ? comment : " ");
+      `Step ${step}\n${player}：${moveText}\n\n` + (comment.length ? comment : "無解說");
   }
 
   function renderHeader(game, pos){
@@ -546,6 +546,7 @@ async function loadGame(i){
 </script>
 </body>
 </html>
+
 
 
 
