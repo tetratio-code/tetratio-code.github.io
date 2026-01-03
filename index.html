@@ -198,14 +198,6 @@ body.varMode .item.active { background: rgba(147,197,253,0.14); outline-color: r
 
 <script>
 (() => {
-  // ========== 分檔資料模式 ==========
-  // 1) 先讀取 ./data/index.json 取得清單
-  // 2) 依選取讀取 ./data/<file> (例如 games/demo-1.json)
-  //
-  // index.json 建議格式：[{id,title,file}, ...]
-  // 單盤 json 建議格式：{id,title,meta,moves:[{move,comment}, ...]}
-
-  // ===== Othello engine (apply moves only, no legality UI) =====
   const N = 8;
   const EMPTY = 0, BLACK = 1, WHITE = 2;
   const dirs = [
@@ -342,15 +334,11 @@ function normalizeGame(g){
   const id = String(g?.id ?? "");
   const title = String(g?.title ?? id ?? "");
   const meta = String(g?.meta ?? "");
-
-  // 新結構必備：record（每 2 字元一手，如 "f5d6c3..."）
   const record = String(g?.record ?? "").trim().toLowerCase();
   if (!record) throw new Error("對局檔格式錯誤：缺少 record");
 
   // 可選：comments 物件，key = 第幾手（1-based），value = 解說
   const comments = (g?.comments && typeof g.comments === "object") ? g.comments : {};
-
-  // 基本檢查：長度必須是 2 的倍數
   if (record.length % 2 !== 0) {
     throw new Error("record 長度錯誤：必須是 2 的倍數（每手 2 字元）");
   }
@@ -569,8 +557,6 @@ function renderHeader(game, pos){
   if (active) active.scrollIntoView({ block: "nearest" });
 }
 
-  "baseStep": 3
-
 function exitVariation(){
   mode = "main";
   varCtx = null;
@@ -709,24 +695,9 @@ async function loadGame(i){
       showError(String(err?.message ?? err));
     }
   }
-
   init();
 })();
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
