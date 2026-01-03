@@ -138,7 +138,8 @@ body.varMode .item.active { background: rgba(147,197,253,0.14); outline-color: r
       background: rgba(0,0,0,0.12);
     }
     .item {
-      padding: 10px 12px;
+      padding: 12px 12px;
+      font-size: 14px;
       border-bottom: 1px solid rgba(255,255,255,0.08);
       cursor:pointer;
       display:flex;
@@ -149,8 +150,8 @@ body.varMode .item.active { background: rgba(147,197,253,0.14); outline-color: r
     .item:last-child { border-bottom: 0; }
     .item:hover { background: rgba(255,255,255,0.06); }
     .item.active { background: rgba(250,204,21,0.10); outline: 1px solid rgba(250,204,21,0.20); }
-    .tag { font-size: 12px; opacity: 0.85; white-space:nowrap; }
-    .mainText { font-size: 14px; line-height: 1.35; }
+    .tag { font-size: 13px; opacity: 0.85; white-space:nowrap; }
+    .mainText { font-size: 16px; line-height: 1.4; }
     .detailBox {
       border-radius: 12px;
       border: 1px solid rgba(255,255,255,0.12);
@@ -181,7 +182,7 @@ body.varMode .item.active { background: rgba(147,197,253,0.14); outline-color: r
   <div class="app">
     <!-- Left: board + controls -->
     <div class="panel">
-      <h1>黑白棋解說譜瀏覽器v1.03</h1>
+      <h1>黑白棋解說譜瀏覽器v1.04</h1>
 
       <div class="row">
         <div class="rowLeft">
@@ -546,12 +547,6 @@ function normalizeGame(g){
   const vPack = game.variations?.[key];
   const entries = vPack?.entries;
   if (variationBox && Array.isArray(entries) && entries.length){
-    // 顯示提示文字
-    const hint = document.createElement("div");
-    hint.className = "muted";
-    hint.textContent = "變化圖：點選可進入分支（棋盤會變藍）";
-    variationBox.appendChild(hint);
-
     entries.forEach((entry) => {
       const btn = document.createElement("button");
       btn.type = "button";
@@ -803,6 +798,7 @@ async function loadGame(i){
 </script>
 </body>
 </html>
+
 
 
 
