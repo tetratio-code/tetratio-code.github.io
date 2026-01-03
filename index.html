@@ -465,16 +465,18 @@ async function loadIndex(){
     });
   }
 
-  async function loadGame(i){
-    clearError();
-    step = 0;
-    currentGame = null;
-    renderAll();
+async function loadGame(i){
+  clearError();
+  step = 0;
+  currentGame = null;
+  renderAll();
 
-    const entry = gameIndex[i];
-    if (!entry) throw new Error("找不到對局索引項目");
+  const entry = gameIndex[i];
+  if (!entry) throw new Error("找不到對局索引項目");
 
-    const game = normalizeGame(await fetchJson("./data/" + entry.file));
+  const game = normalizeGame(
+    await fetchJson("./data/" + entry.file + "?v=" + Date.now())
+  );
     if (!game.moves) throw new Error("對局檔格式錯誤：缺少 moves");
 
     // 若單盤檔沒寫 title，就用 index.json 的 title
@@ -524,4 +526,5 @@ async function loadIndex(){
 </script>
 </body>
 </html>
+
 
