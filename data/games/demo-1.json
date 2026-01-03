@@ -21,7 +21,7 @@
 
   "variations": {
     "4": {
-      "baseStep": 3,
+      "baseStep": 4,
       "entries": [
         {
           "name": "牛定式",
@@ -50,6 +50,7 @@
     }
   }
 }
+
 
 
 
