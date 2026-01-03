@@ -131,14 +131,13 @@
   <div class="app">
     <!-- Left: board + controls -->
     <div class="panel">
-      <h1>黑白棋解說譜瀏覽器（分檔）</h1>
+      <h1>黑白棋解說譜瀏覽器</h1>
 
       <div class="row">
         <div class="rowLeft">
           <span class="pill">對局：</span>
           <select id="gameSelect" aria-label="Select game"></select>
           <span class="pill">步數：<b id="stepText">0</b>/<b id="totalText">0</b></span>
-          <span class="pill">輪到：<b id="turnText">黑</b></span>
           <span class="pill">黑：<b id="bCount">2</b>　白：<b id="wCount">2</b></span>
         </div>
 
@@ -152,7 +151,6 @@
 
       <p class="muted" style="margin:10px 0 0;">
         快捷鍵：<span class="kbd">←</span>/<span class="kbd">→</span> 前後手、<span class="kbd">Home</span>/<span class="kbd">End</span> 首尾。
-        PASS 用 <code>"move": "pass"</code> 表示。
       </p>
 
       <div id="errorBox" class="error" style="display:none;"></div>
@@ -169,9 +167,6 @@
         <div class="row">
           <div class="rowLeft">
             <span class="pill">步驟清單（點選可跳轉）</span>
-          </div>
-          <div class="rowLeft">
-            <span class="pill">目前步解說</span>
           </div>
         </div>
 
@@ -399,7 +394,7 @@ function normalizeGame(g){
       const player = (i % 2 === 0) ? "黑" : "白";
       const moveText = (String(m.move).toLowerCase()==="pass") ? "PASS" : String(m.move);
       const shortComment = (m.comment || "").trim().replace(/\s+/g," ");
-      const preview = shortComment.length ? shortComment.slice(0, 24) + (shortComment.length>24 ? "…" : "") : "無解說";
+      const preview = shortComment.length ? shortComment.slice(0, 24) + (shortComment.length>24 ? "…" : "") : "";
 
       item.innerHTML = `
         <div>
@@ -424,7 +419,7 @@ function normalizeGame(g){
     const moveText = (String(m.move).toLowerCase()==="pass") ? "PASS" : String(m.move);
     const comment = (m.comment || "").trim();
     detailBox.textContent =
-      `Step ${step}\n${player}：${moveText}\n\n` + (comment.length ? comment : "無解說");
+      `Step ${step}\n${player}：${moveText}\n\n` + (comment.length ? comment : "");
   }
 
   function renderHeader(game, pos){
@@ -546,6 +541,7 @@ async function loadGame(i){
 </script>
 </body>
 </html>
+
 
 
 
