@@ -261,7 +261,6 @@
 
   const stepText = document.getElementById("stepText");
   const totalText = document.getElementById("totalText");
-  const turnText = document.getElementById("turnText");
   const bCountEl = document.getElementById("bCount");
   const wCountEl = document.getElementById("wCount");
 
@@ -422,22 +421,21 @@ function normalizeGame(g){
       `Step ${step}\n${player}：${moveText}\n\n` + (comment.length ? comment : "");
   }
 
-  function renderHeader(game, pos){
-    stepText.textContent = step;
-    totalText.textContent = game.moves.length;
-    turnText.textContent = (pos.turn === BLACK) ? "黑" : "白";
+function renderHeader(game, pos){
+  if (stepText) stepText.textContent = step;
+  if (totalText) totalText.textContent = game.moves.length;
 
-    const {b,w} = countDiscs(pos.board);
-    bCountEl.textContent = b;
-    wCountEl.textContent = w;
+  const {b,w} = countDiscs(pos.board);
+  if (bCountEl) bCountEl.textContent = b;
+  if (wCountEl) wCountEl.textContent = w;
 
-    const atStart = step === 0;
-    const atEnd = step === game.moves.length;
-    firstBtn.disabled = atStart;
-    prevBtn.disabled  = atStart;
-    nextBtn.disabled  = atEnd;
-    lastBtn.disabled  = atEnd;
-  }
+  const atStart = step === 0;
+  const atEnd = step === game.moves.length;
+  if (firstBtn) firstBtn.disabled = atStart;
+  if (prevBtn)  prevBtn.disabled  = atStart;
+  if (nextBtn)  nextBtn.disabled  = atEnd;
+  if (lastBtn)  lastBtn.disabled  = atEnd;
+}
 
   function renderAll(){
     if (!currentGame){
@@ -541,6 +539,7 @@ async function loadGame(i){
 </script>
 </body>
 </html>
+
 
 
 
