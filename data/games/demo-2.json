@@ -1,15 +1,15 @@
 {
     "id": "demo-2",
     "title": "2025全國公開賽決賽 (徹拉修 vs. LAM)",
-    "meta": "2025全國公開賽決賽<br>解說譜",
+    "meta": "2025全國公開賽決賽\n解說譜",
     "moves": [
         {
             "move": "f5",
-            "comment": ""
+            "comment": "徹拉修執黑"
         },
         {
             "move": "f4",
-            "comment": ""
+            "comment": "LAM執白"
         },
         {
             "move": "e3",
@@ -21,6 +21,7 @@
         }
     ]
 }
+
 
 
 
