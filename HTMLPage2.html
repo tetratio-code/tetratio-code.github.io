@@ -231,18 +231,6 @@
             background: rgba(255,255,255,0.08);
             border: 1px solid rgba(255,255,255,0.12);
         }
-
-        .error {
-            margin-top: 10px;
-            padding: 10px 12px;
-            border-radius: 12px;
-            border: 1px solid rgba(248,113,113,0.35);
-            background: rgba(248,113,113,0.10);
-            color: #fecaca;
-            font-size: 13px;
-            line-height: 1.45;
-            white-space: pre-wrap;
-        }
     </style>
 </head>
 
@@ -250,7 +238,7 @@
     <div class="app">
         <!-- Left: board + controls -->
         <div class="panel">
-            <h1>黑白棋解說譜瀏覽器（分檔）</h1>
+            <h1>黑白棋解說譜瀏覽器</h1>
 
             <div class="row">
                 <div class="rowLeft">
@@ -270,4 +258,315 @@
             </div>
 
             <p class="muted" style="margin:10px 0 0;">
-                快捷鍵：<span class="kbd">←</s
+                快捷鍵：<span class="kbd">←</span>/<span class="kbd">→</span> 前後手、<span class="kbd">Home</span>/<span class="kbd">End</span> 首尾。
+                支援 PASS（用 <code>move: "pass"</code> 表示）。
+            </p>
+
+            <div style="height:12px;"></div>
+            <div class="boardWrap">
+                <div class="board" id="board" aria-label="Othello board"></div>
+            </div>
+        </div>
+
+        <!-- Right: commentary -->
+        <div class="right">
+            <div class="panel moves">
+                <div class="row">
+                    <div class="rowLeft">
+                        <span class="pill">步驟清單（點選可跳轉）</span>
+                    </div>
+                    <div class="rowLeft">
+                        <span class="pill">目前步解說</span>
+                    </div>
+                </div>
+
+                <div class="list" id="moveList" aria-label="Move list"></div>
+
+                <div class="detailBox" id="detailBox">（尚未選擇步驟）</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+(() => {
+  // ===== Data model =====
+  // games[i] = { id, title, meta, moves: [{move:"d3", comment:"..."}, ...] }
+  // move notation: "a1".."h8" (a=left, 1=top), or "pass"
+  const games = [
+    {
+      id: "demo-1",
+      title: "示範對局 #1（含解說）",
+      meta: "你可以把這個當模板，之後新增更多對局。",
+      moves: [
+        { move: "d3", comment: "黑：常見開局之一，先建立中央附近的影響力。" },
+        { move: "c3", comment: "白：對應回應，避免黑方輕易擴張。" },
+        { move: "c4", comment: "黑：先搶下穩定的翻子方向，避免過早外擴。" },
+        { move: "c5", comment: "白：保持彈性，下一步看黑是否給角的機會。" },
+        { move: "b4", comment: "黑：往邊靠近要小心，別送對手角或穩邊。" },
+        { move: "b3", comment: "白：減少黑方在左側的連續翻子。" },
+        { move: "a4", comment: "黑：再往外伸，這種手法要配合後續形狀避免被打穿。" },
+        { move: "d2", comment: "白：中央上方插入，逼黑方表態。" }
+      ]
+    },
+    {
+      id: "demo-2",
+      title: "示範對局 #2（空白解說也可）",
+      meta: "解說可以留空字串，仍可瀏覽棋譜。",
+      moves: [
+        { move: "f5", comment: "" },
+        { move: "f4", comment: "" },
+        { move: "e6", comment: "" },
+        { move: "d6", comment: "" }
+      ]
+    }
+  ];
+
+  // ===== Othello engine (apply moves only, no legality UI) =====
+  const N = 8;
+  const EMPTY = 0, BLACK = 1, WHITE = 2;
+  const dirs = [
+    [-1,-1],[-1,0],[-1,1],
+    [0,-1],        [0,1],
+    [1,-1],[1,0],[1,1]
+  ];
+  function other(p){ return p===BLACK ? WHITE : BLACK; }
+  function inBounds(r,c){ return r>=0 && r<N && c>=0 && c<N; }
+
+  function initBoard(){
+    const b = Array.from({length:N}, () => Array(N).fill(EMPTY));
+    b[3][3] = WHITE; b[3][4] = BLACK;
+    b[4][3] = BLACK; b[4][4] = WHITE;
+    return b;
+  }
+
+  // Parse "d3" -> {r,c} where a1 = (0,0)
+  function parseMove(s){
+    if (!s) return null;
+    const t = String(s).trim().toLowerCase();
+    if (t === "pass") return { pass:true };
+    const file = t.charCodeAt(0) - "a".charCodeAt(0);
+    const rank = parseInt(t.slice(1), 10) - 1;
+    if (Number.isNaN(rank) || file < 0 || file >= 8 || rank < 0 || rank >= 8) return null;
+    return { r: rank, c: file, pass:false };
+  }
+
+  function getFlips(board, r, c, p){
+    if (board[r][c] !== EMPTY) return [];
+    const opp = other(p);
+    const flips = [];
+    for (const [dr,dc] of dirs){
+      let rr = r + dr, cc = c + dc;
+      const line = [];
+      while (inBounds(rr,cc) && board[rr][cc] === opp){
+        line.push([rr,cc]);
+        rr += dr; cc += dc;
+      }
+      if (line.length && inBounds(rr,cc) && board[rr][cc] === p) flips.push(...line);
+    }
+    return flips;
+  }
+
+  function applyMove(board, moveObj, p){
+    // Returns {ok, last:{r,c}|null, board}
+    if (moveObj.pass) return { ok:true, last:null, board };
+    const {r,c} = moveObj;
+    const flips = getFlips(board, r, c, p);
+    if (!flips.length) return { ok:false, last:null, board };
+    board[r][c] = p;
+    for (const [rr,cc] of flips) board[rr][cc] = p;
+    return { ok:true, last:{r,c}, board };
+  }
+
+  function countDiscs(board){
+    let b=0,w=0;
+    for (let r=0;r<N;r++){
+      for (let c=0;c<N;c++){
+        if (board[r][c]===BLACK) b++;
+        else if (board[r][c]===WHITE) w++;
+      }
+    }
+    return {b,w};
+  }
+
+  // ===== UI state =====
+  const boardEl = document.getElementById("board");
+  const gameSelect = document.getElementById("gameSelect");
+  const moveListEl = document.getElementById("moveList");
+  const detailBox = document.getElementById("detailBox");
+
+  const stepText = document.getElementById("stepText");
+  const totalText = document.getElementById("totalText");
+  const turnText = document.getElementById("turnText");
+  const bCountEl = document.getElementById("bCount");
+  const wCountEl = document.getElementById("wCount");
+
+  const firstBtn = document.getElementById("firstBtn");
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
+  const lastBtn = document.getElementById("lastBtn");
+
+  let currentGameIndex = 0;
+  let step = 0; // 0 = initial position, 1..moves.length = after that move
+
+  function loadGame(index){
+    currentGameIndex = index;
+    step = 0;
+    renderAll();
+  }
+
+  function computePosition(game, step){
+    // step: 0..moves.length
+    let board = initBoard();
+    let turn = BLACK;
+    let last = null;
+
+    for (let i=0;i<step;i++){
+      const m = game.moves[i];
+      const mo = parseMove(m.move);
+      if (!mo) { /* ignore invalid */ turn = other(turn); continue; }
+
+      const res = applyMove(board, mo, turn);
+      // 如果你希望「即使不合法也硬套棋譜」可以改成不檢查 ok
+      if (res.ok) last = res.last;
+      // PASS 或不合法也照樣換手，讓解說譜能順著走
+      turn = other(turn);
+    }
+    return { board, turn, last };
+  }
+
+  function renderBoard(board, last){
+    boardEl.innerHTML = "";
+    for (let r=0;r<N;r++){
+      for (let c=0;c<N;c++){
+        const cell = document.createElement("div");
+        cell.className = "cell";
+        if (last && last.r===r && last.c===c) cell.classList.add("lastMove");
+
+        const v = board[r][c];
+        if (v !== EMPTY){
+          const d = document.createElement("div");
+          d.className = "disc " + (v===BLACK ? "black" : "white");
+          cell.appendChild(d);
+        }
+        boardEl.appendChild(cell);
+      }
+    }
+  }
+
+  function renderMoveList(game){
+    moveListEl.innerHTML = "";
+
+    // step 0 item
+    const initItem = document.createElement("div");
+    initItem.className = "item" + (step===0 ? " active":"");
+    initItem.innerHTML = `
+      <div>
+        <div class="mainText"><b>初始局面</b></div>
+        <div class="tag">Step 0</div>
+      </div>
+      <div class="tag">—</div>
+    `;
+    initItem.addEventListener("click", () => { step = 0; renderAll(); });
+    moveListEl.appendChild(initItem);
+
+    for (let i=0;i<game.moves.length;i++){
+      const m = game.moves[i];
+      const s = i+1; // after i-th move
+      const item = document.createElement("div");
+      item.className = "item" + (step===s ? " active":"");
+
+      const player = (i % 2 === 0) ? "黑" : "白";
+      const moveText = (String(m.move).toLowerCase()==="pass") ? "PASS" : String(m.move);
+      const shortComment = (m.comment || "").trim().replace(/\s+/g," ");
+      const preview = shortComment.length ? shortComment.slice(0, 24) + (shortComment.length>24 ? "…" : "") : "（無解說）";
+
+      item.innerHTML = `
+        <div>
+          <div class="mainText"><b>${player}</b>：${moveText}</div>
+          <div class="tag">${preview}</div>
+        </div>
+        <div class="tag">Step ${s}</div>
+      `;
+      item.addEventListener("click", () => { step = s; renderAll(); });
+      moveListEl.appendChild(item);
+    }
+  }
+
+  function renderDetail(game){
+    if (step === 0){
+      detailBox.textContent = game.meta ? `【對局資訊】\n${game.meta}` : "（初始局面）";
+      return;
+    }
+    const i = step - 1;
+    const m = game.moves[i];
+    const player = (i % 2 === 0) ? "黑" : "白";
+    const moveText = (String(m.move).toLowerCase()==="pass") ? "PASS" : String(m.move);
+
+    const comment = (m.comment || "").trim();
+    detailBox.textContent =
+      `Step ${step}\n${player}：${moveText}\n\n` + (comment.length ? comment : "（此步沒有解說）");
+  }
+
+  function renderHeader(game, pos){
+    stepText.textContent = step;
+    totalText.textContent = game.moves.length;
+    turnText.textContent = (pos.turn === BLACK) ? "黑" : "白";
+
+    const {b,w} = countDiscs(pos.board);
+    bCountEl.textContent = b;
+    wCountEl.textContent = w;
+
+    const atStart = step === 0;
+    const atEnd = step === game.moves.length;
+    firstBtn.disabled = atStart;
+    prevBtn.disabled  = atStart;
+    nextBtn.disabled  = atEnd;
+    lastBtn.disabled  = atEnd;
+  }
+
+  function renderAll(){
+    const game = games[currentGameIndex];
+    const pos = computePosition(game, step);
+    renderBoard(pos.board, pos.last);
+    renderMoveList(game);
+    renderDetail(game);
+    renderHeader(game, pos);
+
+    // auto-scroll active item into view
+    const active = moveListEl.querySelector(".item.active");
+    if (active) active.scrollIntoView({ block: "nearest" });
+  }
+
+  // ===== Init select + controls =====
+  function init(){
+    // populate games
+    gameSelect.innerHTML = "";
+    games.forEach((g, idx) => {
+      const opt = document.createElement("option");
+      opt.value = String(idx);
+      opt.textContent = g.title || g.id;
+      gameSelect.appendChild(opt);
+    });
+    gameSelect.value = String(currentGameIndex);
+    gameSelect.addEventListener("change", () => loadGame(Number(gameSelect.value)));
+
+    firstBtn.addEventListener("click", () => { step = 0; renderAll(); });
+    prevBtn.addEventListener("click", () => { step = Math.max(0, step-1); renderAll(); });
+    nextBtn.addEventListener("click", () => { step = Math.min(games[currentGameIndex].moves.length, step+1); renderAll(); });
+    lastBtn.addEventListener("click", () => { step = games[currentGameIndex].moves.length; renderAll(); });
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowLeft") { if (step>0) { step--; renderAll(); } }
+      if (e.key === "ArrowRight") { const L = games[currentGameIndex].moves.length; if (step<L) { step++; renderAll(); } }
+      if (e.key === "Home") { step = 0; renderAll(); }
+      if (e.key === "End") { step = games[currentGameIndex].moves.length; renderAll(); }
+    });
+
+    renderAll();
+  }
+
+  init();
+})();
+    </script>
+</body>
+</html>
