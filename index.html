@@ -570,31 +570,37 @@ function renderHeader(game, pos){
   if (active) active.scrollIntoView({ block: "nearest" });
 }
 
-  function enterVariation(parentStep, entry){
-  // parentStep 是主線的 step（例如 4）
-  const basePos = computePosition(currentGame, parentStep);
-
-  const varGame = {
-    id: entry.id || "var",
-    title: entry.title || "變化",
-    meta: "",
-    moves: buildMovesFromRecord(entry.record, entry.comments)
-  };
-
-  mode = "var";
-  varCtx = {
-    parentStep,
-    baseBoard: basePos.board,
-    baseTurn: basePos.turn,
-    varGame,
-    varStep: 0,
-    varTitle: entry.title || entry.label || "變化"
-  };
-
-  document.body.classList.add("varMode");
-  if (backBtn) backBtn.style.display = "";
-  renderAll();
-}
+  function enterVariation(parentStep, entry, vPack){
+    // vPack = game.variations[step]
+    // 若有 baseStep，代表「這個變化要改寫主線某一步」
+    const baseStep = (vPack && Number.isInteger(vPack.baseStep))
+      ? vPack.baseStep
+      : parentStep;
+  
+    const basePos = computePosition(currentGame, baseStep);
+  
+    const varGame = {
+      id: entry.id || "var",
+      title: entry.title || "變化",
+      meta: "",
+      moves: buildMovesFromRecord(entry.record, entry.comments)
+    };
+  
+    mode = "var";
+    varCtx = {
+      parentStep,   // 用來顯示「從哪一步進入變化」
+      baseStep,     // 真正的起始局面（你現在要用的）
+      baseBoard: basePos.board,
+      baseTurn: basePos.turn,
+      varGame,
+      varStep: 0,
+      varTitle: entry.title || entry.label || "變化"
+    };
+  
+    document.body.classList.add("varMode");
+    if (backBtn) backBtn.style.display = "";
+    renderAll();
+  }
 
 function exitVariation(){
   mode = "main";
@@ -740,6 +746,7 @@ async function loadGame(i){
 </script>
 </body>
 </html>
+
 
 
 
