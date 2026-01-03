@@ -49,6 +49,23 @@
       outline: 1px solid rgba(0,0,0,0.15);
       display:flex; align-items:center; justify-content:center;
     }
+    /* 分支模式：棋盤偏藍 */
+body.varMode .cell { background:#1e3a8a; } /* 深藍 */
+body.varMode .board { border-color: rgba(147,197,253,0.35); }
+body.varMode .item.active { background: rgba(147,197,253,0.14); outline-color: rgba(147,197,253,0.25); }
+
+/* 變化圖按鈕區 */
+#variationBox { display:flex; flex-direction:column; gap:8px; }
+.varBtn {
+  display:flex; justify-content:space-between; align-items:center;
+  border-radius: 12px; padding: 9px 12px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.08);
+  color:#e2e8f0;
+  cursor:pointer;
+}
+.varBtn:hover { background: rgba(255,255,255,0.12); }
+.varBtn small { opacity: .85; }
     .disc {
       width: calc(var(--cell) * 0.68);
       height: calc(var(--cell) * 0.68);
@@ -146,6 +163,7 @@
           <button id="prevBtn">◀ 上一手</button>
           <button id="nextBtn">下一手 ▶</button>
           <button id="lastBtn">最後一手 ⏭</button>
+          <button id="backBtn" style="display:none;">↩ 回到原對局</button>
         </div>
       </div>
 
@@ -173,6 +191,7 @@
         <div class="list" id="moveList" aria-label="Move list"></div>
 
         <div class="detailBox" id="detailBox">（尚未載入對局）</div>
+        <div id="variationBox" style="margin-top:10px;"></div>
       </div>
     </div>
   </div>
@@ -269,11 +288,16 @@
   const nextBtn = document.getElementById("nextBtn");
   const lastBtn = document.getElementById("lastBtn");
 
+  const backBtn = document.getElementById("backBtn");
+const variationBox = document.getElementById("variationBox");
+
   // ===== App state =====
   let gameIndex = [];         // from data/index.json
   let currentGame = null;     // loaded game json
   let currentIndex = 0;       // which entry in gameIndex
   let step = 0;               // 0..moves.length
+  let mode = "main";          // "main" | "var"
+  let varCtx = null;          // { parentStep, baseBoard, baseTurn, varGame, varStep, varTitle }
 
   function showError(msg){
     errorBox.style.display = "block";
@@ -299,6 +323,20 @@
     if (!id || !file) return null;
     return { id, title, file };
   }
+
+function buildMovesFromRecord(record, comments){
+  const rec = String(record ?? "").trim().toLowerCase();
+  if (!rec) return [];
+  if (rec.length % 2 !== 0) throw new Error("variation record 長度錯誤：必須是 2 的倍數");
+  const c = (comments && typeof comments === "object") ? comments : {};
+  const moves = [];
+  for (let i=0;i<rec.length;i+=2){
+    const s = (i/2)+1;
+    const mv = rec.slice(i,i+2);
+    moves.push({ move: mv, comment: String(c[String(s)] ?? c[s] ?? "") });
+  }
+  return moves;
+}
 
 function normalizeGame(g){
   const id = String(g?.id ?? "");
@@ -328,7 +366,8 @@ function normalizeGame(g){
     });
   }
 
-  return { id, title, meta, moves };
+  const variations = (g?.variations && typeof g.variations === "object") ? g.variations : {};
+  return { id, title, meta, moves, variations };
 }
 
   function computePosition(game, step){
@@ -349,6 +388,24 @@ function normalizeGame(g){
     }
     return { board, turn, last };
   }
+
+  function computePositionFrom(startBoard, startTurn, game, step){
+  // 深拷貝棋盤避免污染
+  let board = startBoard.map(row => row.slice());
+  let turn = startTurn;
+  let last = null;
+
+  for (let i=0;i<step;i++){
+    const m = game.moves[i];
+    const mo = parseMove(m.move);
+    if (!mo) { turn = other(turn); continue; }
+
+    const res = applyMove(board, mo, turn);
+    if (res.ok) last = res.last;
+    turn = other(turn);
+  }
+  return { board, turn, last };
+}
 
   function renderBoard(board, last){
     boardEl.innerHTML = "";
@@ -407,11 +464,30 @@ function normalizeGame(g){
     }
   }
 
-  function renderDetail(game){
-    if (step === 0){
-      detailBox.textContent = game.meta ? `【對局資訊】\n${game.meta}` : "（初始局面）";
-      return;
+  function renderDetail(game, pos){
+  if (variationBox) variationBox.innerHTML = "";
+
+  // 分支模式顯示分支標頭
+  if (mode === "var" && varCtx){
+    if (varCtx.varStep === 0){
+      detailBox.textContent = `【變化分支】${varCtx.varTitle}\n（從主線 Step ${varCtx.parentStep} 進入）`;
+    } else {
+      const i = varCtx.varStep - 1;
+      const m = varCtx.varGame.moves[i];
+      const player = (i % 2 === 0) ? "黑" : "白";
+      const moveText = (String(m.move).toLowerCase()==="pass") ? "PASS" : String(m.move);
+      const comment = (m.comment || "").trim();
+      detailBox.textContent =
+        `【變化分支】${varCtx.varTitle}\nStep ${varCtx.varStep}\n${player}：${moveText}\n\n` + (comment.length ? comment : "");
     }
+    // 分支模式不顯示主線變化按鈕（避免混淆）
+    return;
+  }
+
+  // ===== 主線模式 =====
+  if (step === 0){
+    detailBox.textContent = game.meta ? `【對局資訊】\n${game.meta}` : "（初始局面）";
+  } else {
     const i = step - 1;
     const m = game.moves[i];
     const player = (i % 2 === 0) ? "黑" : "白";
@@ -420,6 +496,31 @@ function normalizeGame(g){
     detailBox.textContent =
       `Step ${step}\n${player}：${moveText}\n\n` + (comment.length ? comment : "");
   }
+
+  // 主線：如果這一步有 variations，顯示變化圖按鈕
+  const key = String(step);
+  const vPack = game.variations?.[key];
+  const entries = vPack?.entries;
+  if (variationBox && Array.isArray(entries) && entries.length){
+    // 顯示提示文字
+    const hint = document.createElement("div");
+    hint.className = "muted";
+    hint.textContent = "變化圖：點選可進入分支（棋盤會變藍）";
+    variationBox.appendChild(hint);
+
+    entries.forEach((entry) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "varBtn";
+      const title = entry.title || "變化";
+      const label = entry.label || "變化圖";
+      const rec = String(entry.record || "");
+      btn.innerHTML = `<span>${title}：<b>${label}</b></span><small>${rec}</small>`;
+      btn.addEventListener("click", () => enterVariation(step, entry));
+      variationBox.appendChild(btn);
+    });
+  }
+}
 
 function renderHeader(game, pos){
   if (stepText) stepText.textContent = step;
@@ -435,23 +536,73 @@ function renderHeader(game, pos){
   if (prevBtn)  prevBtn.disabled  = atStart;
   if (nextBtn)  nextBtn.disabled  = atEnd;
   if (lastBtn)  lastBtn.disabled  = atEnd;
+  if (backBtn) backBtn.style.display = (mode === "var") ? "" : "none";
 }
 
   function renderAll(){
-    if (!currentGame){
-      detailBox.textContent = "（尚未載入對局）";
-      return;
-    }
-    const pos = computePosition(currentGame, step);
+  if (!currentGame){
+    detailBox.textContent = "（尚未載入對局）";
+    if (variationBox) variationBox.innerHTML = "";
+    return;
+  }
+
+  // 分支模式
+  if (mode === "var" && varCtx){
+    const pos = computePositionFrom(varCtx.baseBoard, varCtx.baseTurn, varCtx.varGame, varCtx.varStep);
     renderBoard(pos.board, pos.last);
-    renderMoveList(currentGame);
-    renderDetail(currentGame);
-    renderHeader(currentGame, pos);
+    renderMoveList(varCtx.varGame);
+    renderDetail(varCtx.varGame, pos);
+    renderHeader(varCtx.varGame, pos);
 
     const active = moveListEl.querySelector(".item.active");
     if (active) active.scrollIntoView({ block: "nearest" });
+    return;
   }
 
+  // 主線模式
+  const pos = computePosition(currentGame, step);
+  renderBoard(pos.board, pos.last);
+  renderMoveList(currentGame);
+  renderDetail(currentGame, pos);
+  renderHeader(currentGame, pos);
+
+  const active = moveListEl.querySelector(".item.active");
+  if (active) active.scrollIntoView({ block: "nearest" });
+}
+
+  function enterVariation(parentStep, entry){
+  // parentStep 是主線的 step（例如 4）
+  const basePos = computePosition(currentGame, parentStep);
+
+  const varGame = {
+    id: entry.id || "var",
+    title: entry.title || "變化",
+    meta: "",
+    moves: buildMovesFromRecord(entry.record, entry.comments)
+  };
+
+  mode = "var";
+  varCtx = {
+    parentStep,
+    baseBoard: basePos.board,
+    baseTurn: basePos.turn,
+    varGame,
+    varStep: 0,
+    varTitle: entry.title || entry.label || "變化"
+  };
+
+  document.body.classList.add("varMode");
+  if (backBtn) backBtn.style.display = "";
+  renderAll();
+}
+
+function exitVariation(){
+  mode = "main";
+  varCtx = null;
+  document.body.classList.remove("varMode");
+  if (backBtn) backBtn.style.display = "none";
+  renderAll();
+}
 async function loadIndex(){
   clearError();
   const idx = await fetchJson("./data/index.json?v=" + Date.now());
@@ -501,14 +652,51 @@ async function loadGame(i){
   }
 
   function wireControls(){
-    firstBtn.addEventListener("click", () => { step = 0; renderAll(); });
-    prevBtn.addEventListener("click", () => { step = Math.max(0, step-1); renderAll(); });
+    if (backBtn){
+      backBtn.addEventListener("click", () => {
+        // 回主線，停在進入變化的那一步
+        exitVariation();
+      });
+    }
+    
+    firstBtn.addEventListener("click", () => {
+      if (mode === "var" && varCtx){ varCtx.varStep = 0; renderAll(); return; }
+      step = 0; renderAll();
+    });
+    
+    prevBtn.addEventListener("click", () => {
+      if (mode === "var" && varCtx){
+        if (varCtx.varStep > 0){
+          varCtx.varStep--;
+          renderAll();
+        } else {
+          // 已經在分支 Step 0，再按上一手就回主線
+          exitVariation();
+        }
+        return;
+      }
+      step = Math.max(0, step-1);
+      renderAll();
+    });
+    
     nextBtn.addEventListener("click", () => {
+      if (mode === "var" && varCtx){
+        const L = varCtx.varGame.moves.length;
+        varCtx.varStep = Math.min(L, varCtx.varStep+1);
+        renderAll();
+        return;
+      }
       const L = currentGame ? currentGame.moves.length : 0;
       step = Math.min(L, step+1);
       renderAll();
     });
+    
     lastBtn.addEventListener("click", () => {
+      if (mode === "var" && varCtx){
+        varCtx.varStep = varCtx.varGame.moves.length;
+        renderAll();
+        return;
+      }
       const L = currentGame ? currentGame.moves.length : 0;
       step = L;
       renderAll();
@@ -516,6 +704,19 @@ async function loadGame(i){
 
     window.addEventListener("keydown", (e) => {
       if (!currentGame) return;
+    
+      if (mode === "var" && varCtx){
+        const L = varCtx.varGame.moves.length;
+        if (e.key === "ArrowLeft") {
+          if (varCtx.varStep > 0) { varCtx.varStep--; renderAll(); }
+          else { exitVariation(); }
+        }
+        if (e.key === "ArrowRight") { if (varCtx.varStep < L) { varCtx.varStep++; renderAll(); } }
+        if (e.key === "Home") { varCtx.varStep = 0; renderAll(); }
+        if (e.key === "End") { varCtx.varStep = L; renderAll(); }
+        return;
+      }
+    
       const L = currentGame.moves.length;
       if (e.key === "ArrowLeft") { if (step>0) { step--; renderAll(); } }
       if (e.key === "ArrowRight") { if (step<L) { step++; renderAll(); } }
@@ -539,6 +740,7 @@ async function loadGame(i){
 </script>
 </body>
 </html>
+
 
 
 
