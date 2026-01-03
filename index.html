@@ -47,15 +47,19 @@
     .coordTop{
       position: absolute;
       left: 22px;
-      top: 0;
+      top: 22px; /* ✅ 改：下移到棋盤第一列的中心 */
       display: grid;
       grid-template-columns: repeat(8, var(--cell));
       gap: 2px;
-      height: 22px;
-      align-items: center;
       font-size: 18px;
       opacity: 0.9;
-      letter-spacing: 0.5px;
+    }
+    
+    .coordTop > div{
+      height: var(--cell);
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     
     .coordLeft{
@@ -66,10 +70,16 @@
       grid-template-rows: repeat(8, var(--cell));
       gap: 2px;
       width: 22px;
-      align-items: center;
-      justify-items: center;
       font-size: 18px;
       opacity: 0.9;
+    }
+    
+    .coordLeft > div{
+      height: var(--cell);
+      width: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .boardWrap { display:flex; justify-content:center; }
     .board {
@@ -191,11 +201,11 @@ body.varMode .item.active { background: rgba(147,197,253,0.14); outline-color: r
   <div class="app">
     <!-- Left: board + controls -->
     <div class="panel">
-      <h1>黑白棋解說譜瀏覽器v1.06B</h1>
+      <h1>黑白棋解說譜瀏覽器v1.07</h1>
 
       <div class="row">
         <div class="rowLeft">
-          <span class="pill">解說譜<span>
+          <span class="pill">解說譜</span>
           <select id="gameSelect" aria-label="Select game"></select>
           <span class="pill">步數：<b id="stepText">0</b>/<b id="totalText">0</b></span>
           <span class="pill">黑：<b id="bCount">2</b>　白：<b id="wCount">2</b></span>
@@ -807,6 +817,7 @@ async function loadGame(i){
 </script>
 </body>
 </html>
+
 
 
 
