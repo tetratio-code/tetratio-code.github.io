@@ -1,13 +1,14 @@
 [
     {
         "id": "demo-1",
-        "title": "示範對局 #1（含解說）",
+        "title": "2024全國公開賽決賽",
         "file": "games/demo-1.json"
     },
     {
         "id": "demo-2",
-        "title": "2025全國公開賽決賽 (徹拉修 vs. LAM)",
+        "title": "2025全國公開賽決賽",
         "file": "games/demo-2.json"
     }
 ]
+
 
