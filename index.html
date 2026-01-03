@@ -439,10 +439,10 @@
     if (active) active.scrollIntoView({ block: "nearest" });
   }
 
-  async function loadIndex(){
-    clearError();
-    const idx = await fetchJson("./data/index.json");
-    if (!Array.isArray(idx)) throw new Error("index.json 格式錯誤：必須是 JSON 陣列");
+async function loadIndex(){
+  clearError();
+  const idx = await fetchJson("./data/index.json?v=" + Date.now());
+  if (!Array.isArray(idx)) throw new Error("index.json 格式錯誤：必須是 JSON 陣列");
 
     const normalized = idx.map(normalizeIndexEntry).filter(Boolean);
     if (!normalized.length) throw new Error("index.json 沒有任何有效項目（需要 id + file）");
@@ -524,3 +524,4 @@
 </script>
 </body>
 </html>
+
