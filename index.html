@@ -15,10 +15,20 @@
     .row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between; }
     .rowLeft { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
     select, button {
-      border-radius: 12px; padding: 9px 12px;
+      border-radius: 12px;
+      padding: 9px 12px;
       border: 1px solid rgba(255,255,255,0.18);
       background: rgba(255,255,255,0.08);
       color:#e2e8f0;
+    }
+    select option {
+      background-color: #0f172a;
+      color: #e2e8f0;
+    }
+    select option:hover,
+    select option:checked {
+      background-color: #1c4e80;
+      color: #ffffff;
     }
     button { cursor:pointer; }
     button:hover { background: rgba(255,255,255,0.12); }
@@ -181,11 +191,11 @@ body.varMode .item.active { background: rgba(147,197,253,0.14); outline-color: r
   <div class="app">
     <!-- Left: board + controls -->
     <div class="panel">
-      <h1>黑白棋解說譜瀏覽器v1.05</h1>
+      <h1>黑白棋解說譜瀏覽器v1.06</h1>
 
       <div class="row">
         <div class="rowLeft">
-          <span class="pill">對局：</span>
+          <span class="pill">解說譜ㄐ<span>
           <select id="gameSelect" aria-label="Select game"></select>
           <span class="pill">步數：<b id="stepText">0</b>/<b id="totalText">0</b></span>
           <span class="pill">黑：<b id="bCount">2</b>　白：<b id="wCount">2</b></span>
@@ -797,6 +807,7 @@ async function loadGame(i){
 </script>
 </body>
 </html>
+
 
 
 
