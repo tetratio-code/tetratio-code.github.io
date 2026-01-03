@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>黑白棋解說譜瀏覽器1</title>
+  <title>黑白棋解說譜瀏覽器</title>
   <style>
     :root { --cell: 54px; --gap: 14px; }
     body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; margin: 0; padding: 18px; background:#0f172a; color:#e2e8f0; }
@@ -27,7 +27,40 @@
 
     .pill { padding: 6px 10px; border-radius: 999px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); font-size: 14px; }
     .muted { opacity: 0.85; font-size: 13px; line-height:1.45; }
-
+    .boardFrame{
+      position: relative;
+      padding-left: 22px;  /* 留給左側 1~8 */
+      padding-top: 22px;   /* 留給上方 A~H */
+      display: inline-block;
+    }
+    
+    .coordTop{
+      position: absolute;
+      left: 22px;
+      top: 0;
+      display: grid;
+      grid-template-columns: repeat(8, var(--cell));
+      gap: 2px;
+      height: 22px;
+      align-items: center;
+      font-size: 12px;
+      opacity: 0.9;
+      letter-spacing: 0.5px;
+    }
+    
+    .coordLeft{
+      position: absolute;
+      left: 0;
+      top: 22px;
+      display: grid;
+      grid-template-rows: repeat(8, var(--cell));
+      gap: 2px;
+      width: 22px;
+      align-items: center;
+      justify-items: center;
+      font-size: 12px;
+      opacity: 0.9;
+    }
     .boardWrap { display:flex; justify-content:center; }
     .board {
       display:grid;
@@ -50,7 +83,7 @@
       display:flex; align-items:center; justify-content:center;
     }
     /* 分支模式：棋盤偏藍 */
-body.varMode .cell { background:#1e3a8a; } /* 深藍 */
+body.varMode .cell { background:#1c4e80; }
 body.varMode .board { border-color: rgba(147,197,253,0.35); }
 body.varMode .item.active { background: rgba(147,197,253,0.14); outline-color: rgba(147,197,253,0.25); }
 
@@ -126,7 +159,7 @@ body.varMode .item.active { background: rgba(147,197,253,0.14); outline-color: r
       min-height: 120px;
       white-space: pre-wrap;
       line-height: 1.5;
-      font-size: 14px;
+      font-size: 16px;
     }
     .kbd { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; padding: 2px 6px; border-radius: 8px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); }
 
@@ -148,7 +181,7 @@ body.varMode .item.active { background: rgba(147,197,253,0.14); outline-color: r
   <div class="app">
     <!-- Left: board + controls -->
     <div class="panel">
-      <h1>黑白棋解說譜瀏覽器</h1>
+      <h1>黑白棋解說譜瀏覽器v1.02</h1>
 
       <div class="row">
         <div class="rowLeft">
@@ -175,7 +208,11 @@ body.varMode .item.active { background: rgba(147,197,253,0.14); outline-color: r
 
       <div style="height:12px;"></div>
       <div class="boardWrap">
-        <div class="board" id="board" aria-label="Othello board"></div>
+        <div class="boardFrame">
+          <div class="coordTop" aria-hidden="true"></div>
+          <div class="coordLeft" aria-hidden="true"></div>
+          <div class="board" id="board" aria-label="Othello board"></div>
+        </div>
       </div>
     </div>
 
@@ -281,8 +318,28 @@ body.varMode .item.active { background: rgba(147,197,253,0.14); outline-color: r
   const lastBtn = document.getElementById("lastBtn");
 
   const backBtn = document.getElementById("backBtn");
-const variationBox = document.getElementById("variationBox");
-
+  const variationBox = document.getElementById("variationBox");
+  const coordTopEl = document.querySelector(".coordTop");
+  const coordLeftEl = document.querySelector(".coordLeft");
+  
+  function initCoords(){
+    if (coordTopEl && !coordTopEl.childElementCount){
+      const letters = ["A","B","C","D","E","F","G","H"];
+      letters.forEach(ch => {
+        const d = document.createElement("div");
+        d.textContent = ch;
+        d.style.textAlign = "center";
+        coordTopEl.appendChild(d);
+      });
+    }
+    if (coordLeftEl && !coordLeftEl.childElementCount){
+      for (let i=1;i<=8;i++){
+        const d = document.createElement("div");
+        d.textContent = String(i);
+        coordLeftEl.appendChild(d);
+      }
+    }
+  }
   // ===== App state =====
   let gameIndex = [];         // from data/index.json
   let currentGame = null;     // loaded game json
@@ -624,6 +681,7 @@ async function loadIndex(){
     gameSelect.addEventListener("change", async () => {
       currentIndex = Number(gameSelect.value);
       await loadGame(currentIndex);
+      gameSelect.blur();
     });
   }
 
@@ -701,6 +759,14 @@ async function loadGame(i){
     });
 
     window.addEventListener("keydown", (e) => {
+      const ae = document.activeElement;
+      if (ae && ae.tagName === "SELECT") {
+        // 只攔截會影響選單的鍵
+        if (["ArrowLeft","ArrowRight","ArrowUp","ArrowDown","Home","End"].includes(e.key)) {
+          e.preventDefault();
+        }
+        return;
+      }
       if (!currentGame) return;
     
       if (mode === "var" && varCtx){
@@ -726,6 +792,7 @@ async function loadGame(i){
   async function init(){
     try{
       wireControls();
+      initCoords();
       await loadIndex();
       await loadGame(0);
     } catch (err){
@@ -737,5 +804,6 @@ async function loadGame(i){
 </script>
 </body>
 </html>
+
 
 
