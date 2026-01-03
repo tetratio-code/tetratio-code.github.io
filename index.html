@@ -132,7 +132,7 @@ body.varMode .item.active { background: rgba(147,197,253,0.14); outline-color: r
     }
     .list {
       overflow:auto;
-      max-height: 320px;
+      max-height: 240px;
       border-radius: 12px;
       border: 1px solid rgba(255,255,255,0.12);
       background: rgba(0,0,0,0.12);
@@ -181,7 +181,7 @@ body.varMode .item.active { background: rgba(147,197,253,0.14); outline-color: r
   <div class="app">
     <!-- Left: board + controls -->
     <div class="panel">
-      <h1>黑白棋解說譜瀏覽器v1.02</h1>
+      <h1>黑白棋解說譜瀏覽器v1.03</h1>
 
       <div class="row">
         <div class="rowLeft">
@@ -199,10 +199,6 @@ body.varMode .item.active { background: rgba(147,197,253,0.14); outline-color: r
           <button id="backBtn" style="display:none;">↩ 回到原對局</button>
         </div>
       </div>
-
-      <p class="muted" style="margin:10px 0 0;">
-        快捷鍵：<span class="kbd">←</span>/<span class="kbd">→</span> 前後手、<span class="kbd">Home</span>/<span class="kbd">End</span> 首尾。
-      </p>
 
       <div id="errorBox" class="error" style="display:none;"></div>
 
@@ -222,6 +218,9 @@ body.varMode .item.active { background: rgba(147,197,253,0.14); outline-color: r
         <div class="row">
           <div class="rowLeft">
             <span class="pill">步驟清單（點選可跳轉）</span>
+          </div>
+          <div class="hotkeys muted">
+            快捷鍵：<span class="kbd">←</span>/<span class="kbd">→</span> 前後手、<span class="kbd">Home</span>/<span class="kbd">End</span> 首尾。
           </div>
         </div>
 
@@ -804,6 +803,7 @@ async function loadGame(i){
 </script>
 </body>
 </html>
+
 
 
 
