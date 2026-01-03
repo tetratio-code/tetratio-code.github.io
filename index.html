@@ -112,6 +112,18 @@
       font-size: 14px;
     }
     .kbd { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; padding: 2px 6px; border-radius: 8px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); }
+
+    .error {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(248,113,113,0.35);
+      background: rgba(248,113,113,0.10);
+      color: #fecaca;
+      font-size: 13px;
+      line-height: 1.45;
+      white-space: pre-wrap;
+    }
   </style>
 </head>
 
@@ -119,7 +131,7 @@
   <div class="app">
     <!-- Left: board + controls -->
     <div class="panel">
-      <h1>黑白棋解說譜瀏覽器</h1>
+      <h1>黑白棋解說譜瀏覽器（分檔）</h1>
 
       <div class="row">
         <div class="rowLeft">
@@ -140,8 +152,10 @@
 
       <p class="muted" style="margin:10px 0 0;">
         快捷鍵：<span class="kbd">←</span>/<span class="kbd">→</span> 前後手、<span class="kbd">Home</span>/<span class="kbd">End</span> 首尾。
-        支援 PASS（用 <code>move: "pass"</code> 表示）。
+        PASS 用 <code>"move": "pass"</code> 表示。
       </p>
+
+      <div id="errorBox" class="error" style="display:none;"></div>
 
       <div style="height:12px;"></div>
       <div class="boardWrap">
@@ -163,44 +177,19 @@
 
         <div class="list" id="moveList" aria-label="Move list"></div>
 
-        <div class="detailBox" id="detailBox">（尚未選擇步驟）</div>
+        <div class="detailBox" id="detailBox">（尚未載入對局）</div>
       </div>
     </div>
   </div>
 
 <script>
 (() => {
-  // ===== Data model =====
-  // games[i] = { id, title, meta, moves: [{move:"d3", comment:"..."}, ...] }
-  // move notation: "a1".."h8" (a=left, 1=top), or "pass"
-  const games = [
-    {
-      id: "demo-1",
-      title: "示範對局 #1（含解說）",
-      meta: "你可以把這個當模板，之後新增更多對局。",
-      moves: [
-        { move: "d3", comment: "黑：常見開局之一，先建立中央附近的影響力。" },
-        { move: "c3", comment: "白：對應回應，避免黑方輕易擴張。" },
-        { move: "c4", comment: "黑：先搶下穩定的翻子方向，避免過早外擴。" },
-        { move: "c5", comment: "白：保持彈性，下一步看黑是否給角的機會。" },
-        { move: "b4", comment: "黑：往邊靠近要小心，別送對手角或穩邊。" },
-        { move: "b3", comment: "白：減少黑方在左側的連續翻子。" },
-        { move: "a4", comment: "黑：再往外伸，這種手法要配合後續形狀避免被打穿。" },
-        { move: "d2", comment: "白：中央上方插入，逼黑方表態。" }
-      ]
-    },
-    {
-      id: "demo-2",
-      title: "示範對局 #2（空白解說也可）",
-      meta: "解說可以留空字串，仍可瀏覽棋譜。",
-      moves: [
-        { move: "f5", comment: "" },
-        { move: "f4", comment: "" },
-        { move: "e6", comment: "" },
-        { move: "d6", comment: "" }
-      ]
-    }
-  ];
+  // ========== 分檔資料模式 ==========
+  // 1) 先讀取 ./data/index.json 取得清單
+  // 2) 依選取讀取 ./data/<file> (例如 games/demo-1.json)
+  //
+  // index.json 建議格式：[{id,title,file}, ...]
+  // 單盤 json 建議格式：{id,title,meta,moves:[{move,comment}, ...]}
 
   // ===== Othello engine (apply moves only, no legality UI) =====
   const N = 8;
@@ -220,7 +209,7 @@
     return b;
   }
 
-  // Parse "d3" -> {r,c} where a1 = (0,0)
+  // Parse "d3" -> {r,c} where a1 = (0,0), or "pass"
   function parseMove(s){
     if (!s) return null;
     const t = String(s).trim().toLowerCase();
@@ -248,7 +237,6 @@
   }
 
   function applyMove(board, moveObj, p){
-    // Returns {ok, last:{r,c}|null, board}
     if (moveObj.pass) return { ok:true, last:null, board };
     const {r,c} = moveObj;
     const flips = getFlips(board, r, c, p);
@@ -269,11 +257,12 @@
     return {b,w};
   }
 
-  // ===== UI state =====
+  // ===== UI elements =====
   const boardEl = document.getElementById("board");
   const gameSelect = document.getElementById("gameSelect");
   const moveListEl = document.getElementById("moveList");
   const detailBox = document.getElementById("detailBox");
+  const errorBox = document.getElementById("errorBox");
 
   const stepText = document.getElementById("stepText");
   const totalText = document.getElementById("totalText");
@@ -286,17 +275,49 @@
   const nextBtn = document.getElementById("nextBtn");
   const lastBtn = document.getElementById("lastBtn");
 
-  let currentGameIndex = 0;
-  let step = 0; // 0 = initial position, 1..moves.length = after that move
+  // ===== App state =====
+  let gameIndex = [];         // from data/index.json
+  let currentGame = null;     // loaded game json
+  let currentIndex = 0;       // which entry in gameIndex
+  let step = 0;               // 0..moves.length
 
-  function loadGame(index){
-    currentGameIndex = index;
-    step = 0;
-    renderAll();
+  function showError(msg){
+    errorBox.style.display = "block";
+    errorBox.textContent = msg;
+  }
+  function clearError(){
+    errorBox.style.display = "none";
+    errorBox.textContent = "";
+  }
+
+  async function fetchJson(url){
+    // no-store to reduce caching issues after updates on GitHub Pages
+    const res = await fetch(url, { cache: "no-store" });
+    if (!res.ok) throw new Error(`${url} 讀取失敗（HTTP ${res.status}）`);
+    return await res.json();
+  }
+
+  function normalizeIndexEntry(e){
+    // allow {id,title,file} minimal
+    const id = String(e?.id ?? "");
+    const title = String(e?.title ?? id ?? "Untitled");
+    const file = String(e?.file ?? "");
+    if (!id || !file) return null;
+    return { id, title, file };
+  }
+
+  function normalizeGame(g){
+    const id = String(g?.id ?? "");
+    const title = String(g?.title ?? id ?? "");
+    const meta = String(g?.meta ?? "");
+    const moves = Array.isArray(g?.moves) ? g.moves.map(x => ({
+      move: String(x?.move ?? ""),
+      comment: String(x?.comment ?? "")
+    })) : [];
+    return { id, title, meta, moves };
   }
 
   function computePosition(game, step){
-    // step: 0..moves.length
     let board = initBoard();
     let turn = BLACK;
     let last = null;
@@ -304,11 +325,11 @@
     for (let i=0;i<step;i++){
       const m = game.moves[i];
       const mo = parseMove(m.move);
-      if (!mo) { /* ignore invalid */ turn = other(turn); continue; }
+      if (!mo) { turn = other(turn); continue; }
 
       const res = applyMove(board, mo, turn);
-      // 如果你希望「即使不合法也硬套棋譜」可以改成不檢查 ok
       if (res.ok) last = res.last;
+
       // PASS 或不合法也照樣換手，讓解說譜能順著走
       turn = other(turn);
     }
@@ -337,7 +358,6 @@
   function renderMoveList(game){
     moveListEl.innerHTML = "";
 
-    // step 0 item
     const initItem = document.createElement("div");
     initItem.className = "item" + (step===0 ? " active":"");
     initItem.innerHTML = `
@@ -352,7 +372,7 @@
 
     for (let i=0;i<game.moves.length;i++){
       const m = game.moves[i];
-      const s = i+1; // after i-th move
+      const s = i+1;
       const item = document.createElement("div");
       item.className = "item" + (step===s ? " active":"");
 
@@ -382,7 +402,6 @@
     const m = game.moves[i];
     const player = (i % 2 === 0) ? "黑" : "白";
     const moveText = (String(m.move).toLowerCase()==="pass") ? "PASS" : String(m.move);
-
     const comment = (m.comment || "").trim();
     detailBox.textContent =
       `Step ${step}\n${player}：${moveText}\n\n` + (comment.length ? comment : "（此步沒有解說）");
@@ -406,44 +425,98 @@
   }
 
   function renderAll(){
-    const game = games[currentGameIndex];
-    const pos = computePosition(game, step);
+    if (!currentGame){
+      detailBox.textContent = "（尚未載入對局）";
+      return;
+    }
+    const pos = computePosition(currentGame, step);
     renderBoard(pos.board, pos.last);
-    renderMoveList(game);
-    renderDetail(game);
-    renderHeader(game, pos);
+    renderMoveList(currentGame);
+    renderDetail(currentGame);
+    renderHeader(currentGame, pos);
 
-    // auto-scroll active item into view
     const active = moveListEl.querySelector(".item.active");
     if (active) active.scrollIntoView({ block: "nearest" });
   }
 
-  // ===== Init select + controls =====
-  function init(){
-    // populate games
+  async function loadIndex(){
+    clearError();
+    const idx = await fetchJson("./data/index.json");
+    if (!Array.isArray(idx)) throw new Error("index.json 格式錯誤：必須是 JSON 陣列");
+
+    const normalized = idx.map(normalizeIndexEntry).filter(Boolean);
+    if (!normalized.length) throw new Error("index.json 沒有任何有效項目（需要 id + file）");
+
+    gameIndex = normalized;
+
     gameSelect.innerHTML = "";
-    games.forEach((g, idx) => {
+    gameIndex.forEach((g, i) => {
       const opt = document.createElement("option");
-      opt.value = String(idx);
+      opt.value = String(i);
       opt.textContent = g.title || g.id;
       gameSelect.appendChild(opt);
     });
-    gameSelect.value = String(currentGameIndex);
-    gameSelect.addEventListener("change", () => loadGame(Number(gameSelect.value)));
 
+    currentIndex = 0;
+    gameSelect.value = "0";
+    gameSelect.addEventListener("change", async () => {
+      currentIndex = Number(gameSelect.value);
+      await loadGame(currentIndex);
+    });
+  }
+
+  async function loadGame(i){
+    clearError();
+    step = 0;
+    currentGame = null;
+    renderAll();
+
+    const entry = gameIndex[i];
+    if (!entry) throw new Error("找不到對局索引項目");
+
+    const game = normalizeGame(await fetchJson("./data/" + entry.file));
+    if (!game.moves) throw new Error("對局檔格式錯誤：缺少 moves");
+
+    // 若單盤檔沒寫 title，就用 index.json 的 title
+    if (!game.title) game.title = entry.title;
+    if (!game.id) game.id = entry.id;
+
+    currentGame = game;
+    renderAll();
+  }
+
+  function wireControls(){
     firstBtn.addEventListener("click", () => { step = 0; renderAll(); });
     prevBtn.addEventListener("click", () => { step = Math.max(0, step-1); renderAll(); });
-    nextBtn.addEventListener("click", () => { step = Math.min(games[currentGameIndex].moves.length, step+1); renderAll(); });
-    lastBtn.addEventListener("click", () => { step = games[currentGameIndex].moves.length; renderAll(); });
-
-    window.addEventListener("keydown", (e) => {
-      if (e.key === "ArrowLeft") { if (step>0) { step--; renderAll(); } }
-      if (e.key === "ArrowRight") { const L = games[currentGameIndex].moves.length; if (step<L) { step++; renderAll(); } }
-      if (e.key === "Home") { step = 0; renderAll(); }
-      if (e.key === "End") { step = games[currentGameIndex].moves.length; renderAll(); }
+    nextBtn.addEventListener("click", () => {
+      const L = currentGame ? currentGame.moves.length : 0;
+      step = Math.min(L, step+1);
+      renderAll();
+    });
+    lastBtn.addEventListener("click", () => {
+      const L = currentGame ? currentGame.moves.length : 0;
+      step = L;
+      renderAll();
     });
 
-    renderAll();
+    window.addEventListener("keydown", (e) => {
+      if (!currentGame) return;
+      const L = currentGame.moves.length;
+      if (e.key === "ArrowLeft") { if (step>0) { step--; renderAll(); } }
+      if (e.key === "ArrowRight") { if (step<L) { step++; renderAll(); } }
+      if (e.key === "Home") { step = 0; renderAll(); }
+      if (e.key === "End") { step = L; renderAll(); }
+    });
+  }
+
+  async function init(){
+    try{
+      wireControls();
+      await loadIndex();
+      await loadGame(0);
+    } catch (err){
+      showError(String(err?.message ?? err));
+    }
   }
 
   init();
