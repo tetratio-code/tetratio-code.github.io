@@ -1,12 +1,12 @@
 [
     {
         "id": "demo-1",
-        "title": "�ܽd�什 #1�]�t�ѻ��^",
+        "title": "示範對局 #1（含解說）",
         "file": "games/demo-1.json"
     },
     {
         "id": "demo-2",
-        "title": "�ܽd�什 #2�]�ֶq�B�^",
+        "title": "示範對局 #2（少量步）",
         "file": "games/demo-2.json"
     }
 ]
