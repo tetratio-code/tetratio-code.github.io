@@ -21,24 +21,20 @@
 
   "variations": {
     "4": {
+      "baseStep": 3,
       "entries": [
         {
           "name": "牛定式",
           "record": "f4d6e6",
-          "comments": {
-            "1": "牛定式：進入後第一手"
-          }
+          "comments": { "1": "牛定式：進入後第一手" }
         },
         {
           "name": "鬥牛定式",
           "record": "d2b4b3",
-          "comments": {
-            "1": "鬥牛定式：進入後第一手"
-          }
+          "comments": { "1": "鬥牛定式：進入後第一手" }
         }
       ]
     },
-  
     "33": {
       "baseStep": 32,
       "entries": [
@@ -54,6 +50,7 @@
     }
   }
 }
+
 
 
 
