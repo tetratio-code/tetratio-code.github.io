@@ -1,0 +1,273 @@
+﻿<!doctype html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>黑白棋解說譜瀏覽器</title>
+    <style>
+        :root {
+            --cell: 54px;
+            --gap: 14px;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+            margin: 0;
+            padding: 18px;
+            background: #0f172a;
+            color: #e2e8f0;
+        }
+
+        .app {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+            gap: var(--gap);
+        }
+
+        @media (max-width: 980px) {
+            .app {
+                grid-template-columns: 1fr;
+            }
+
+            :root {
+                --cell: 46px;
+            }
+        }
+
+        .panel {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 14px;
+            padding: 14px;
+        }
+
+        h1 {
+            font-size: 18px;
+            margin: 0 0 10px;
+        }
+
+        .row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .rowLeft {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        select, button {
+            border-radius: 12px;
+            padding: 9px 12px;
+            border: 1px solid rgba(255,255,255,0.18);
+            background: rgba(255,255,255,0.08);
+            color: #e2e8f0;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+            button:hover {
+                background: rgba(255,255,255,0.12);
+            }
+
+            button:active {
+                transform: translateY(1px);
+            }
+
+            button:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+
+        .pill {
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            font-size: 14px;
+        }
+
+        .muted {
+            opacity: 0.85;
+            font-size: 13px;
+            line-height: 1.45;
+        }
+
+        .boardWrap {
+            display: flex;
+            justify-content: center;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(8, var(--cell));
+            grid-template-rows: repeat(8, var(--cell));
+            gap: 2px;
+            background: rgba(255,255,255,0.08);
+            padding: 10px;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.12);
+            user-select: none;
+            touch-action: manipulation;
+        }
+
+        .cell {
+            width: var(--cell);
+            height: var(--cell);
+            background: #166534;
+            border-radius: 10px;
+            position: relative;
+            outline: 1px solid rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .disc {
+            width: calc(var(--cell) * 0.68);
+            height: calc(var(--cell) * 0.68);
+            border-radius: 50%;
+            box-shadow: inset 0 0 0 2px rgba(255,255,255,0.12), 0 10px 18px rgba(0,0,0,0.35);
+        }
+
+        .black {
+            background: radial-gradient(circle at 35% 30%, #64748b 0%, #111827 60%, #0b1220 100%);
+        }
+
+        .white {
+            background: radial-gradient(circle at 35% 30%, #ffffff 0%, #e2e8f0 55%, #cbd5e1 100%);
+        }
+
+        .lastMove::after {
+            content: "";
+            position: absolute;
+            width: calc(var(--cell) * 0.28);
+            height: calc(var(--cell) * 0.28);
+            border-radius: 8px;
+            border: 2px solid rgba(250,204,21,0.95);
+            box-shadow: 0 0 0 3px rgba(250,204,21,0.18);
+        }
+
+        .right {
+            display: flex;
+            flex-direction: column;
+            gap: var(--gap);
+            min-height: 0;
+        }
+
+        .moves {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            min-height: 0;
+        }
+
+        .list {
+            overflow: auto;
+            max-height: 320px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(0,0,0,0.12);
+        }
+
+        .item {
+            padding: 10px 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            cursor: pointer;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            justify-content: space-between;
+        }
+
+            .item:last-child {
+                border-bottom: 0;
+            }
+
+            .item:hover {
+                background: rgba(255,255,255,0.06);
+            }
+
+            .item.active {
+                background: rgba(250,204,21,0.10);
+                outline: 1px solid rgba(250,204,21,0.20);
+            }
+
+        .tag {
+            font-size: 12px;
+            opacity: 0.85;
+            white-space: nowrap;
+        }
+
+        .mainText {
+            font-size: 14px;
+            line-height: 1.35;
+        }
+
+        .detailBox {
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(0,0,0,0.12);
+            padding: 12px;
+            min-height: 120px;
+            white-space: pre-wrap;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+        .kbd {
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+            padding: 2px 6px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+
+        .error {
+            margin-top: 10px;
+            padding: 10px 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(248,113,113,0.35);
+            background: rgba(248,113,113,0.10);
+            color: #fecaca;
+            font-size: 13px;
+            line-height: 1.45;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+        <!-- Left: board + controls -->
+        <div class="panel">
+            <h1>黑白棋解說譜瀏覽器（分檔）</h1>
+
+            <div class="row">
+                <div class="rowLeft">
+                    <span class="pill">對局：</span>
+                    <select id="gameSelect" aria-label="Select game"></select>
+                    <span class="pill">步數：<b id="stepText">0</b>/<b id="totalText">0</b></span>
+                    <span class="pill">輪到：<b id="turnText">黑</b></span>
+                    <span class="pill">黑：<b id="bCount">2</b>　白：<b id="wCount">2</b></span>
+                </div>
+
+                <div class="rowLeft">
+                    <button id="firstBtn">⏮ 第一手</button>
+                    <button id="prevBtn">◀ 上一手</button>
+                    <button id="nextBtn">下一手 ▶</button>
+                    <button id="lastBtn">最後一手 ⏭</button>
+                </div>
+            </div>
+
+            <p class="muted" style="margin:10px 0 0;">
+                快捷鍵：<span class="kbd">←</s
