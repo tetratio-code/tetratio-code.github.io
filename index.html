@@ -516,7 +516,7 @@ function normalizeGame(g){
       const label = entry.label || "變化圖";
       const rec = String(entry.record || "");
       btn.innerHTML = `<span>${title}：<b>${label}</b></span><small>${rec}</small>`;
-      btn.addEventListener("click", () => enterVariation(step, entry));
+      btn.addEventListener("click", () => enterVariation(step, entry, vPack));
       variationBox.appendChild(btn);
     });
   }
@@ -761,6 +761,7 @@ async function loadGame(i){
 </script>
 </body>
 </html>
+
 
 
 
