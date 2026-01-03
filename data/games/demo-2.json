@@ -1,0 +1,23 @@
+{
+    "id": "demo-2",
+    "title": "示範對局 #2（少量步）",
+    "meta": "解說可以留空字串，仍可瀏覽棋譜。",
+    "moves": [
+        {
+            "move": "f5",
+            "comment": ""
+        },
+        {
+            "move": "f4",
+            "comment": ""
+        },
+        {
+            "move": "e6",
+            "comment": ""
+        },
+        {
+            "move": "d6",
+            "comment": ""
+        }
+    ]
+}

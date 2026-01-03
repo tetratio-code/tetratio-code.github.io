@@ -1,0 +1,39 @@
+{
+    "id": "demo-1",
+    "title": "�ܽd�什 #1�]�t�ѻ��^",
+    "meta": "�A�i�H��o�q��@�ҪO�G���ɸ�T�B�}���B�什�I���B�[�ԭ��I�K",
+    "moves": [
+        {
+            "move": "d3",
+            "comment": "�¡G�`���}�����@�A���إߤ������񪺼v�T�O�C"
+        },
+        {
+            "move": "c3",
+            "comment": "�աG�����^���A�קK�¤軴���X�i�C"
+        },
+        {
+            "move": "c4",
+            "comment": "�¡G���m�Uí�w��½�l��V�A�קK�L���~�X�C"
+        },
+        {
+            "move": "c5",
+            "comment": "�աG�O���u�ʡA�U�@�B�ݶ¬O�_���������|�C"
+        },
+        {
+            "move": "b4",
+            "comment": "�¡G����a��n�p�ߡA�O�e��⨤��í��C"
+        },
+        {
+            "move": "b3",
+            "comment": "�աG��ֶ¤�b�������s��½�l�C"
+        },
+        {
+            "move": "a4",
+            "comment": "�¡G�A���~���A�o�ؤ�k�n�t�X����Ϊ��קK�Q����C"
+        },
+        {
+            "move": "d2",
+            "comment": "�աG�����W�贡�J�A�G�¤��A�C"
+        }
+    ]
+}
