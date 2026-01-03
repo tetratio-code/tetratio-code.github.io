@@ -306,16 +306,36 @@
     return { id, title, file };
   }
 
-  function normalizeGame(g){
-    const id = String(g?.id ?? "");
-    const title = String(g?.title ?? id ?? "");
-    const meta = String(g?.meta ?? "");
-    const moves = Array.isArray(g?.moves) ? g.moves.map(x => ({
-      move: String(x?.move ?? ""),
-      comment: String(x?.comment ?? "")
-    })) : [];
-    return { id, title, meta, moves };
+function normalizeGame(g){
+  const id = String(g?.id ?? "");
+  const title = String(g?.title ?? id ?? "");
+  const meta = String(g?.meta ?? "");
+
+  // 新結構必備：record（每 2 字元一手，如 "f5d6c3..."）
+  const record = String(g?.record ?? "").trim().toLowerCase();
+  if (!record) throw new Error("對局檔格式錯誤：缺少 record");
+
+  // 可選：comments 物件，key = 第幾手（1-based），value = 解說
+  const comments = (g?.comments && typeof g.comments === "object") ? g.comments : {};
+
+  // 基本檢查：長度必須是 2 的倍數
+  if (record.length % 2 !== 0) {
+    throw new Error("record 長度錯誤：必須是 2 的倍數（每手 2 字元）");
   }
+
+  const moves = [];
+  for (let i = 0; i < record.length; i += 2) {
+    const step = (i / 2) + 1;         // 1-based
+    const move = record.slice(i, i + 2);
+
+    moves.push({
+      move,
+      comment: String(comments[String(step)] ?? comments[step] ?? "")
+    });
+  }
+
+  return { id, title, meta, moves };
+}
 
   function computePosition(game, step){
     let board = initBoard();
@@ -526,5 +546,6 @@ async function loadGame(i){
 </script>
 </body>
 </html>
+
 
 
