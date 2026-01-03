@@ -548,8 +548,7 @@ function normalizeGame(g){
     const player = (i % 2 === 0) ? "黑" : "白";
     const moveText = (String(m.move).toLowerCase()==="pass") ? "PASS" : String(m.move);
     const comment = (m.comment || "").trim();
-    detailBox.textContent =
-      `Step ${step}\n${player}：${moveText}\n\n` + (comment.length ? comment : "");
+    detailBox.textContent = comment;
   }
 
   // 主線：如果這一步有 variations，顯示變化圖按鈕
@@ -808,6 +807,7 @@ async function loadGame(i){
 </script>
 </body>
 </html>
+
 
 
 
