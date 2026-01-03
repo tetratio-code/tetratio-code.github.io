@@ -512,10 +512,9 @@ function normalizeGame(g){
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "varBtn";
-      const title = entry.title || "變化";
-      const label = entry.label || "變化圖";
+      const name = entry.name || "變化";
       const rec = String(entry.record || "");
-      btn.innerHTML = `<span>${title}：<b>${label}</b></span><small>${rec}</small>`;
+      btn.innerHTML = `<span><b>${name}</b></span><small>${rec}</small>`;
       btn.addEventListener("click", () => enterVariation(step, entry, vPack));
       variationBox.appendChild(btn);
     });
@@ -746,6 +745,7 @@ async function loadGame(i){
 </script>
 </body>
 </html>
+
 
 
 
