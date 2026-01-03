@@ -578,7 +578,7 @@ function renderHeader(game, pos){
       : parentStep;
   
     const basePos = computePosition(currentGame, baseStep);
-  
+    const intendedTurn = computePosition(currentGame, parentStep - 1).turn;
     const varGame = {
       id: entry.id || "var",
       title: entry.title || "變化",
@@ -591,7 +591,7 @@ function renderHeader(game, pos){
       parentStep,   // 用來顯示「從哪一步進入變化」
       baseStep,     // 真正的起始局面（你現在要用的）
       baseBoard: basePos.board,
-      baseTurn: basePos.turn,
+      baseTurn: intendedTurn,
       varGame,
       varStep: 0,
       varTitle: entry.title || entry.label || "變化"
@@ -746,6 +746,7 @@ async function loadGame(i){
 </script>
 </body>
 </html>
+
 
 
 
