@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>黑白棋解說譜瀏覽器</title>
+  <title>黑白棋解說譜瀏覽器1</title>
   <style>
     :root { --cell: 54px; --gap: 14px; }
     body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; margin: 0; padding: 18px; background:#0f172a; color:#e2e8f0; }
@@ -557,6 +557,43 @@ function renderHeader(game, pos){
   if (active) active.scrollIntoView({ block: "nearest" });
 }
 
+function enterVariation(parentStep, entry, vPack){
+  if (!currentGame) throw new Error("currentGame 尚未載入");
+
+  // baseStep：分支起始「走完主線幾手」後開始
+  const baseStep = (vPack && Number.isInteger(vPack.baseStep))
+    ? vPack.baseStep
+    : parentStep;
+
+  const basePos = computePosition(currentGame, baseStep);
+
+  // entry: { name, record, comments }
+  const varGame = {
+    id: "var",
+    title: entry?.name || "變化",
+    meta: "",
+    moves: buildMovesFromRecord(entry?.record, entry?.comments)
+  };
+
+  if (!varGame.moves.length) throw new Error("這個變化圖的 record 是空的，無法進入");
+
+  mode = "var";
+  varCtx = {
+    parentStep,
+    baseStep,
+    baseBoard: basePos.board,
+    baseTurn: basePos.turn,          // ✅ 輪到誰下完全跟著 baseStep
+    varGame,
+    varStep: 0,
+    varTitle: entry?.name || "變化"
+  };
+
+  document.body.classList.add("varMode");
+  if (backBtn) backBtn.style.display = "";
+  clearError();
+  renderAll();
+}
+
 function exitVariation(){
   mode = "main";
   varCtx = null;
@@ -700,4 +737,5 @@ async function loadGame(i){
 </script>
 </body>
 </html>
+
 
