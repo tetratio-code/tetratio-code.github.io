@@ -192,7 +192,7 @@ body.varMode .item.active { background: rgba(147,197,253,0.14); outline-color: r
   <div class="app">
     <!-- Left: board + controls -->
     <div class="panel">
-      <h1>黑白棋解說譜瀏覽器v1.08</h1>
+      <h1>黑白棋解說譜瀏覽器v1.09</h1>
 
       <div class="row">
         <div class="rowLeft">
@@ -487,7 +487,11 @@ function normalizeGame(g){
       </div>
       <div class="tag">—</div>
     `;
-    initItem.addEventListener("click", () => { step = 0; renderAll(); });
+    initItem.addEventListener("click", () => {
+      if (mode === "var" && varCtx) varCtx.varStep = 0;
+      else step = 0;
+      renderAll();
+    });
     moveListEl.appendChild(initItem);
 
     for (let i=0;i<game.moves.length;i++){
@@ -508,7 +512,11 @@ function normalizeGame(g){
         </div>
         <div class="tag">Move ${s}</div>
       `;
-      item.addEventListener("click", () => { step = s; renderAll(); });
+      item.addEventListener("click", () => {
+        if (mode === "var" && varCtx) varCtx.varStep = s;
+        else step = s;
+        renderAll();
+      });
       moveListEl.appendChild(item);
     }
   }
@@ -636,6 +644,7 @@ function enterVariation(parentStep, entry, vPack){
     varGame,
     varStep: 0,
     varTitle: entry?.name || "變化"
+    returnStep: step
   };
 
   document.body.classList.add("varMode");
@@ -645,6 +654,9 @@ function enterVariation(parentStep, entry, vPack){
 }
 
 function exitVariation(){
+  if (varCtx && Number.isInteger(varCtx.returnStep)) {
+    step = varCtx.returnStep;
+  }
   mode = "main";
   varCtx = null;
   document.body.classList.remove("varMode");
@@ -791,5 +803,6 @@ async function loadGame(i){
 </script>
 </body>
 </html>
+
 
 
