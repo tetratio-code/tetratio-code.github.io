@@ -525,15 +525,14 @@ function normalizeGame(g){
   // 分支模式
   if (mode === "var" && varCtx){
     if (varCtx.varStep === 0){
-      detailBox.textContent = `【變化分支】${varCtx.varTitle}\n（從主線 Step ${varCtx.parentStep} 進入）`;
+      detailBox.textContent = `【變化分支】${varCtx.varTitle}`;
     } else {
       const i = varCtx.varStep - 1;
       const m = varCtx.varGame.moves[i];
       const player = (i % 2 === 0) ? "黑" : "白";
       const moveText = (String(m.move).toLowerCase()==="pass") ? "PASS" : String(m.move);
       const comment = (m.comment || "").trim();
-      detailBox.textContent =
-  `    【變化分支】${varCtx.varTitle}\n\n` + (comment.length ? comment : "");
+      detailBox.textContent = comment;
     }
     return;
   }
@@ -806,6 +805,7 @@ async function loadGame(i){
 </script>
 </body>
 </html>
+
 
 
 
