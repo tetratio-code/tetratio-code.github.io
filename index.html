@@ -483,7 +483,7 @@ function normalizeGame(g){
     initItem.innerHTML = `
       <div>
         <div class="mainText"><b>初始局面</b></div>
-        <div class="tag">Step 0</div>
+        <div class="tag">Move 0</div>
       </div>
       <div class="tag">—</div>
     `;
@@ -506,7 +506,7 @@ function normalizeGame(g){
           <div class="mainText"><b>${player}</b>：${moveText}</div>
           <div class="tag">${preview}</div>
         </div>
-        <div class="tag">Step ${s}</div>
+        <div class="tag">Move ${s}</div>
       `;
       item.addEventListener("click", () => { step = s; renderAll(); });
       moveListEl.appendChild(item);
@@ -791,4 +791,5 @@ async function loadGame(i){
 </script>
 </body>
 </html>
+
 
