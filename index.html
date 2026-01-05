@@ -163,6 +163,9 @@
     .item:hover { background: rgba(255,255,255,0.06); }
     .item.active { background: rgba(250,204,21,0.10); outline: 1px solid rgba(250,204,21,0.20); }
     .tag { font-size: 14px; opacity: 0.85; white-space:nowrap; }
+    .tag.moveNo { min-width: 90px; text-align: right; }
+    .tag.moveNo::before { content: "★ "; visibility: hidden; }
+    .item.hasVar .tag.moveNo::before { visibility: visible; }
     .mainText { font-size: 15px; line-height: 1.4; }
 
     .detailBox {
@@ -201,7 +204,7 @@
 <body>
   <div class="app">
     <div class="panel">
-      <h1>黑白棋解說譜瀏覽器v1.14</h1>
+      <h1>黑白棋解說譜瀏覽器v1.15</h1>
 
       <div class="row">
         <div class="rowLeft">
@@ -604,7 +607,7 @@
     const players = buildPlayersForMoves(startBoardForThisGame, startTurnForThisGame, game);
 
     const initItem = document.createElement("div");
-    initItem.className = "item" + (activeStep===0 ? " active":"");
+    item.className = "item" + (activeStep===s ? " active":"") + (hasVar ? " hasVar" : "");
     initItem.innerHTML = `
       <div>
         <div class="mainText"><b>初始局面</b></div>
@@ -622,6 +625,8 @@
     for (let i=0;i<game.moves.length;i++){
       const m = game.moves[i];
       const s = i+1;
+      const key = String(s);
+      const hasVar = Array.isArray(game.variations?.[key]?.entries) && game.variations[key].entries.length;
       const item = document.createElement("div");
       item.className = "item" + (activeStep===s ? " active":"");
 
@@ -639,7 +644,7 @@
           <div class="mainText"><b>${playerLabel}</b>：${moveText}</div>
           <div class="tag">${preview}</div>
         </div>
-        <div class="tag">Move ${s}</div>
+        <div class="tag moveNo">Move ${s}</div>
       `;
       item.addEventListener("click", () => {
         if (mode === "var" && varCtx) varCtx.varStep = s;
@@ -671,7 +676,13 @@
     } else {
       const i = step - 1;
       const m = game.moves[i];
-      detailBox.textContent = String((m.comment || "")).trim();
+      const comment = String((m.comment || "")).trim();
+      const key = String(step);
+      const vPack = game.variations?.[key];
+      const entries = vPack?.entries;
+      const hasVarHere = Array.isArray(entries) && entries.length;
+      
+      detailBox.textContent = hasVarHere ? `【變化圖】\n${comment}`: comment;
     }
 
     const key = String(step);
@@ -910,6 +921,7 @@
 </script>
 </body>
 </html>
+
 
 
 
