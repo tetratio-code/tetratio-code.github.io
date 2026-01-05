@@ -703,7 +703,7 @@
     const atEnd = (mode === "var" && varCtx) ? (varCtx.varStep === varCtx.varGame.moves.length) : (step === game.moves.length);
 
     if (firstBtn) firstBtn.disabled = atStart;
-    if (prevBtn)  prevBtn.disabled  = atStart;
+    if (prevBtn)  prevBtn.disabled  = inVar ? false : atStart;
     if (nextBtn)  nextBtn.disabled  = atEnd;
     if (lastBtn)  lastBtn.disabled  = atEnd;
 
@@ -910,6 +910,7 @@
 </script>
 </body>
 </html>
+
 
 
 
