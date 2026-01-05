@@ -201,7 +201,7 @@
 <body>
   <div class="app">
     <div class="panel">
-      <h1>黑白棋解說譜瀏覽器v1.12</h1>
+      <h1>黑白棋解說譜瀏覽器v1.13</h1>
 
       <div class="row">
         <div class="rowLeft">
@@ -323,6 +323,7 @@
     return {b,w};
   }
 
+  // ===== UI elements =====
   const boardEl = document.getElementById("board");
   const gameSelect = document.getElementById("gameSelect");
   const moveListEl = document.getElementById("moveList");
@@ -363,6 +364,7 @@
     }
   }
 
+  // ===== App state =====
   let gameIndex = [];
   let currentGame = null;
   let currentIndex = 0;
@@ -407,6 +409,17 @@
     return moves;
   }
 
+  function parseStartBoard(raw){
+    // 目前先維持原本 json 格式；但保留未來從 json 讀 initBoard 的入口
+    // 若未來 json 真的提供 startBoard，可在這裡接：raw.startBoard / raw.initBoard / raw.start 等
+    const b = initBoard();
+    return b;
+  }
+  function parseStartTurn(raw){
+    // 未來可從 json 讀：raw.startTurn / raw.turn / raw.start.turn 等
+    return BLACK;
+  }
+
   function normalizeGame(g){
     const id = String(g?.id ?? "");
     const title = String(g?.title ?? id ?? "");
@@ -425,25 +438,15 @@
     }
 
     const variations = (g?.variations && typeof g.variations === "object") ? g.variations : {};
-    return { id, title, meta, moves, variations };
+
+    // 內部統一：起始盤面 + 起始輪到誰（未來 json 變更時只改這裡）
+    const startBoard = parseStartBoard(g);
+    const startTurn = parseStartTurn(g);
+
+    return { id, title, meta, moves, variations, startBoard, startTurn };
   }
 
-  function computePosition(game, step){
-    let board = initBoard();
-    let turn = BLACK;
-    let last = null;
-
-    for (let i=0;i<step;i++){
-      const m = game.moves[i];
-      const mo = parseMove(m.move);
-      if (!mo) { turn = other(turn); continue; }
-      const res = applyMove(board, mo, turn);
-      if (res.ok) last = res.last;
-      turn = other(turn);
-    }
-    return { board, turn, last };
-  }
-
+  // ===== Turn / PASS 相容的回放核心 =====
   function computePositionFrom(startBoard, startTurn, game, step){
     let board = startBoard.map(row => row.slice());
     let turn = startTurn;
@@ -452,12 +455,55 @@
     for (let i=0;i<step;i++){
       const m = game.moves[i];
       const mo = parseMove(m.move);
-      if (!mo) { turn = other(turn); continue; }
+
+      // 非法/未知 token：維持舊行為（跳過但切手）
+      if (!mo){
+        turn = other(turn);
+        continue;
+      }
+
+      // PASS：不切手（對方繼續下）
+      if (mo.pass){
+        last = null;
+        continue;
+      }
+
       const res = applyMove(board, mo, turn);
       if (res.ok) last = res.last;
+      // 舊行為：不管 ok 與否都切手（只是 PASS 例外）
       turn = other(turn);
     }
     return { board, turn, last };
+  }
+
+  function computePosition(game, step){
+    const startBoard = game?.startBoard ? game.startBoard : initBoard();
+    const startTurn  = (game && (game.startTurn===BLACK || game.startTurn===WHITE)) ? game.startTurn : BLACK;
+    return computePositionFrom(startBoard, startTurn, game, step);
+  }
+
+  function buildPlayersForMoves(startTurn, game){
+    // 回傳每一步「輪到誰下」的列表（用同一套 turn 規則，修 PASS bug）
+    const players = [];
+    let turn = startTurn;
+
+    for (let i=0;i<game.moves.length;i++){
+      players[i] = turn;
+
+      const mo = parseMove(game.moves[i].move);
+      if (!mo){
+        turn = other(turn);
+        continue;
+      }
+      if (mo.pass){
+        // 不切手
+        continue;
+      }
+
+      // 這裡不用真的 apply（不影響 turn 規則）；保持與 computePositionFrom 一致：非 PASS 一律切手
+      turn = other(turn);
+    }
+    return players;
   }
 
   function renderBoard(board, last){
@@ -494,10 +540,11 @@
     else if (bottom > viewBottom) moveListEl.scrollTop = bottom - moveListEl.clientHeight + 8;
   }
 
-  function renderMoveList(game){
+  function renderMoveList(game, startTurnForThisGame){
     moveListEl.innerHTML = "";
 
     const activeStep = (mode === "var" && varCtx) ? varCtx.varStep : step;
+    const players = buildPlayersForMoves(startTurnForThisGame, game);
 
     const initItem = document.createElement("div");
     initItem.className = "item" + (activeStep===0 ? " active":"");
@@ -521,14 +568,18 @@
       const item = document.createElement("div");
       item.className = "item" + (activeStep===s ? " active":"");
 
-      const player = (i % 2 === 0) ? "黑" : "白";
-      const moveText = (String(m.move).toLowerCase()==="pass") ? "PASS" : String(m.move);
+      const p = players[i];
+      const playerLabel = (p === BLACK) ? "黑" : "白";
+
+      const moveLower = String(m.move).toLowerCase();
+      const moveText = (moveLower === "pass") ? "PASS" : String(m.move);
+
       const shortComment = (m.comment || "").trim().replace(/\s+/g," ");
       const preview = shortComment.length ? shortComment.slice(0, 24) + (shortComment.length>24 ? "…" : "") : "";
 
       item.innerHTML = `
         <div>
-          <div class="mainText"><b>${player}</b>：${moveText}</div>
+          <div class="mainText"><b>${playerLabel}</b>：${moveText}</div>
           <div class="tag">${preview}</div>
         </div>
         <div class="tag">Move ${s}</div>
@@ -612,7 +663,7 @@
     if (mode === "var" && varCtx){
       const pos = computePositionFrom(varCtx.baseBoard, varCtx.baseTurn, varCtx.varGame, varCtx.varStep);
       renderBoard(pos.board, pos.last);
-      renderMoveList(varCtx.varGame);
+      renderMoveList(varCtx.varGame, varCtx.baseTurn);
       renderDetail(varCtx.varGame, pos);
       renderHeader(varCtx.varGame, pos);
       return;
@@ -620,7 +671,7 @@
 
     const pos = computePosition(currentGame, step);
     renderBoard(pos.board, pos.last);
-    renderMoveList(currentGame);
+    renderMoveList(currentGame, currentGame.startTurn ?? BLACK);
     renderDetail(currentGame, pos);
     renderHeader(currentGame, pos);
   }
@@ -802,5 +853,3 @@
 </script>
 </body>
 </html>
-
-
