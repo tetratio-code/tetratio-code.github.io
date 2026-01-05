@@ -138,9 +138,8 @@
       min-height: 0;
     }
 
-    .detailWrap { order: 1; }
-    .moveListWrap { order: 2; }
-    .moveListHeader { order: 2; }
+    .moveSection { order: 1; }
+    .detailWrap  { order: 2; }
 
     .list {
       overflow:auto;
@@ -192,9 +191,8 @@
     }
 
     @media (max-width: 980px){
-      .detailWrap { order: 1; }
-      .moveListHeader { order: 2; }
-      .moveListWrap { order: 3; }
+      .detailWrap  { order: 1; }
+      .moveSection { order: 2; }
       .list { max-height: 200px; }
     }
   </style>
@@ -242,16 +240,16 @@
           <div id="variationBox" style="margin-top:10px;"></div>
         </div>
 
-        <div class="row moveListHeader">
-          <div class="rowLeft">
-            <span class="pill">步驟清單（點選可跳轉）</span>
+        <div class="moveSection">
+          <div class="row">
+            <div class="rowLeft">
+              <span class="pill">步驟清單（點選可跳轉）</span>
+            </div>
+            <div class="hotkeys muted">
+              快捷鍵：<span class="kbd">←</span>/<span class="kbd">→</span> 前後手、<span class="kbd">Home</span>/<span class="kbd">End</span> 首尾。
+            </div>
           </div>
-          <div class="hotkeys muted">
-            快捷鍵：<span class="kbd">←</span>/<span class="kbd">→</span> 前後手、<span class="kbd">Home</span>/<span class="kbd">End</span> 首尾。
-          </div>
-        </div>
 
-        <div class="moveListWrap">
           <div class="list" id="moveList" aria-label="Move list"></div>
         </div>
 
@@ -804,3 +802,4 @@
 </script>
 </body>
 </html>
+
