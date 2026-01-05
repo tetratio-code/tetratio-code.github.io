@@ -201,7 +201,7 @@
 <body>
   <div class="app">
     <div class="panel">
-      <h1>黑白棋解說譜瀏覽器v1.13</h1>
+      <h1>黑白棋解說譜瀏覽器v1.13A</h1>
 
       <div class="row">
         <div class="rowLeft">
@@ -301,7 +301,15 @@
     }
     return flips;
   }
-
+  function hasAnyLegalMove(board, p){
+    for (let r=0;r<N;r++){
+      for (let c=0;c<N;c++){
+        if (board[r][c] !== EMPTY) continue;
+        if (getFlips(board, r, c, p).length) return true;
+      }
+    }
+    return false;
+  }
   function applyMove(board, moveObj, p){
     if (moveObj.pass) return { ok:true, last:null, board };
     const {r,c} = moveObj;
@@ -455,22 +463,42 @@
     for (let i=0;i<step;i++){
       const m = game.moves[i];
       const mo = parseMove(m.move);
-
-      // 非法/未知 token：維持舊行為（跳過但切手）
-      if (!mo){
+      if (!mo) { 
+        // 這裡你也可以選擇 throw；先維持相容
+        continue;
+      }
+    
+      // ✅ 隱性 PASS：如果目前這手沒有任何合法著手，就先把回合交給對方
+      // 不消耗 record token，因為 record 裡下一個 token 就是對方的實際落子
+      let guard = 0;
+      while (!hasAnyLegalMove(board, turn)) {
         turn = other(turn);
-        continue;
+        guard++;
+        if (guard >= 2) break; // 兩邊都沒法下 => 對局實質結束
       }
-
-      // PASS：不切手（對方繼續下）
-      if (mo.pass){
-        last = null;
-        continue;
+    
+      // 若兩邊都不能下，就不用再吃 token（避免亂套）
+      if (guard >= 2 && !hasAnyLegalMove(board, turn)) {
+        break;
       }
-
+    
+      // 套用這個 token（此時 turn 已經是「真正應該下的人」）
       const res = applyMove(board, mo, turn);
-      if (res.ok) last = res.last;
-      // 舊行為：不管 ok 與否都切手（只是 PASS 例外）
+    
+      // 若仍然非法：再做一次「嘗試視為對方下」（避免資料或規則外狀況）
+      if (!res.ok) {
+        const alt = other(turn);
+        const res2 = applyMove(board, mo, alt);
+        if (res2.ok) {
+          last = res2.last;
+          turn = other(alt);
+          continue;
+        }
+        // 兩邊都不行：資料真的不一致，這裡建議直接 continue 或 throw
+        continue;
+      }
+    
+      last = res.last;
       turn = other(turn);
     }
     return { board, turn, last };
@@ -853,3 +881,4 @@
 </script>
 </body>
 </html>
+
