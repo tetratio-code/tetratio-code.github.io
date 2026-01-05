@@ -13,8 +13,14 @@
         "id": "demo-3",
         "title": "2024台湾オープン決勝戦",
         "file": "games/demo-3.json"
+    },
+    {
+        "id": "demo-4",
+        "title": "VTuber 對決 AZKi vs. 博衣こより",
+        "file": "games/demo-4.json"
     }
 ]
+
 
 
 
