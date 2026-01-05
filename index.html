@@ -607,7 +607,7 @@
     const players = buildPlayersForMoves(startBoardForThisGame, startTurnForThisGame, game);
 
     const initItem = document.createElement("div");
-    item.className = "item" + (activeStep===s ? " active":"") + (hasVar ? " hasVar" : "");
+    initItem.className = "item" + (activeStep===0 ? " active":"");
     initItem.innerHTML = `
       <div>
         <div class="mainText"><b>初始局面</b></div>
@@ -628,7 +628,7 @@
       const key = String(s);
       const hasVar = Array.isArray(game.variations?.[key]?.entries) && game.variations[key].entries.length;
       const item = document.createElement("div");
-      item.className = "item" + (activeStep===s ? " active":"");
+      item.className = "item" + (activeStep===s ? " active":"") + (hasVar ? " hasVar" : "");
 
       const p = players[i];
       const playerLabel = (p === BLACK) ? "黑" : "白";
@@ -921,6 +921,7 @@
 </script>
 </body>
 </html>
+
 
 
 
