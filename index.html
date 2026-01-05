@@ -201,7 +201,7 @@
 <body>
   <div class="app">
     <div class="panel">
-      <h1>黑白棋解說譜瀏覽器v1.13A</h1>
+      <h1>黑白棋解說譜瀏覽器v1.13B</h1>
 
       <div class="row">
         <div class="rowLeft">
@@ -510,30 +510,61 @@
     return computePositionFrom(startBoard, startTurn, game, step);
   }
 
-  function buildPlayersForMoves(startTurn, game){
-    // 回傳每一步「輪到誰下」的列表（用同一套 turn 規則，修 PASS bug）
+  function buildPlayersForMoves(startBoard, startTurn, game){
     const players = [];
+    let board = startBoard.map(row => row.slice());
     let turn = startTurn;
-
+  
     for (let i=0;i<game.moves.length;i++){
-      players[i] = turn;
-
       const mo = parseMove(game.moves[i].move);
       if (!mo){
+        // 維持相容：遇到怪 token 就先當作不處理，玩家標籤也給目前 turn
+        players[i] = turn;
+        continue;
+      }
+  
+      // ✅ 隱性 PASS：若目前輪到的人沒合法手，就先把回合交出去（不消耗 token）
+      let guard = 0;
+      while (!hasAnyLegalMove(board, turn)) {
         turn = other(turn);
+        guard++;
+        if (guard >= 2) break; // 兩邊都沒法下
+      }
+  
+      // 若兩邊都不能下：之後的 token 其實也不該再有意義
+      if (guard >= 2 && !hasAnyLegalMove(board, turn)) {
+        players[i] = turn; // 隨便標一下，後面也會一路維持
         continue;
       }
+  
+      // 此 token 的真正下棋方
+      players[i] = turn;
+  
+      // 套用落子到 local board，讓下一步的 turn 推導與盤面一致
       if (mo.pass){
-        // 不切手
+        // 明示 PASS：不落子，但依你的規則「不切手」
         continue;
       }
-
-      // 這裡不用真的 apply（不影響 turn 規則）；保持與 computePositionFrom 一致：非 PASS 一律切手
+  
+      const res = applyMove(board, mo, turn);
+  
+      // 若仍非法：嘗試當作對方落子（避免資料/規則外狀況）
+      if (!res.ok) {
+        const alt = other(turn);
+        const res2 = applyMove(board, mo, alt);
+        if (res2.ok) {
+          turn = other(alt);
+          continue;
+        }
+        // 兩邊都不行：就不更新 board、不切手（避免越走越歪）
+        continue;
+      }
+  
       turn = other(turn);
     }
+  
     return players;
   }
-
   function renderBoard(board, last){
     boardEl.innerHTML = "";
     for (let r=0;r<N;r++){
@@ -568,11 +599,10 @@
     else if (bottom > viewBottom) moveListEl.scrollTop = bottom - moveListEl.clientHeight + 8;
   }
 
-  function renderMoveList(game, startTurnForThisGame){
+  function renderMoveList(game, startBoardForThisGame, startTurnForThisGame){
     moveListEl.innerHTML = "";
-
     const activeStep = (mode === "var" && varCtx) ? varCtx.varStep : step;
-    const players = buildPlayersForMoves(startTurnForThisGame, game);
+    const players = buildPlayersForMoves(startBoardForThisGame, startTurnForThisGame, game);
 
     const initItem = document.createElement("div");
     initItem.className = "item" + (activeStep===0 ? " active":"");
@@ -691,7 +721,7 @@
     if (mode === "var" && varCtx){
       const pos = computePositionFrom(varCtx.baseBoard, varCtx.baseTurn, varCtx.varGame, varCtx.varStep);
       renderBoard(pos.board, pos.last);
-      renderMoveList(varCtx.varGame, varCtx.baseTurn);
+      renderMoveList(varCtx.varGame, varCtx.baseBoard, varCtx.baseTurn);
       renderDetail(varCtx.varGame, pos);
       renderHeader(varCtx.varGame, pos);
       return;
@@ -699,7 +729,7 @@
 
     const pos = computePosition(currentGame, step);
     renderBoard(pos.board, pos.last);
-    renderMoveList(currentGame, currentGame.startTurn ?? BLACK);
+    renderMoveList(currentGame, currentGame.startBoard ?? initBoard(), currentGame.startTurn ?? BLACK);
     renderDetail(currentGame, pos);
     renderHeader(currentGame, pos);
   }
@@ -881,4 +911,5 @@
 </script>
 </body>
 </html>
+
 
