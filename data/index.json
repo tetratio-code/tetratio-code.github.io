@@ -18,8 +18,14 @@
         "id": "demo-4",
         "title": "VTuber 對決 AZKi vs. 博衣こより",
         "file": "games/demo-4.json"
+    },
+    {
+        "id": "demo-5",
+        "title": "京都大學11月祭KIJIN 友誼對局",
+        "file": "games/demo-5.json"
     }
 ]
+
 
 
 
