@@ -29,7 +29,7 @@
     button:hover { background: rgba(255,255,255,0.12); }
     button:active { transform: translateY(1px); }
     button:disabled { opacity: 0.5; cursor:not-allowed; }
-
+    #firstBtn,#backBtn {  min-width: 110px;}
     .pill { padding: 6px 10px; border-radius: 999px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); font-size: 14px; }
     .muted { opacity: 0.85; font-size: 13px; line-height:1.45; }
 
@@ -211,7 +211,7 @@
 <body>
   <div class="app">
     <div class="panel">
-      <h1>黑白棋解說譜瀏覽器v1.15B</h1>
+      <h1>黑白棋解說譜瀏覽器v1.15C</h1>
 
       <div class="row">
         <div class="rowLeft">
@@ -725,8 +725,13 @@
     if (prevBtn)  prevBtn.disabled  = inVar ? false : atStart;
     if (nextBtn)  nextBtn.disabled  = atEnd;
     if (lastBtn)  lastBtn.disabled  = atEnd;
-
-    if (backBtn) backBtn.style.display = (mode === "var") ? "" : "none";
+    if (mode === "var") {
+      if (backBtn)  backBtn.style.display  = "";
+      if (firstBtn) firstBtn.style.display = "none";
+    } else {
+      if (backBtn)  backBtn.style.display  = "none";
+      if (firstBtn) firstBtn.style.display = "";
+    }
   }
 
   function renderAll(){
@@ -929,6 +934,7 @@
 </script>
 </body>
 </html>
+
 
 
 
