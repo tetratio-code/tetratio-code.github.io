@@ -147,7 +147,7 @@
 
     .moveSection { order: 1; }
     .detailWrap  { order: 2; }
-
+    .moveSection > .row { margin-bottom: 8px;}
     .list {
       overflow:auto;
       max-height: 240px;
@@ -165,6 +165,7 @@
       gap: 10px;
       align-items:flex-start;
       justify-content:space-between;
+      margin-bottom: 4px;
     }
     .item:last-child { border-bottom: 0; }
     .item:hover { background: rgba(255,255,255,0.06); }
@@ -211,7 +212,7 @@
 <body>
   <div class="app">
     <div class="panel">
-      <h1>黑白棋解說譜瀏覽器v2.07</h1>
+      <h1>黑白棋解說譜瀏覽器v2.08</h1>
       <div class="row">
         <div class="rowLeft">
           <select id="modeSelect" aria-label="Select mode">
@@ -263,7 +264,6 @@
               快捷鍵：<span class="kbd">←</span>/<span class="kbd">→</span> 前後手、<span class="kbd">Home</span>/<span class="kbd">End</span> 首尾。
             </div>
           </div>
-
           <div class="list" id="moveList" aria-label="List"></div>
         </div>
       </div>
@@ -1280,6 +1280,7 @@
 </script>
 </body>
 </html>
+
 
 
 
