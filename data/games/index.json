@@ -2,27 +2,27 @@
     {
         "id": "demo-1",
         "title": "2024全國公開賽決賽",
-        "file": "games/demo-1.json"
+        "file": "demo-1.json"
     },
     {
         "id": "demo-2",
         "title": "2025全國公開賽決賽",
-        "file": "games/demo-2.json"
+        "file": "demo-2.json"
     },
     {
         "id": "demo-3",
         "title": "2024台湾オープン決勝戦",
-        "file": "games/demo-3.json"
+        "file": "demo-3.json"
     },
     {
         "id": "demo-4",
         "title": "VTuber 對決 AZKi vs. 博衣こより",
-        "file": "games/demo-4.json"
+        "file": "demo-4.json"
     },
     {
         "id": "demo-5",
         "title": "京都大學11月祭KIJIN 友誼對局",
-        "file": "games/demo-5.json"
+        "file": "demo-5.json"
     }
 ]
 
