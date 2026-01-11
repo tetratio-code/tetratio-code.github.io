@@ -10,7 +10,6 @@
       "startBoard": "........ /BBBBBBBB /........ /...WB... /...BW... /........ /........ /.......W",
       "record": "f5d6c3d3",
       "comments": {
-        "0": "開始前解說",
         "1": "第1步解說",
         "2": "第2步解說",
         "3": "第3步解說",
@@ -19,12 +18,11 @@
     },
     {
       "title": "RRRRR題目2",
-      "meta": "meta註解。",
+      "meta": "meta註解。白先",
       "startTurn": 2,
       "startBoard": "W......B/.W....B./..W..B../...WB.../...BW.../..B..W../.B....W./B......W",
       "record": "c5c4c7",
       "comments": {
-        "0": "白先",
         "1": "TEST",
         "2": "tEST"
       }
