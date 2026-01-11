@@ -174,7 +174,6 @@
     .tag.moveNo::before { content: "★ "; visibility: hidden; }
     .item.hasVar .tag.moveNo::before { visibility: visible; }
     .mainText { font-size: 17px; line-height: 1.4; }
-    .positionTitle { font-size: 17px; line-height: 1.4;}
 
     .detailBox {
       border-radius: 12px;
@@ -212,7 +211,7 @@
 <body>
   <div class="app">
     <div class="panel">
-      <h1>黑白棋解說譜瀏覽器v2.06B</h1>
+      <h1>黑白棋解說譜瀏覽器v2.07</h1>
       <div class="row">
         <div class="rowLeft">
           <select id="modeSelect" aria-label="Select mode">
@@ -750,7 +749,7 @@
       item.className = "item" + (i===active ? " active":"");
       item.innerHTML = `
         <div>
-          <div class="positionTitle"><b>局面 ${i+1}</b>：${escapeHtml(p.title)}</div>
+          <div class="mainText"><b>局面 ${i+1}</b>：${escapeHtml(p.title)}</div>
         </div>
         <div class="tag moveNo">#${i+1}</div>
       `;
@@ -1281,6 +1280,7 @@
 </script>
 </body>
 </html>
+
 
 
 
