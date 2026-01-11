@@ -96,6 +96,7 @@
     .boardControls .rowLeft{
       justify-content:center;
     }
+    body.learningMode .cell {background: #166551;}
     body.varMode .cell { background:#1c4e80; }
     body.varMode .board { border-color: rgba(147,197,253,0.35); }
     body.varMode .item.active { background: rgba(147,197,253,0.14); outline-color: rgba(147,197,253,0.25); }
@@ -210,7 +211,7 @@
 <body>
   <div class="app">
     <div class="panel">
-      <h1>黑白棋解說譜瀏覽器v2.03</h1>
+      <h1>黑白棋解說譜瀏覽器v2.04</h1>
       <div class="row">
         <div class="rowLeft">
           <select id="modeSelect" aria-label="Select mode">
@@ -1226,7 +1227,15 @@
         clearError();
         const v = String(modeSelect.value);
         appMode = (v === "learning") ? "learning" : "games";
-
+        function applyAppModeClass(){
+          document.body.classList.remove("learningMode");
+          document.body.classList.remove("gamesMode");
+          if (appMode === "learning") {
+            document.body.classList.add("learningMode");
+          } else {
+            document.body.classList.add("gamesMode");
+          }
+        }
         // reset view
         step = 0;
         mode = "main";
@@ -1264,6 +1273,7 @@
 </script>
 </body>
 </html>
+
 
 
 
