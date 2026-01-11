@@ -772,7 +772,7 @@
       if (step === 0){
         const base = (game.meta || "").trim();
         detailBox.textContent = base
-          ? `【局面資訊】\n${base}`
+          ? `【${game.title || "教學局面"}】\n${base}`
           : "（局面開始）";
       } else {
         const i = step - 1;
@@ -1264,6 +1264,7 @@
 </script>
 </body>
 </html>
+
 
 
 
