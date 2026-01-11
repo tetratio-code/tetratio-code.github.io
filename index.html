@@ -456,37 +456,26 @@
   }
 
   function parseStartBoardFromPosition(posRaw){
-    // Accept:
-    // - 2D number array 8x8 (0/1/2)
-    // - string board with '/' separated rows, each row length 8 with . B W
-    const v = posRaw?.startBoard ?? posRaw?.initBoard ?? posRaw?.board ?? null;
-    if (!v) return initBoard();
+  const v = posRaw?.startBoard ?? posRaw?.initBoard ?? posRaw?.board ?? null;
+  if (!v) return initBoard();
+  if (typeof v !== "string") return initBoard();
 
-    if (Array.isArray(v) && v.length === 8 && Array.isArray(v[0])) {
-      const b = v.map(row => row.slice());
-      if (b.length === 8 && b.every(r => Array.isArray(r) && r.length === 8)) return b;
-      return initBoard();
+  const rows = v.split("/").map(s => s.trim()).filter(Boolean);
+  if (rows.length !== 8) return initBoard();
+
+  const b = Array.from({length:8}, () => Array(8).fill(EMPTY));
+  for (let r=0;r<8;r++){
+    const line = rows[r];
+    if (line.length < 8) return initBoard();
+    for (let c=0;c<8;c++){
+      const ch = line[c];
+      if (ch === "B" || ch === "b") b[r][c] = BLACK;
+      else if (ch === "W" || ch === "w") b[r][c] = WHITE;
+      else b[r][c] = EMPTY; // '.' 或其他字元都當空
     }
-
-    if (typeof v === "string") {
-      const rows = v.split("/").map(s => s.trim()).filter(Boolean);
-      if (rows.length !== 8) return initBoard();
-      const b = Array.from({length:8}, () => Array(8).fill(EMPTY));
-      for (let r=0;r<8;r++){
-        const line = rows[r];
-        if (line.length < 8) return initBoard();
-        for (let c=0;c<8;c++){
-          const ch = line[c];
-          if (ch === "B" || ch === "b") b[r][c] = BLACK;
-          else if (ch === "W" || ch === "w") b[r][c] = WHITE;
-          else b[r][c] = EMPTY; // '.' or anything else => empty
-        }
-      }
-      return b;
-    }
-
-    return initBoard();
   }
+  return b;
+}
 
   function parseStartTurnFromPosition(posRaw){
     const t = posRaw?.startTurn ?? posRaw?.turn ?? posRaw?.startPlayer ?? null;
@@ -1277,6 +1266,7 @@
 </script>
 </body>
 </html>
+
 
 
 
