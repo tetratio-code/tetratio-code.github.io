@@ -490,11 +490,15 @@
     const id = String(g?.id ?? "");
     const title = String(g?.title ?? id ?? "");
     const meta = String(g?.meta ?? "");
-    const record = String(g?.record ?? "").trim().toLowerCase();
-    if (!record) throw new Error("對局檔格式錯誤：缺少 record");
-
-    const comments = (g?.comments && typeof g.comments === "object") ? g.comments : {};
-    const moves = buildMovesFromRecord(record, comments);
+    if (!("record" in g)) {
+      throw new Error("對局檔格式錯誤：缺少 record 欄位");
+    }
+    const record = String(g.record ?? "").trim().toLowerCase();
+    const comments =
+      (g?.comments && typeof g.comments === "object") ? g.comments : {};
+    const moves = record
+      ? buildMovesFromRecord(record, comments)
+      : [];
 
     const variations = (g?.variations && typeof g.variations === "object") ? g.variations : {};
 
@@ -1273,6 +1277,7 @@
 </script>
 </body>
 </html>
+
 
 
 
