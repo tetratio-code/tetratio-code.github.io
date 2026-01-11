@@ -211,7 +211,7 @@
 <body>
   <div class="app">
     <div class="panel">
-      <h1>黑白棋解說譜瀏覽器v2.05</h1>
+      <h1>黑白棋解說譜瀏覽器v2.06</h1>
       <div class="row">
         <div class="rowLeft">
           <select id="modeSelect" aria-label="Select mode">
@@ -521,11 +521,15 @@
     const positions = positionsRaw.map((p, idx) => {
       const pTitle = String(p?.title ?? `局面 ${idx+1}`);
       const pMeta  = String(p?.meta ?? "");
-      const record = String(p?.record ?? "").trim().toLowerCase();
-      if (!record) throw new Error(`教學檔格式錯誤：positions[${idx}] 缺少 record`);
-
-      const comments = (p?.comments && typeof p.comments === "object") ? p.comments : {};
-      const moves = buildMovesFromRecord(record, comments);
+      if (!("record" in p)) {
+        throw new Error(`教學檔格式錯誤：positions[${idx}] 缺少 record 欄位`);
+      }
+      const record = String(p.record ?? "").trim().toLowerCase();
+      const comments =
+        (p?.comments && typeof p.comments === "object") ? p.comments : {};
+      const moves = record
+        ? buildMovesFromRecord(record, comments)
+        : [];
 
       const startBoard = parseStartBoardFromPosition(p);
       const startTurn = parseStartTurnFromPosition(p);
@@ -1277,6 +1281,7 @@
 </script>
 </body>
 </html>
+
 
 
 
