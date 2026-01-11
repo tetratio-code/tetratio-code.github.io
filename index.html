@@ -1236,6 +1236,7 @@
             document.body.classList.add("gamesMode");
           }
         }
+        applyAppModeClass();
         // reset view
         step = 0;
         mode = "main";
@@ -1243,11 +1244,10 @@
         currentGame = null;
         currentLesson = null;
         lessonPos = 0;
-        renderAll();
 
         if (appMode === "learning") await loadLearningMode(true);
         else await loadGamesMode(true);
-
+        renderAll();
       } catch (err){
         showError(String(err?.message ?? err));
       }
@@ -1273,6 +1273,7 @@
 </script>
 </body>
 </html>
+
 
 
 
