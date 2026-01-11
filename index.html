@@ -769,13 +769,11 @@
     if (variationBox) variationBox.innerHTML = "";
 
     if (appMode === "learning"){
-      const intro = (game.comments0 || "").trim();
       if (step === 0){
         const base = (game.meta || "").trim();
-        if (intro && base) detailBox.textContent = `【教學說明】\n${intro}\n\n【局面資訊】\n${base}`;
-        else if (intro) detailBox.textContent = `【教學說明】\n${intro}`;
-        else if (base) detailBox.textContent = `【局面資訊】\n${base}`;
-        else detailBox.textContent = "（局面開始）";
+        detailBox.textContent = base
+          ? `【局面資訊】\n${base}`
+          : "（局面開始）";
       } else {
         const i = step - 1;
         const m = game.moves[i];
@@ -1266,6 +1264,7 @@
 </script>
 </body>
 </html>
+
 
 
 
