@@ -750,7 +750,7 @@
       item.innerHTML = `
         <div>
           <div class="mainText"><b>局面 ${i+1}</b>：${escapeHtml(p.title)}</div>
-          <div class="tag">${escapeHtml((p.meta||"").trim().slice(0, 30))}${(p.meta||"").trim().length>30 ? "…" : ""}</div>
+          //<div class="tag">${escapeHtml((p.meta||"").trim().slice(0, 30))}${(p.meta||"").trim().length>30 ? "…" : ""}</div>
         </div>
         <div class="tag moveNo">#${i+1}</div>
       `;
@@ -1281,6 +1281,7 @@
 </script>
 </body>
 </html>
+
 
 
 
