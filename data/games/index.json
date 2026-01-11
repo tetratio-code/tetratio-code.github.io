@@ -1,32 +1,7 @@
 [
-    {
-        "id": "game-1",
-        "title": "2024全國公開賽決賽",
-        "file": "game-1.json"
-    },
-    {
-        "id": "game-2",
-        "title": "2025全國公開賽決賽",
-        "file": "game-2.json"
-    },
-    {
-        "id": "game-3",
-        "title": "2024台湾オープン決勝戦",
-        "file": "game-3.json"
-    },
-    {
-        "id": "game-4",
-        "title": "VTuber 對決 AZKi vs. 博衣こより",
-        "file": "game-4.json"
-    },
-    {
-        "id": "game-5",
-        "title": "京都大學11月祭KIJIN 友誼對局",
-        "file": "game-5.json"
-    }
+    {"id": "game-1","title": "2024全國公開賽決賽","file": "game-1.json"},
+    {"id": "game-2","title": "2025全國公開賽決賽","file": "game-2.json"},
+    {"id": "game-3","title": "2024台湾オープン決勝戦","file": "game-3.json"},
+    {"id": "game-4","title": "VTuber 對決 AZKi vs. 博衣こより","file": "game-4.json"},
+    {"id": "game-5","title": "京都大學11月祭KIJIN 友誼對局","file": "game-5.json"}
 ]
-
-
-
-
-
