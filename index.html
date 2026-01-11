@@ -879,11 +879,11 @@
 
   function renderListHeader(){
     if (appMode === "learning"){
-      listTitleEl.textContent = "局面清單（點選可切換題目）";
+      listTitleEl.textContent = "局面清單";
       hotkeysEl.innerHTML = `快捷鍵：<span class="kbd">←</span>/<span class="kbd">→</span> 前後手、<span class="kbd">Home</span>/<span class="kbd">End</span> 首尾。`;
       return;
     }
-    listTitleEl.textContent = "步驟清單（點選可跳轉）";
+    listTitleEl.textContent = "步驟清單";
     hotkeysEl.innerHTML = `快捷鍵：<span class="kbd">←</span>/<span class="kbd">→</span> 前後手、<span class="kbd">Home</span>/<span class="kbd">End</span> 首尾。`;
   }
 
@@ -1264,6 +1264,7 @@
 </script>
 </body>
 </html>
+
 
 
 
