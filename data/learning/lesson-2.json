@@ -13,14 +13,13 @@
       }
     },
     {
-      "title": "RRRRR題目2",
-      "meta": "meta註解。白先",
-      "startTurn": 2,
-      "startBoard": "W......B/.W....B./..W..B../...WB.../...BW.../..B..W../.B....W./B......W",
-      "record": "c5c4c7",
+      "title": "最高守則：翻少(正確例)",
+      "meta": "首先要改掉翻多的習慣，每一手棋下翻的棋子數越少越好，甚至最好只翻一顆。",
+      "startTurn": "W",
+      "startBoard": "......../......../..BBBBBW/..BBBWB./...WWW.B/...W.W../......../........",
+      "record": "f2",
       "comments": {
-        "1": "TEST",
-        "2": "tEST"
+        "1": "TEST"
       }
     }
   ]
