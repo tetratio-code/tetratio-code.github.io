@@ -175,7 +175,7 @@
     .tag.moveNo::before { content: "★ "; visibility: hidden; }
     .item.hasVar .tag.moveNo::before { visibility: visible; }
     .mainText { font-size: 17px; line-height: 1.4; }
-
+    .lessonTitle { font-size: 18px; font-weight: 600;}
     .detailBox {
       border-radius: 12px;
       border: 1px solid rgba(255,255,255,0.12);
@@ -212,7 +212,7 @@
 <body>
   <div class="app">
     <div class="panel">
-      <h1>黑白棋解說譜瀏覽器v2.08A</h1>
+      <h1>黑白棋解說譜瀏覽器v2.08B</h1>
       <div class="row">
         <div class="rowLeft">
           <select id="modeSelect" aria-label="Select mode">
@@ -519,6 +519,7 @@
     if (!positionsRaw.length) throw new Error("教學檔格式錯誤：positions 必須是非空陣列");
 
     const positions = positionsRaw.map((p, idx) => {
+      const pTitle = String(p?.title ?? `局面 ${idx+1}`);
       const pMeta  = String(p?.meta ?? "");
       if (!("record" in p)) {
         throw new Error(`教學檔格式錯誤：positions[${idx}] 缺少 record 欄位`);
@@ -548,7 +549,6 @@
 
       return { title: pTitle, meta: pMeta, playable };
     });
-
     return { type:"lesson", id, title, positions };
   }
 
@@ -748,7 +748,7 @@
       item.className = "item" + (i===active ? " active":"");
       item.innerHTML = `
         <div>
-          <div class="mainText"><b>局面 ${i+1}</b>：${escapeHtml(p.title)}</div>
+          <div class="lessonTitle">${escapeHtml(p.title)}</div>
         </div>
         <div class="tag moveNo">#${i+1}</div>
       `;
@@ -1279,6 +1279,7 @@
 </script>
 </body>
 </html>
+
 
 
 
