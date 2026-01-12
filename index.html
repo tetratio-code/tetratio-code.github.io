@@ -82,7 +82,6 @@
     }
     .cell {
       width: var(--cell); height: var(--cell);
-      background: #166534;
       border-radius: 10px;
       position: relative;
       outline: 1px solid rgba(0,0,0,0.15);
@@ -96,7 +95,8 @@
     .boardControls .rowLeft{
       justify-content:center;
     }
-    body.learningMode .cell {background: #166551;}
+    body.gamesMode .cell { background:#166534; }
+    body.learningMode .cell { background:#166551; }
     body.varMode .cell { background:#1c4e80; }
     body.varMode .board { border-color: rgba(147,197,253,0.35); }
     body.varMode .item.active { background: rgba(147,197,253,0.14); outline-color: rgba(147,197,253,0.25); }
@@ -214,7 +214,7 @@
 <body>
   <div class="app">
     <div class="panel">
-      <h1>黑白棋教學網v2.10</h1>
+      <h1>黑白棋教學網v2.11</h1>
       <div class="row">
         <div class="rowLeft">
           <select id="modeSelect" aria-label="Select mode">
@@ -974,6 +974,7 @@
     if (!varGame.moves.length) throw new Error("這個變化圖的 record 是空的，無法進入");
 
     appMode = "learning";
+    document.body.classList.add("learningMode");
     mode = "var";
     varCtx = {
       parentStep,
@@ -1235,8 +1236,7 @@
         const v = String(modeSelect.value);
         appMode = (v === "learning") ? "learning" : "games";
         function applyAppModeClass(){
-          document.body.classList.remove("learningMode");
-          document.body.classList.remove("gamesMode");
+          document.body.classList.remove("learningMode", "gamesMode");
           if (appMode === "learning") {
             document.body.classList.add("learningMode");
           } else {
@@ -1279,6 +1279,7 @@
 </script>
 </body>
 </html>
+
 
 
 
