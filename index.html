@@ -394,7 +394,6 @@
   }
 
   // ===== App state =====
-  // appMode: "games" | "learning"
   let appMode = "learning";
 
   // shared playback state
@@ -1266,11 +1265,10 @@
     try{
       wireControls();
       renderCoords();
-
-      // initial mode = games
-      appMode = "games";
-      modeSelect.value = "games";
-      await loadGamesMode(true);
+      // initial mode = learning
+      appMode = "learning";
+      modeSelect.value = "learning";
+      await loadLearningMode(true);
     } catch (err){
       showError(String(err?.message ?? err));
     }
@@ -1281,6 +1279,7 @@
 </script>
 </body>
 </html>
+
 
 
 
