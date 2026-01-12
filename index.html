@@ -214,7 +214,7 @@
 <body>
   <div class="app">
     <div class="panel">
-      <h1>黑白棋教學網v2.12</h1>
+      <h1>黑白棋教學網v2.13</h1>
       <div class="row">
         <div class="rowLeft">
           <select id="modeSelect" aria-label="Select mode">
@@ -973,7 +973,7 @@
 
     if (!varGame.moves.length) throw new Error("這個變化圖的 record 是空的，無法進入");
 
-    appMode = "learning";
+    appMode = "games";
     document.body.classList.add("learningMode");
     mode = "var";
     varCtx = {
@@ -1279,6 +1279,7 @@
 </script>
 </body>
 </html>
+
 
 
 
