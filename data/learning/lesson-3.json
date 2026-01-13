@@ -115,7 +115,7 @@
       "title": "雙方佔C型：反擊例",
       "meta": "雙方佔C型雙方都有權利發動攻擊",
       "startTurn": "W",
-      "startBoard": "......../......../..WWWWWW/..WBBWWW/..WBBWWW/..BWWWWW/..WWBB../.WWWW.B.",
+      "startBoard": "......../......../..WWWWWW/..WBBWWW/..WWBWWW/..BWWWWW/..WWBB../.WWWW.B.",
       "record": "b7a8f8g7h8",
       "comments": {
         "1": "白棋也可以選擇在自己那一側送角",
@@ -128,18 +128,19 @@
       "title": "雙方佔C型：失敗例",
       "meta": "雙方佔C型雙方都有權利發動攻擊，但是要注意能不能下到中央的一格空",
       "startTurn": "B",
-      "startBoard": "......../......../..WWWWWW/..WBBWWW/..WBBWWW/..BWWWWW/..WBWW../.WWWW.B.",
+      "startBoard": "......../......../..WWWWWW/..WBBWWW/..WBBWWW/..WWWWWW/..WBWW../.WWWW.B.",
       "record": "g7h8h7f8",
       "comments": {
         "1": "黑棋嘗試在自己那一側送角",
-        "2": "白棋拿角，但是發現此時黑棋下不進 F8，使得攻擊失敗"
+        "2": "白棋拿角，但是發現此時黑棋下不進 F8",
+        "4": "黑棋攻擊失敗"
       }
     },
     {
       "title": "雙方佔C型：聲東擊西",
       "meta": "雙方佔C型也可以利用聲東擊西的方式攻擊\n\n局面與失敗例類似，如果X位送角會導致自己下不進 F8",
       "startTurn": "B",
-      "startBoard": "......../.......W/..WWWWWW/..WBBWWW/..WBBWWW/..BWWWWW/..WBWW../.WWWW.B.",
+      "startBoard": "......../.......W/..WWWWWW/..WBBWWW/..WBBWWW/..WWWWWW/..WBWW../.WWWW.B.",
       "record": "h7h8f8g7a8",
       "comments": {
         "1": "黑棋改用聲東擊西的方式攻擊，先打 H7 威脅吃 H1 角",
