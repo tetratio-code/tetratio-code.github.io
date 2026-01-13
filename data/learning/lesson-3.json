@@ -74,15 +74,35 @@
     },
     {
       "title": "攻擊翼型：聲東擊西",
-      "meta": "在X位攻擊不成立時，有時可以用聲東擊西的手法攻擊翼型\n\n現在的局面與失敗例二相似，如果下在X位攻擊翼型，會造成己方中邊純色",
+      "meta": "在X位攻擊不成立時，有時可以用聲東擊西的手法攻擊翼型\n\n現在的局面與失敗例二相似，如果下在X位攻擊翼型，會造成己方中邊純色而攻擊失敗",
       "startTurn": "B",
       "startBoard": "......../.......W/..WWWWBW/..WBBWBW/..WBBWBW/..WWWWWW/..WBBW../.WWWWW..",
-      "record": "h7h8g8g7",
+      "record": "h7h8g8g7a8",
       "comments": {
-        "1": "黑棋改用聲東擊西的手法，先打 H7 威脅吃 H1 角",
-        "2": "白棋反擊，吃回 H8 拿角。此時出現了 G8 的一格空",
+        "1": "因此黑棋改用聲東擊西的手法，先打 H7 威脅吃 H1 角",
+        "2": "白棋反擊，吃回 H8 拿角。此時出現了C位的一格空",
         "3": "黑棋就可以卡進C位這個洞",
         "5": "黑棋成功拿到角"
+      }
+    },
+    {
+      "title": "雙方佔C型：成功例一",
+      "meta": "123123",
+      "startTurn": "W",
+      "startBoard": "......../......../..WWWWWW/..WBBWWW/..WBBWWW/..WWWWWW/..WWWB../.WWW.BB.",
+      "record": "g7h8h7e8a8",
+      "comments": {
+        "1": "白棋"
+      }
+    },
+    {
+      "title": "雙方佔C型：成功例二",
+      "meta": "123123",
+      "startTurn": "B",
+      "startBoard": "......../......../..WWWWWW/..WBBWWW/..WBBWWW/..WWWWWW/..WWWB../.WWW.BB.",
+      "record": "g7h8e8a8",
+      "comments": {
+        "1": "黑棋"
       }
     }
   ]
