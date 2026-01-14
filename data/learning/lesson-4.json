@@ -33,6 +33,28 @@
         "1": "白棋可以翻到部分中央的黑棋，但是無法翻動邊上的黑棋",
         "3": "由這幾個案例可以看出：角落最容易累積穩定子，邊上次之，而中央的棋子難以成為穩定子"
       }
+    },
+    {
+      "title": "爬邊：成功例",
+      "meta": "123",
+      "startTurn": "W",
+      "startBoard": "......../..BBBB../..WWBBBB/.WWWWBBB/.WBBWWBB/.BBBBBWW/..WWWWBB/.......B",
+      "record": "d1g8c1f8e1e8f1d8a6a3a5b3a4a7c8b8",
+      "comments": {
+        "1": "123",
+        "3": "123"
+      }
+    },
+    {
+      "title": "爬邊：反擊",
+      "meta": "123",
+      "startTurn": "W",
+      "startBoard": "......../..BBBB../..WWBBBB/.WWWWBBB/.WBBWWBB/.BBBBBWW/..WWWWBB/.......B",
+      "record": "g8f8e8d8d1c1b1a3a4a5b3a2a7",
+      "comments": {
+        "1": "123",
+        "3": "123"
+      }
     }
   ]
 }
