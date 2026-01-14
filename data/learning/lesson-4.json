@@ -55,6 +55,39 @@
         "1": "123",
         "3": "123"
       }
+    },
+    {
+      "title": "翻兩排",
+      "meta": "123",
+      "startTurn": "W",
+      "startBoard": "..BBBBBW/.BBBBBBW/BBBBBBBW/BBBWWWWW/BBBWWWWW/BBBWWBBB/BBBWWBBB/BBBWWBBB",
+      "record": "a2a1b1",
+      "comments": {
+        "1": "123",
+        "2": "123"
+      }
+    },
+    {
+      "title": "通線：失敗例",
+      "meta": "123",
+      "startTurn": "B",
+      "startBoard": "WWWWWW.W/BBBBBW.W/BBBBBBBW/BBBBWWWW/BBBWWWWW/BBWWWWWW/BWWWWW.W/WWWWWW.W",
+      "record": "g7g8g1g2",
+      "comments": {
+        "1": "123",
+        "2": "123"
+      }
+    },
+    {
+      "title": "通線：成功例",
+      "meta": "123",
+      "startTurn": "B",
+      "startBoard": "WWWWWW.W/BBBBBW.W/BBBBBBBW/BBBBWWWW/BBBWWWWW/BBWWWWWW/BWWWWW.W/WWWWWW.W",
+      "record": "g1g2g7g8",
+      "comments": {
+        "1": "123",
+        "2": "123"
+      }
     }
   ]
 }
