@@ -116,25 +116,26 @@
       }
     },
     {
-      "title": "通線：失敗例",
-      "meta": "123",
+      "title": "控制中邊：失敗例",
+      "meta": "因為在沒有PASS情況下一般是白棋下到最後一手，因此黑棋需要思考如何不讓白棋的最後一手翻到太多黑棋的穩定子",
       "startTurn": "B",
       "startBoard": "WWWWWW.W/BBBBBW.W/BBBBBBBW/BBBBWWWW/BBBWWWWW/BBWWWWWW/BWWWWW.W/WWWWWW.W",
       "record": "g7g8g1g2",
       "comments": {
-        "1": "123",
-        "2": "123"
+        "1": "如果黑棋現在只求翻多",
+        "4": "則白棋最後可翻轉整條中邊，黑棋失去太多穩定子"
       }
     },
     {
-      "title": "通線：成功例",
-      "meta": "123",
+      "title": "控制中邊：成功例",
+      "meta": "控制中邊通常是保護穩定子的一個好方式，這種棋型常常成為黑棋尾盤的救命稻草",
       "startTurn": "B",
       "startBoard": "WWWWWW.W/BBBBBW.W/BBBBBBBW/BBBBWWWW/BBBWWWWW/BBWWWWWW/BWWWWW.W/WWWWWW.W",
       "record": "g1g2g7g8",
       "comments": {
-        "1": "123",
-        "2": "123"
+        "1": "黑棋先拿下G列的一端",
+        "3": "接著翻轉整條中邊，同時讓G列形成黑棋純色",
+        "4": "這樣白棋就無法翻轉中邊，黑棋保護了穩定子"
       }
     }
   ]
