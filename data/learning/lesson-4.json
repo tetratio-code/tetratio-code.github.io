@@ -69,35 +69,38 @@
     },
     {
       "title": "三格空：翻兩排",
-      "meta": "123",
+      "meta": "有時候穩穩爬邊或拿角不足以取勝，而是需要搶奪足夠的穩定子\n在這個局面，白棋取得最多穩定子的方法，是翻轉上方兩排\n\n注意不管是B1爬邊，還是A1拿角，都只能翻到其中一排",
       "startTurn": "W",
       "startBoard": "..BBBBBW/.BBBBBBW/BBBBBBBW/BBBWWWWW/BBBWWWWW/BBBWWBBB/BBBWWBBB/BBBWWBBB",
       "record": "a2a1b1",
       "comments": {
-        "1": "123",
-        "2": "123"
+        "1": "必須先下在橫向一格的 A2",
+        "2": "剩下的橫向兩格不管黑棋下哪裡",
+        "3": "白棋都可以保證翻轉到兩排棋子"
       }
     },
     {
       "title": "三格空：見合",
-      "meta": "123",
+      "meta": "三格空的變化事實上比想像中複雜，在翻兩排技巧不成立時，有時又會變成拿角爬邊的下法\n\n現在這個局面白棋可以翻轉第2排與B列，但不論怎麼下最多也只能翻轉其中之一",
       "startTurn": "W",
       "startBoard": "..BBBBBB/.BBBBBBW/BBBBBBWW/BBBWWWWW/BBBWWWWW/BBBWWBBB/BBWWWBBB/BWWWWBBB",
       "record": "a1b1a2",
       "comments": {
-        "1": "123",
-        "2": "123"
+        "1": "那麼白棋就應該選擇拿角，至少可以多出角落的穩定子",
+        "2": "接下來不管黑棋下哪裡",
+        "3": "白棋都可以翻轉第2排或B列其中之一",
       }
     },
     {
       "title": "三格空：保護穩定子",
-      "meta": "123",
+      "meta": "在無法取得大量穩定子，第2排與B列其中一條翻不到時，有時要以保護自己的穩定子為主要目標\n\n現在這個局面白棋下 B1 會失去整條上邊，而下 A1 則會因為黑棋 B1 之後第2排形成黑棋純色而白棋無法翻轉",
       "startTurn": "W",
       "startBoard": "..BWWWWB/.BBBBBBB/BBBBBBWW/BBBWWWWW/BBBWWWWW/BBBWWBBB/BBWWWBBB/BWWWWBBB",
       "record": "a2a1b1",
       "comments": {
-        "1": "123",
-        "2": "123"
+        "1": "白棋的解法是打在 A2",
+        "2": "讓黑棋吃角之後"
+        "3": "卡進 B1，這樣就保護到上邊的穩定子，並且靠過程中新增加的穩定子獲勝"
       }
     },
     {
