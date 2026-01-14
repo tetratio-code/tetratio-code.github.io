@@ -68,10 +68,32 @@
       }
     },
     {
-      "title": "翻兩排",
+      "title": "三格空：翻兩排",
       "meta": "123",
       "startTurn": "W",
       "startBoard": "..BBBBBW/.BBBBBBW/BBBBBBBW/BBBWWWWW/BBBWWWWW/BBBWWBBB/BBBWWBBB/BBBWWBBB",
+      "record": "a2a1b1",
+      "comments": {
+        "1": "123",
+        "2": "123"
+      }
+    },
+    {
+      "title": "三格空：見合",
+      "meta": "123",
+      "startTurn": "W",
+      "startBoard": "..BBBBBB/.BBBBBBW/BBBBBBWW/BBBWWWWW/BBBWWWWW/BBBWWBBB/BBWWWBBB/BWWWWBBB",
+      "record": "a1b1a2",
+      "comments": {
+        "1": "123",
+        "2": "123"
+      }
+    },
+    {
+      "title": "三格空：保護穩定子",
+      "meta": "123",
+      "startTurn": "W",
+      "startBoard": "..BWWWWB/.BBBBBBB/BBBBBBWW/BBBWWWWW/BBBWWWWW/BBBWWBBB/BBWWWBBB/BWWWWBBB",
       "record": "a2a1b1",
       "comments": {
         "1": "123",
