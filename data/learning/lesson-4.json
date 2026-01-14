@@ -69,19 +69,19 @@
     },
     {
       "title": "三格空：爬邊",
-      "meta": "2442422454",
+      "meta": "三格空的變化事實上比想像中複雜，其中爬邊是最直覺的下法之一，因為邊上的穩定子數量在尾盤常常足以決定勝負",
       "startTurn": "W",
       "startBoard": "..BBBBBW/.BBWBBBW/BBBBBBBW/BBBWWWWW/BBBWWWWW/BBBWWBBB/BBBWWBBB/BWBWWBBB",
       "record": "b1a2a1",
       "comments": {
-        "1": "452",
-        "2": "452452",
-        "3": "452452452"
+        "1": "白棋爬邊，由於是尾盤，所以大量翻棋是正確下法，因為此時的棋子大多可以兌現為穩定子",
+        "2": "黑棋也爬邊，選擇最多穩定子的下法",
+        "3": "如此白棋可以取得足夠的穩定子獲勝"
       }
     },
     {
       "title": "三格空：翻兩排",
-      "meta": "有時候穩穩爬邊或拿角不足以取勝，而是需要搶奪足夠的穩定子\n在這個局面，白棋取得最多穩定子的方法，是翻轉上方兩排\n\n注意不管是B1爬邊，還是A1拿角，都只能翻到其中一排",
+      "meta": "有時候穩穩爬邊或拿角不足以取勝，而是需要搶奪中邊的穩定子\n在這個局面，白棋取得最多穩定子的方法，是翻轉上方兩排\n\n注意不管是B1爬邊，還是A1拿角，都只能翻到其中一排",
       "startTurn": "W",
       "startBoard": "..BBBBBW/.BBBBBBW/BBBBBBBW/BBBWWWWW/BBBWWWWW/BBBWWBBB/BBBWWBBB/BBBWWBBB",
       "record": "a2a1b1",
@@ -93,7 +93,7 @@
     },
     {
       "title": "三格空：見合",
-      "meta": "三格空的變化事實上比想像中複雜，在翻兩排技巧不成立時，有時又會變成拿角爬邊的下法\n\n現在這個局面白棋可以翻轉第2排與B列，但不論怎麼下最多也只能翻轉其中之一",
+      "meta": "在翻兩排技巧不成立時，有時會變成先拿角求見合的下法\n\n現在這個局面白棋可以翻轉第2排與B列，但不論怎麼下最多也只能翻轉其中之一",
       "startTurn": "W",
       "startBoard": "..BBBBBB/.BBBBBBW/BBBBBBWW/BBBWWWWW/BBBWWWWW/BBBWWBBB/BBWWWBBB/BWWWWBBB",
       "record": "a1b1a2",
