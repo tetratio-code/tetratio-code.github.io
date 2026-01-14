@@ -36,12 +36,12 @@
     },
     {
       "title": "爬邊：成功例",
-      "meta": "123",
+      "meta": "爬邊是拿下勝利最安全有效的方式，通常也可以藉此累積邊上與附近的穩定子",
       "startTurn": "W",
       "startBoard": "......../..BBBB../..WWBBBB/.WWWWBBB/.WBBWWBB/.BBBBBWW/..WWWWBB/.......B",
       "record": "d1g8c1f8e1e8f1d8a6a3a5b3a4a7c8b8",
       "comments": {
-        "1": "123",
+        "1": "注意到黑棋下邊",
         "3": "123"
       }
     },
