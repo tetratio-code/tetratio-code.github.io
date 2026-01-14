@@ -15,12 +15,23 @@
     {
       "title": "角落的穩定子",
       "meta": "角落一定是穩定子\n角落帶的邊也一定是穩定子\n而角落旁的兩邊，其形成的三角洲區域也是穩定子\n\n如棋盤顯示，黑棋有哪些是穩定子，哪些不是?\n穩定子必須是緊鄰著一邊、且平行或與另一邊呈斜向堆積",
-      "startTurn": "B",
+      "startTurn": "W",
       "startBoard": "WWWWWWWB/WWWWWWWB/WWWWW..B/WWWWBBBB/WWWWBBBB/WWWWBBBB/WBBBBBBB/BBBBBBBB",
       "record": "f3g3",
       "comments": {
         "1": "如果是與另一邊呈垂直，則還是有機會被對方翻過來",
         "2": "因此一開始的 E4、E5、F4 不是穩定子"
+      }
+    },
+    {
+      "title": "邊上的穩定子",
+      "meta": "下滿八顆棋子的邊則全部都是穩定子\n而中央的棋子則要保證埋得夠深，或是對手的棋型翻不到才是穩定子。",
+      "startTurn": "W",
+      "startBoard": "......../......../WBBBBBBW/WBBBBBBW/WBBBBBBW/WBBBBBBW/WBBBBBBW/WBBBBBBW",
+      "record": "b2c2g2",
+      "comments": {
+        "1": "白棋可以翻到部分中央的黑棋，但是無法翻動邊上的黑棋",
+        "3": "由這幾個案例可以看出：角落最容易累積穩定子，邊上次之，而中央的棋子難以成為穩定子"
       }
     }
   ]
