@@ -68,6 +68,18 @@
       }
     },
     {
+      "title": "三格空：爬邊",
+      "meta": "2442422454",
+      "startTurn": "W",
+      "startBoard": "..BBBBBW/.BBWBBBW/BBBBBBBW/BBBWWWWW/BBBWWWWW/BBBWWBBB/BBBWWBBB/BWBWWBBB",
+      "record": "b1a2a1",
+      "comments": {
+        "1": "452",
+        "2": "452452",
+        "3": "452452452"
+      }
+    },
+    {
       "title": "三格空：翻兩排",
       "meta": "有時候穩穩爬邊或拿角不足以取勝，而是需要搶奪足夠的穩定子\n在這個局面，白棋取得最多穩定子的方法，是翻轉上方兩排\n\n注意不管是B1爬邊，還是A1拿角，都只能翻到其中一排",
       "startTurn": "W",
