@@ -62,12 +62,15 @@
     },
     {
       "title": "逆偶：黑棋不能下的偶數空",
-      "meta": "TEST",
+      "meta": "逆偶的最後一招，不是讓白棋而是黑棋自己 PASS，由於只有在最後一個局部逼白棋下偶數，因此一般來說威力較弱\n這種下法稱為「Hyper偶數」\n\n現在這個局面，左上與右下都是奇數空，如果黑棋單純搶左上的奇數空，則會被白棋使用偶數理論擊敗",
       "startTurn": "B",
       "startBoard": "...WWWBB/BWBWWWWW/BBBWWWWW/WWWWWWWW/WWWWWWWW/BBBBBBWB/WBBBBBW./BBBBBB..",
       "record": "g8a1c1b1h8h7",
       "comments": {
-        "1": "RRRRRRRRRRRRR"
+        "1": "黑棋需要主動把右下角變成自己下不進的偶數",
+        "2": "讓白棋搶到左上的奇數空",
+        "4": "白棋搶完奇數空，此時因為黑棋自己下不進右下角，黑棋 PASS，現在變成白棋必須下偶數空",
+        "6": "如此一來變成黑棋下到全局最後一手，藉由Hyper偶數取得勝利"
       }
     },
     {
