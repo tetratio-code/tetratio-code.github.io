@@ -38,11 +38,15 @@
       "startBoard": "..BWWBBB/W.BWWBBB/WWWWWWBW/WBWBWWBW/WBWBWWBB/WWWWWBBB/W.WBBW../..WWWW..",
       "record": "b2a1b1g7h8h7g8b7a8b8",
       "comments": {
-        "1": "黑棋應該搶的是左上角的奇數空，因為左下角要保留到最後才下，逼迫白棋 PASS 黑棋才可以下到最後一手"
+        "1": "黑棋應該搶的是左上角的奇數空，因為左下角要保留到最後才下，讓棋局其他地方都變成由黑棋收到最後一手",
+        "3": "黑棋下到左上最後一手",
+        "4": "由於白棋下不進左下的奇數空，被迫從偶數空下手",
+        "7": "黑棋再次下到最後一手，並且因為現在白棋無處可下只能 PASS，再次輪到黑棋先搶左下的奇數空",
+        "10": "黑棋藉由逆偶數取得勝利"
       }
     },
     {
-      "title": "逆偶數：白棋不想下的奇數空ˊ中盤",
+      "title": "逆偶數：白棋不想下的奇數空",
       "meta": "TEST",
       "startTurn": "B",
       "startBoard": "..BWWBBB/W.BWWBBB/WWWWWWBW/WBWBWWBW/WBWBWWBB/WWWWWBBB/W.WBBW../..BWWB..",
