@@ -52,8 +52,8 @@
       "title": "逆偶數：黑棋不能下的偶數空",
       "meta": "TEST",
       "startTurn": "B",
-      "startBoard": "..BWWWBB/.BWWWWBB/BWWWWBBB/WWWWWWWW/WWWWWWWW/BBBBBBBB/BBBBBW../BBBBW...",
-      "record": "f8",
+      "startBoard": "...WWWBB/BWBWWWWW/BBBWWWWW/WWWWWWWW/WWWWWWWW/BBBBBBWB/WBBBBBW./BBBBBB..",
+      "record": "g8a1c1b1h8h7",
       "comments": {
         "1": "RRRRRRRRRRRRR"
       }
