@@ -74,13 +74,17 @@
       }
     },
     {
-      "title": "破逆偶數",
-      "meta": "TEST",
+      "title": "破逆偶",
+      "meta": "雖然黑棋可以製造自己下不進的Hyper偶數，但是白棋也有可以破解黑棋的逆偶。\n\n現在黑棋在右下有不能下的四格空，左上有不能下的一格空。\n如果白棋把左上角馬上下掉，右下黑棋就是一個成功的 Hyper偶數",
       "startTurn": "B",
       "startBoard": ".BBWWBBB/BBBWWBBB/BBBWWBBB/WWWWWWWW/BBBBBBBB/BBBBBBBB/WBBBBB../BBBBBB..",
       "record": "g8h8a1g7h7",
       "comments": {
-        "1": "RRRRRRRRRRRRR"
+        "1": "白棋的目的是讓黑棋沒有 PASS 的機會，因此在右下送黑棋兩顆吃",
+        "2": "白棋送的這兩顆棋子，黑棋沒辦法一手吃光",
+        "3": "白棋下到左上奇數空時",
+        "4": "黑棋右下的棋子因為還沒吃完，所以沒有 PASS 的機會",
+        "5": "這樣一來白棋成功破解逆偶"
       }
     }
   ]
