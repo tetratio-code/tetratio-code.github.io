@@ -19,11 +19,41 @@
       }
     },
     {
-      "title": "搶奇數空：ˊ中盤",
+      "title": "搶奇數空：中盤",
       "meta": "TEST",
       "startTurn": "W",
       "startBoard": "..WWWWW./W.WWBW.W/WWBWWBWW/WBWWWWWW/WWWWWWBW/WWBWWBBW/W.WBWW.W/.WWWWWW.",
       "record": "b2a1b1h1g2h8g7a8b7",
+      "comments": {
+        "1": "RRRRRRRRRRRRR"
+      }
+    },
+    {
+      "title": "逆偶數：白棋不能下的奇數空",
+      "meta": "TEST",
+      "startTurn": "B",
+      "startBoard": "..BWWB../W.BWWB../WWWWWWBW/WBWWWWBB/WBWBWWBB/WWWWWWBW/W.WBBW../..WWWW..",
+      "record": "b2",
+      "comments": {
+        "1": "RRRRRRRRRRRRR"
+      }
+    },
+    {
+      "title": "逆偶數：白棋不想下的奇數空ˊ中盤",
+      "meta": "TEST",
+      "startTurn": "B",
+      "startBoard": "..BWWB../W.BWWB../WWWWWWBW/WBWWWWBB/WBWBWWBB/WWWWWWBW/W.WBBW../..BWWB..",
+      "record": "b2",
+      "comments": {
+        "1": "RRRRRRRRRRRRR"
+      }
+    },
+    {
+      "title": "逆偶數：黑棋不能下的偶數空",
+      "meta": "TEST",
+      "startTurn": "B",
+      "startBoard": "..BWWWBB/.BWWWWBB/BWWWWBBB/WWWWWWWW/WWWWWWWW/BBBBBBBB/BBBBBW../BBBBW...",
+      "record": "f8",
       "comments": {
         "1": "RRRRRRRRRRRRR"
       }
