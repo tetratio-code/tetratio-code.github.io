@@ -20,29 +20,32 @@
     },
     {
       "title": "搶奇數空：中盤",
-      "meta": "TEST",
+      "meta": "搶奇數空的情形不只在尾盤出現，中盤出現的奇數空也需要檢查是不是可以先搶",
       "startTurn": "W",
       "startBoard": "..BBBB../B.WWBB../BWBBWB../BWWWWB../BWWBWB../BBWWWB../......../........",
       "record": "b2a1b1e7",
       "comments": {
-        "1": "RRRRRRRRRRRRR"
+        "1": "白棋此時搶奇數空",
+        "2": "黑棋拿角正常",
+        "3": "白棋下到局部最後一手，並且不會因此讓黑棋有爬邊的機會，因此搶奇數空成功",
+        "4": "並且因為在左上角白棋比黑棋多下到一手，逼迫黑棋開始消耗外部的手數"
       }
     },
     {
       "title": "逆偶數：白棋不能下的奇數空",
-      "meta": "TEST",
+      "meta": "而黑棋為了避免白棋藉由偶數理論得利，需要做出「逆偶數」。逆偶數通常來自其中一方的PASS，讓棋局變成黑棋下到最後一手\n\n左上與左下是三格空，而右上與右下是四格空\n根據偶數理論，應該要搶左上或左下的奇數空\n觀察可以發現，左上的奇數空雙方都可以下，而左下的奇數空只有黑棋下得進去",
       "startTurn": "B",
-      "startBoard": "..BWWB../W.BWWB../WWWWWWBW/WBWWWWBB/WBWBWWBB/WWWWWWBW/W.WBBW../..WWWW..",
-      "record": "b2",
+      "startBoard": "..BWWBBB/W.BWWBBB/WWWWWWBW/WBWBWWBW/WBWBWWBB/WWWWWBBB/W.WBBW../..WWWW..",
+      "record": "b2a1b1g7h8h7g8b7a8b8",
       "comments": {
-        "1": "RRRRRRRRRRRRR"
+        "1": "黑棋應該搶的是左上角的奇數空，因為左下角要保留到最後才下，逼迫白棋 PASS 黑棋才可以下到最後一手"
       }
     },
     {
       "title": "逆偶數：白棋不想下的奇數空ˊ中盤",
       "meta": "TEST",
       "startTurn": "B",
-      "startBoard": "..BWWB../W.BWWB../WWWWWWBW/WBWWWWBB/WBWBWWBB/WWWWWWBW/W.WBBW../..BWWB..",
+      "startBoard": "..BWWBBB/W.BWWBBB/WWWWWWBW/WBWBWWBW/WBWBWWBB/WWWWWBBB/W.WBBW../..BWWB..",
       "record": "b2",
       "comments": {
         "1": "RRRRRRRRRRRRR"
