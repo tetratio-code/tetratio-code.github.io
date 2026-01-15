@@ -32,7 +32,7 @@
       }
     },
     {
-      "title": "逆偶數：白棋不能下的奇數空",
+      "title": "逆偶：白棋不能下的奇數空",
       "meta": "而黑棋為了避免白棋藉由偶數理論得利，需要做出「逆偶數」。逆偶數通常來自其中一方的PASS，讓棋局變成黑棋下到最後一手\n\n左上與左下是三格空，而右上與右下是四格空\n根據偶數理論，應該要搶左上或左下的奇數空\n觀察可以發現，左上的奇數空雙方都可以下，而左下的奇數空只有黑棋下得進去",
       "startTurn": "B",
       "startBoard": "..BWWBBB/W.BWWBBB/WWWWWWBW/WBWBWWBW/WBWBWWBB/WWWWWBBB/W.WBBW../..WWWW..",
@@ -46,17 +46,22 @@
       }
     },
     {
-      "title": "逆偶數：白棋不想下的奇數空",
-      "meta": "TEST",
+      "title": "逆偶：白棋不想下的奇數空",
+      "meta": "現在左上與左下的奇數空都是雙方可下，不過左下角的棋型白棋即使退B8讓A8拿角，白棋也無法擠進B7\n\n因此黑棋可以把白棋不想下的奇數空保留到最後，逼白棋去下\n這種逆偶的方法稱為「末國陷阱」",
       "startTurn": "B",
-      "startBoard": "..BWWBBB/W.BWWBBB/WWWWWWBW/WBWBWWBW/WBWBWWBB/WWWWWBBB/W.WBBW../..BWWB..",
-      "record": "b2",
+      "startBoard": "..BWWBBB/W.BWWBBB/WWWWWWBW/WBWBWWBW/WBWBWWBB/WWWWWBBB/W.WBBW../..BWBW..",
+      "record": "b2a1b1g7h8h7g8b8a8b7",
       "comments": {
-        "1": "RRRRRRRRRRRRR"
+        "1": "黑棋應該搶的是左上角的奇數空，因為左下角要保留到最後，逼白棋下",
+        "3": "黑棋下到左上最後一手",
+        "4": "由於白棋不想下左下的奇數空，先從偶數空下手",
+        "7": "但是由於右下是偶數，黑棋下到最後一手",
+        "8": "白棋被迫下左下的奇數空",
+        "10": "黑棋藉由末國陷阱的手法，成功逆偶取得勝利"
       }
     },
     {
-      "title": "逆偶數：黑棋不能下的偶數空",
+      "title": "逆偶：黑棋不能下的偶數空",
       "meta": "TEST",
       "startTurn": "B",
       "startBoard": "...WWWBB/BWBWWWWW/BBBWWWWW/WWWWWWWW/WWWWWWWW/BBBBBBWB/WBBBBBW./BBBBBB..",
