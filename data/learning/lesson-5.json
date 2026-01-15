@@ -62,7 +62,7 @@
       "title": "破逆偶數",
       "meta": "TEST",
       "startTurn": "B",
-      "startBoard": ".BBWWBBB/BBBWWBBB/BBBWWBBB/WWWWWWWW/WWWWWWWW/BBBBBBBB/BBBBBB../BBBBBB..",
+      "startBoard": ".BBWWBBB/BBBWWBBB/BBBWWBBB/WWWWWWWW/BBBBBBBB/BBBBBBBB/WBBBBB../BBBBBB..",
       "record": "g8h8a1g7h7",
       "comments": {
         "1": "RRRRRRRRRRRRR"
