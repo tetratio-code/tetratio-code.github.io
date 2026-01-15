@@ -22,8 +22,8 @@
       "title": "搶奇數空：中盤",
       "meta": "TEST",
       "startTurn": "W",
-      "startBoard": "..BBBB../B.WWBB../BWBBWB../BWWWWB../.BWWBWB../BBWWWB../......../........",
-      "record": "a2a1b1e7",
+      "startBoard": "..BBBB../B.WWBB../BWBBWB../BWWWWB../BWWBWB../BBWWWB../......../........",
+      "record": "b2a1b1e7",
       "comments": {
         "1": "RRRRRRRRRRRRR"
       }
