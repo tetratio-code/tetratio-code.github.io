@@ -67,22 +67,26 @@
     },
     {
       "title": "切斷對角線：聲東擊西",
-      "meta": "TSETSE",
+      "meta": "有時切斷對角線的方式比較隱蔽，甚至是平常不會想下的位置",
       "startTurn": "W",
       "startBoard": "..WWWWW./B.WBBW.W/BBBWWBWW/BBWWWWBW/BBWWWWBW/BBWWWBWW/B.BBBW../.WWWWW..",
       "record": "g2g8h8h1",
       "comments": {
-        "1": "此時白棋下在G2控制對角線"
+        "1": "白棋下在G2控制對角線",
+        "2": "黑棋可以打在 G8 直接送白棋一個角，同時也切斷對角線",
+        "4": "黑棋藉由一個角的代價，得到價值較高的右上角"
       }
     },
     {
       "title": "切斷對角線：藉由角",
-      "meta": "SFWFDFDFEFWFSFW",
+      "meta": "角落除了注意偶數理論，也可以用於切斷對角線",
       "startTurn": "B",
       "startBoard": "BBBBBB../BBBBBB.B/WWWBBWBB/BWBBBBWB/BWBBBBWB/WBBBBWBB/..BWWB.B/.BBBBBB.",
       "record": "g2b7a8a7h1",
       "comments": {
-        "1": "黑棋下在 G2 控制對角線"
+        "1": "黑棋下在 G2 控制對角線",
+        "2": "白棋只要搶占左下角奇數空",
+        "4": "根據偶數理論，白棋可以下到左下角的最後一手，並切斷對角線"
       }
     },
     {
