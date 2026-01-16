@@ -82,7 +82,7 @@
       "meta": "角落除了注意偶數理論，也可以用於切斷對角線",
       "startTurn": "B",
       "startBoard": "BBBBBB../WWWBBB.B/WWWBBWBB/BWBBBBWB/BWBBBBWB/WBBBBWBB/..BWWB.B/.BBBBBB.",
-      "record": "g2b7a8a7g7h1",
+      "record": "g2b7a8a7g7h1g1h8",
       "comments": {
         "1": "黑棋下在 G2 控制對角線",
         "2": "白棋只要搶占左下角奇數空",
@@ -94,7 +94,7 @@
       "meta": "VFDVFDVDVDVDVDVD",
       "startTurn": "B",
       "startBoard": "BBBBBB../BWWBBB.B/BWWBBWBB/BWBBBBWB/BWBBBBWB/WBBBBWBB/..BWWB.B/.BBBBBB.",
-      "record": "g2b7a7g7h8",
+      "record": "g2b7a7g7h8g1h1",
       "comments": {
         "1": "範例待改"
       }
@@ -104,7 +104,7 @@
       "meta": "VFDVFDVDVDVDVDVD",
       "startTurn": "B",
       "startBoard": "BBBBBB../WWWBBB.B/WWWBBWBB/BWBBBBWB/BWBBBBWB/WBBBBWBB/..BBBB.B/.BBBBBB.",
-      "record": "g2b7a8g7h8",
+      "record": "g2b7a8g7h8g1h1a7",
       "comments": {
         "1": "範例待改"
       }
@@ -114,7 +114,7 @@
       "meta": "VCCVVCDVDDCCVDVDVCV",
       "startTurn": "B",
       "startBoard": "BWBBBB../WWWBBB.B/WWWBBWBB/BWBBBBWB/BWBBBBWB/BBBBBWBB/..BWWB.B/..BBBB..",
-      "record": "g2b7a8b8a7h1",
+      "record": "g2b7a8a7b8h1g1h8g7g8",
       "comments": {
         "1": "範例待改"
       }
