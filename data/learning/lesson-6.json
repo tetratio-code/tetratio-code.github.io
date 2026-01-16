@@ -49,7 +49,7 @@
       "title": "切斷對角線：藉由邊",
       "meta": "白棋",
       "startTurn": "W",
-      "startBoard": "..W..WW./W.WWWWWW/WWBWWWWW/WBWWWWBW/WBWWWWBW/WWWWWBWW/W.BBBW.W/.WWWWWW.",
+      "startBoard": "..W..WW./W.WWWW.W/WWBWBWWW/WBWWWWBW/WBWWWWBW/WWWWWBWW/W.BBBW.W/.WWWWWW.",
       "record": "g2e1d1h1",
       "comments": {
         "1": "此時白棋下在G2控制對角線"
