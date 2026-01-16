@@ -49,7 +49,7 @@
       "title": "切斷對角線：藉由邊",
       "meta": "白棋",
       "startTurn": "W",
-      "startBoard": ".BBBBBB./..BWBW.W/BBBWWBWW/BWBWWWBW/BWWWBBBW/BBWBBWWW/B.BWWB../.BBBBBB.",
+      "startBoard": "..W..WW./W.WWWWWW/WWBWWWWW/WBWWWWBW/WBWWWWBW/WWWWWBWW/W.BBBW.W/.WWWWWW.",
       "record": "g2e1d1h1",
       "comments": {
         "1": "此時白棋下在G2控制對角線"
@@ -68,7 +68,7 @@
     {
       "title": "切斷對角線：藉由角",
       "meta": "白棋",
-      "startTurn": "W",
+      "startTurn": "B",
       "startBoard": "BBBBBB../BBBBBB.B/WWWBBWBB/BWBBBBWB/BWBBBBWB/BBBBBWBB/..BWWB.B/.BBBBBB.",
       "record": "g2b7a8a7h1",
       "comments": {
@@ -78,7 +78,7 @@
     {
       "title": "切斷對角線：失敗例",
       "meta": "白棋",
-      "startTurn": "W",
+      "startTurn": "B",
       "startBoard": "BBBBBB../BBBBBB.B/WWWBBWBB/BWBBBBWB/BWBBBBWB/BBBBBWBB/..BBBB.B/.BBBBBB.",
       "record": "g2b7a8a7h1",
       "comments": {
@@ -88,7 +88,7 @@
     {
       "title": "切斷對角線：藉由中邊",
       "meta": "白棋",
-      "startTurn": "W",
+      "startTurn": "B",
       "startBoard": "BWBBBB../BWBBBB.B/WWWBBWBB/BWBBBBWB/BWBBBBWB/BBBBBWBB/..BBBW.B/..BBBBB.",
       "record": "g2b7a8b8a7h1",
       "comments": {
