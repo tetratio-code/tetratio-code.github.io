@@ -30,22 +30,26 @@
     },
     {
       "title": "對角線：爭奪例一",
-      "meta": "白棋",
+      "meta": "控制對角線，有時同時是雙方的權利，需要爭奪",
       "startTurn": "W",
-      "startBoard": ".BBBBBB./..BWBW.W/BBBWWBWW/BWBWWWBW/BWWWBBBW/BBWBBWWW/B.BWWB../.BBBBBB.",
-      "record": "g2g7b2",
+      "startBoard": ".BBBBBB./..BWBW.W/BBBWWBWW/BWBWWWBW/BWWWBBBW/BBWBBWWW/B.BWWB.W/.BBBBBB.",
+      "record": "g2g7h8",
       "comments": {
-        "1": "DDDDDDDDDDDD"
+        "1": "白棋首先出手控制對角線",
+        "2": "則黑棋無法再下在白棋控制的對角線上",
+        "3": "白棋由於控制了對角線，大幅縮減黑棋尾盤的選擇權"
       }
     },
     {
       "title": "對角線：爭奪例二",
       "meta": "白棋",
-      "startTurn": "W",
-      "startBoard": ".BBBBBB./..BWBW.W/BBBWWBWW/BWBWWWBW/BWWWBBBW/BBWBBWWW/B.BWWB../.BBBBBB.",
+      "startTurn": "對角線經常是雙方需要立即爭奪之處",
+      "startBoard": ".BBBBBB./..BWBW.W/BBBWWBWW/BWBWWWBW/BWWWBBBW/BBWBBWWW/B.BWWB.W/.BBBBBB.",
       "record": "b2b7g7h8",
       "comments": {
-        "1": "DDDDDDDDDDDD"
+        "1": "白棋受到左上奇數控的誘惑，先下在左上角",
+        "2": "不但被黑棋控制對角線，A8 也形成白棋下不進的一格空，實質上形成逆偶",
+        "3": "白棋現在只剩下送角的下法，因為未立即爭奪對角線而陷入大敗的局面"
       }
     },
     {
