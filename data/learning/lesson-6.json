@@ -90,11 +90,21 @@
       }
     },
     {
-      "title": "切斷對角線：失敗例",
+      "title": "切斷對角線：失敗例一",
+      "meta": "VFDVFDVDVDVDVDVD",
+      "startTurn": "B",
+      "startBoard": "BBBBBB../BBBBBB.B/BWWBBWBB/BWBBBBWB/BWBBBBWB/WBBBBWBB/..BBBB.B/.BBBBBB.",
+      "record": "g2b7a7g7h8",
+      "comments": {
+        "1": "範例待改"
+      }
+    },
+    {
+      "title": "切斷對角線：失敗例二",
       "meta": "VFDVFDVDVDVDVDVD",
       "startTurn": "B",
       "startBoard": "BBBBBB../BBBBBB.B/WWWBBWBB/BWBBBBWB/BWBBBBWB/WBBBBWBB/..BBBB.B/.BBBBBB.",
-      "record": "g2b7a8",
+      "record": "g2b7a8g7h8",
       "comments": {
         "1": "範例待改"
       }
