@@ -4,4 +4,5 @@
   { "id": "lesson-3", "title": "尾盤基礎：攻擊取角", "file": "lesson-3.json" },
   { "id": "lesson-4", "title": "尾盤基礎：穩定子", "file": "lesson-4.json" },
   { "id": "lesson-5", "title": "尾盤基礎：偶數理論", "file": "lesson-5.json" }
+  { "id": "lesson-6", "title": "尾盤基礎：對角線", "file": "lesson-6.json" }
 ]
