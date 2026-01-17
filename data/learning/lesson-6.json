@@ -115,12 +115,17 @@
     },
     {
       "title": "切斷對角線：藉由中邊",
-      "meta": "VCCVVCDVDDCCVDVDVCV",
+      "meta": "如果有辦法控制中邊，即使是一個偶數空的角，也可以用來切斷對角線",
       "startTurn": "B",
       "startBoard": "BWBBBB../WWWBBB.B/WWWBBWBB/BWBBBBWB/BWBBBBWB/BBBBBWBB/..BWWB.B/..BBBB..",
       "record": "g2b7a8a7b8h1g1h8g7g8",
       "comments": {
-        "1": "範例待改"
+        "1": "黑棋下在 G2 控制對角線",
+        "2": "白棋下在偶數空的X位",
+        "3": "這一手雖然黑棋可以選擇滑到 B8，但是為了阻止白棋切斷對角線下在 A8",
+        "4": "白棋再次切斷對角線，注意此時B列的中邊是白棋純色",
+        "5": "黑棋雖然下到左下區域的最後一手，但未能翻轉 B7",
+        "6": "如此一來，白棋成功藉由控制中邊，以偶數區域切斷對角線"
       }
     }
   ]
