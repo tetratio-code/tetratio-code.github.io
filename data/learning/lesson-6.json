@@ -91,22 +91,26 @@
     },
     {
       "title": "切斷對角線：失敗例一",
-      "meta": "VFDVFDVDVDVDVDVD",
+      "meta": "藉由角落切斷對角線有兩種失敗的可能性，下不進與切不斷",
       "startTurn": "B",
       "startBoard": "BBBBBB../BWWBBB.B/BWWBBWBB/BWBBBBWB/BWBBBBWB/WBBBBWBB/..BWWB.B/.BBBBBB.",
       "record": "g2b7a7g7h8g1h1",
       "comments": {
-        "1": "範例待改"
+        "1": "黑棋下在 G2 控制對角線",
+        "2": "白棋希望藉由左下角奇數空切斷對角線",
+        "3": "但是黑棋這一手之後，同時控制了對角線與兩條邊，左下角雖然剩下奇數空但是白棋下不進"
       }
     },
     {
       "title": "切斷對角線：失敗例二",
-      "meta": "VFDVFDVDVDVDVDVD",
+      "meta": "與攻擊取角時相同，如果黑棋有一個純色的中邊，也可能讓切斷對角線的手段失效",
       "startTurn": "B",
       "startBoard": "BBBBBB../WWWBBB.B/WWWBBWBB/BWBBBBWB/BWBBBBWB/WBBBBWBB/..BBBB.B/.BBBBBB.",
       "record": "g2b7a8g7h8g1h1a7",
       "comments": {
-        "1": "範例待改"
+        "1": "黑棋下在 G2 控制對角線",
+        "2": "白棋希望藉由左下角奇數空切斷對角線",
+        "3": "但是黑棋爬 B8 之後，白棋缺乏中邊的棋種，下不進 A7"
       }
     },
     {
