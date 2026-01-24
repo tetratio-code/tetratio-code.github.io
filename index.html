@@ -214,7 +214,7 @@
 <body>
   <div class="app">
     <div class="panel">
-      <h1>黑白棋教學網v2.15</h1>
+      <h1>黑白棋教學網v2.16</h1>
       <div class="row">
         <div class="rowLeft">
           <select id="modeSelect" aria-label="Select mode">
@@ -779,9 +779,10 @@
     if (appMode === "learning"){
       if (step === 0){
         const base = (game.meta || "").trim();
+        const turnLabel = (game.startTurn === BLACK) ? "黑" : "白";
         detailBox.textContent = base
-          ? `【${game.title || "教學局面"}】\n${base}`
-          : "（局面開始）";
+          ? `【${game.title || "教學局面"}】：輪到${turnLabel}棋下\n${base}`
+          : `【${game.title || "教學局面"}】：輪到${turnLabel}棋下`;
       } else {
         const i = step - 1;
         const m = game.moves[i];
@@ -1278,6 +1279,7 @@
 </script>
 </body>
 </html>
+
 
 
 
