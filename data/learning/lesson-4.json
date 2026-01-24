@@ -107,7 +107,7 @@
       "title": "三格空：保護穩定子",
       "meta": "在無法取得大量穩定子，第2排與B列其中一條翻不到時，有時要以保護自己的穩定子為主要目標\n\n現在這個局面白棋下 B1 會失去整條上邊，而下 A1 則會因為黑棋 B1 之後第2排形成黑棋純色而白棋無法翻轉",
       "startTurn": "W",
-      "startBoard": "..BWWWWB/.BBBBBBB/BBBBBBWW/BBBWWWWW/BBBWWWWW/BBBWWBBB/BBWWWBBB/BWWWWBBB",
+      "startBoard": "..BWWWWB/.BBBBBBB/BBBBBBWW/BBBWWWWW/BBBWWWWW/BBBWWBBB/BWWWWBBB/BWWWWBBB",
       "record": "a2a1b1",
       "comments": {
         "1": "白棋的解法是打在 A2",
