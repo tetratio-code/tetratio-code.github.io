@@ -10,9 +10,7 @@
   <canvas id="chart"></canvas>
 
   <script>
-    const API = "https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLgcYkDSNPKfesnBFYwAd0BLJvYhwOiloUpHJYNSRITAHYX6nplZzuZvYG_Wm7I5j_nfWIEy6xFcxWz2a9kBQXxkITmHPWH6f3vRT12-Oy7rzjCgIpE-F-Q6pIAOn5WEoEPpPmA93--NZz80FAWAj0r7DmdFWHIFzXrAeFOCeg3t_x964hXYAfUZEE-jNHMdgyuyNFPLJv0Q_q6viZNsMOcrV3ufpfokSuy-OyTTXwDM9sucaiTGI0WY0jI2R0SNGGgjixxgIE6KNUnxMrh3OmV_OHBn19kkrANcdi5j&lib=MW9gMCtm5d85rgJvqJ-KZyvrfAuVRiGKo";
-
-    fetch(API)
+    const API = "
       .then(r => r.json())
       .then(({ data }) => {
 
@@ -30,6 +28,176 @@
           }
         });
       });
+  </script>
+</body>
+</html>
+
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>表單回應列表</title>
+  <style>
+    body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans TC", Arial, sans-serif; margin: 16px; }
+    .bar { display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-bottom: 12px; }
+    input[type="search"] { padding:10px 12px; width:min(520px, 100%); border:1px solid #ccc; border-radius:10px; }
+    select { padding:10px 12px; border:1px solid #ccc; border-radius:10px; }
+    .meta { color:#666; font-size: 14px; }
+    .box {
+      border:1px solid #ddd;
+      border-radius: 12px;
+      overflow: auto;          /* ✅ 可捲動 */
+      max-height: 70vh;        /* ✅ 限高，超出就出現滾輪 */
+      box-shadow: 0 2px 12px rgba(0,0,0,.06);
+      background: #fff;
+    }
+    table { border-collapse: collapse; width: 100%; min-width: 900px; } /* min-width 讓欄位多時可左右捲動 */
+    th, td { border-bottom: 1px solid #eee; padding: 10px 12px; vertical-align: top; }
+    th {
+      position: sticky; top: 0; z-index: 2;   /* ✅ 表頭固定 */
+      background: #fafafa;
+      text-align: left;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    td { white-space: pre-wrap; word-break: break-word; }
+    .loading, .error { padding: 14px; }
+    .pill { display:inline-block; padding:2px 8px; border-radius:999px; background:#f2f2f2; font-size:12px; color:#333; }
+  </style>
+</head>
+<body>
+  <h2 style="margin:0 0 10px 0;">表單回應列表</h2>
+
+  <div class="bar">
+    <input id="q" type="search" placeholder="搜尋（任一欄位包含關鍵字）…" />
+    <label class="meta">
+      每頁顯示：
+      <select id="limit">
+        <option value="50">50</option>
+        <option value="100" selected>100</option>
+        <option value="200">200</option>
+        <option value="500">500</option>
+      </select>
+    </label>
+    <span id="meta" class="meta"></span>
+  </div>
+
+  <div class="box">
+    <div id="status" class="loading">載入中…</div>
+    <table id="tbl" style="display:none;">
+      <thead><tr id="thead"></tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+  <script>
+    // ✅ 改成你的 Web app URL（可帶參數：?sheet=表單回應%201）
+    const BASE_API_URL = "https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLgcYkDSNPKfesnBFYwAd0BLJvYhwOiloUpHJYNSRITAHYX6nplZzuZvYG_Wm7I5j_nfWIEy6xFcxWz2a9kBQXxkITmHPWH6f3vRT12-Oy7rzjCgIpE-F-Q6pIAOn5WEoEPpPmA93--NZz80FAWAj0r7DmdFWHIFzXrAeFOCeg3t_x964hXYAfUZEE-jNHMdgyuyNFPLJv0Q_q6viZNsMOcrV3ufpfokSuy-OyTTXwDM9sucaiTGI0WY0jI2R0SNGGgjixxgIE6KNUnxMrh3OmV_OHBn19kkrANcdi5j&lib=MW9gMCtm5d85rgJvqJ-KZyvrfAuVRiGKo"; 
+
+    const elStatus = document.getElementById("status");
+    const elTbl = document.getElementById("tbl");
+    const elThead = document.getElementById("thead");
+    const elTbody = document.getElementById("tbody");
+    const elMeta = document.getElementById("meta");
+    const elQ = document.getElementById("q");
+    const elLimit = document.getElementById("limit");
+
+    let rawData = [];
+    let headers = [];
+
+    function withLimit(url, limit) {
+      const u = new URL(url);
+      u.searchParams.set("limit", String(limit));
+      return u.toString();
+    }
+
+    function setStatus(msg, isError=false) {
+      elStatus.className = isError ? "error" : "loading";
+      elStatus.textContent = msg;
+      elStatus.style.display = "block";
+      elTbl.style.display = "none";
+    }
+
+    function renderTable(data) {
+      // 表頭
+      elThead.innerHTML = "";
+      for (const h of headers) {
+        const th = document.createElement("th");
+        th.textContent = h;
+        elThead.appendChild(th);
+      }
+
+      // 內容
+      elTbody.innerHTML = "";
+      for (const row of data) {
+        const tr = document.createElement("tr");
+        for (const h of headers) {
+          const td = document.createElement("td");
+          const v = row[h];
+          td.textContent = (v === null || v === undefined) ? "" : String(v);
+          tr.appendChild(td);
+        }
+        elTbody.appendChild(tr);
+      }
+
+      elStatus.style.display = "none";
+      elTbl.style.display = "table";
+      elMeta.innerHTML = `<span class="pill">顯示 ${data.length} 筆</span>`;
+    }
+
+    function applyFilter() {
+      const q = elQ.value.trim().toLowerCase();
+      if (!q) return renderTable(rawData);
+
+      const filtered = rawData.filter(row => {
+        // 任一欄位包含關鍵字就算符合
+        return headers.some(h => String(row[h] ?? "").toLowerCase().includes(q));
+      });
+
+      renderTable(filtered);
+    }
+
+    async function load() {
+      try {
+        setStatus("載入中…");
+        const limit = Number(elLimit.value || 100);
+        const api = withLimit(BASE_API_URL, limit);
+
+        const res = await fetch(api);
+        const json = await res.json();
+
+        if (!json || json.ok === false) {
+          throw new Error(json?.error || "API 回傳格式不正確");
+        }
+
+        rawData = Array.isArray(json.data) ? json.data : [];
+        headers = rawData.length ? Object.keys(rawData[0]) : [];
+
+        if (!headers.length) {
+          setStatus("目前沒有資料或工作表沒有內容。");
+          return;
+        }
+
+        // 顯示一些 meta（如果 API 有提供）
+        const metaBits = [];
+        if (json.meta?.sheet) metaBits.push(`工作表：${json.meta.sheet}`);
+        if (typeof json.meta?.totalRows === "number") metaBits.push(`總筆數：${json.meta.totalRows}`);
+        if (json.meta?.updatedAt) metaBits.push(`更新：${json.meta.updatedAt}`);
+        if (metaBits.length) elMeta.innerHTML = `<span class="pill">${metaBits.join("｜")}</span>`;
+
+        renderTable(rawData);
+      } catch (err) {
+        console.error(err);
+        setStatus("載入失敗：" + err.message, true);
+      }
+    }
+
+    // 事件：搜尋與切換筆數
+    elQ.addEventListener("input", () => applyFilter());
+    elLimit.addEventListener("change", () => load());
+
+    load();
   </script>
 </body>
 </html>
