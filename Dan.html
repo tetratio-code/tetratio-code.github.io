@@ -1,38 +1,4 @@
 <!doctype html>
-<html>
-<head>
-  <meta charset="utf-8" />
-  <title>表單視覺化</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-<body>
-  <h2>表單資料統計</h2>
-  <canvas id="chart"></canvas>
-
-  <script>
-    const API = "
-      .then(r => r.json())
-      .then(({ data }) => {
-
-        const labels = data.map(x => x["英文姓名"]);
-        const values = data.map(x => Number(x["最高積分"]));
-
-        new Chart(document.getElementById("chart"), {
-          type: "bar",
-          data: {
-            labels,
-            datasets: [{
-              label: "最高積分",
-              data: values
-            }]
-          }
-        });
-      });
-  </script>
-</body>
-</html>
-
-<!doctype html>
 <html lang="zh-Hant">
 <head>
   <meta charset="utf-8" />
