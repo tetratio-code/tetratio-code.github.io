@@ -3,51 +3,67 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>表單回應列表</title>
+  <title>表單回應列表（可展開明細）</title>
   <style>
     body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans TC", Arial, sans-serif; margin: 16px; }
-    .bar { display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-bottom: 12px; }
-    input[type="search"] { padding:10px 12px; width:min(520px, 100%); border:1px solid #ccc; border-radius:10px; }
-    select { padding:10px 12px; border:1px solid #ccc; border-radius:10px; }
     .meta { color:#666; font-size: 14px; }
+    .pill { display:inline-block; padding:2px 8px; border-radius:999px; background:#f2f2f2; font-size:12px; color:#333; }
+
     .box {
       border:1px solid #ddd;
       border-radius: 12px;
-      overflow: auto;          /* ✅ 可捲動 */
-      max-height: 70vh;        /* ✅ 限高，超出就出現滾輪 */
+      overflow: auto;
+      max-height: 75vh;
       box-shadow: 0 2px 12px rgba(0,0,0,.06);
       background: #fff;
     }
-    table { border-collapse: collapse; width: 100%; min-width: 900px; } /* min-width 讓欄位多時可左右捲動 */
+    table { border-collapse: collapse; width: 100%; min-width: 900px; }
     th, td { border-bottom: 1px solid #eee; padding: 10px 12px; vertical-align: top; }
     th {
-      position: sticky; top: 0; z-index: 2;   /* ✅ 表頭固定 */
+      position: sticky; top: 0; z-index: 2;
       background: #fafafa;
       text-align: left;
       font-weight: 600;
       white-space: nowrap;
     }
     td { white-space: pre-wrap; word-break: break-word; }
+
+    /* 主表 hover/可點 */
+    tr.master-row { cursor: pointer; }
+    tr.master-row:hover td { background: #fcfcff; }
+
+    /* 展開區 */
+    tr.detail-row td {
+      background: #fbfbfb;
+      border-bottom: 1px solid #eaeaea;
+      padding: 12px;
+    }
+    .detail-wrap {
+      border: 1px solid #e6e6e6;
+      border-radius: 12px;
+      background: #fff;
+      padding: 10px;
+    }
+    .detail-title {
+      display:flex; align-items:center; justify-content:space-between;
+      gap: 12px; margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .detail-table {
+      border: 1px solid #eee;
+      border-radius: 10px;
+      overflow: auto;
+      max-height: 320px;  /* 明細區內也可滾 */
+    }
+    .detail-table table { min-width: 700px; }
+    .small { font-size: 13px; color:#666; }
+
     .loading, .error { padding: 14px; }
-    .pill { display:inline-block; padding:2px 8px; border-radius:999px; background:#f2f2f2; font-size:12px; color:#333; }
   </style>
 </head>
 <body>
-  <h2 style="margin:0 0 10px 0;">表單回應列表</h2>
-
-  <div class="bar">
-    <input id="q" type="search" placeholder="搜尋（任一欄位包含關鍵字）…" />
-    <label class="meta">
-      每頁顯示：
-      <select id="limit">
-        <option value="50">50</option>
-        <option value="100" selected>100</option>
-        <option value="200">200</option>
-        <option value="500">500</option>
-      </select>
-    </label>
-    <span id="meta" class="meta"></span>
-  </div>
+  <h2 style="margin:0 0 10px 0;">表單回應列表（點選手列可展開第二張表單）</h2>
+  <div id="meta" class="meta"></div>
 
   <div class="box">
     <div id="status" class="loading">載入中…</div>
@@ -58,23 +74,31 @@
   </div>
 
   <script>
-    // ✅ 改成你的 Web app URL（可帶參數：?sheet=表單回應%201）
-    const BASE_API_URL = "https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLgcYkDSNPKfesnBFYwAd0BLJvYhwOiloUpHJYNSRITAHYX6nplZzuZvYG_Wm7I5j_nfWIEy6xFcxWz2a9kBQXxkITmHPWH6f3vRT12-Oy7rzjCgIpE-F-Q6pIAOn5WEoEPpPmA93--NZz80FAWAj0r7DmdFWHIFzXrAeFOCeg3t_x964hXYAfUZEE-jNHMdgyuyNFPLJv0Q_q6viZNsMOcrV3ufpfokSuy-OyTTXwDM9sucaiTGI0WY0jI2R0SNGGgjixxgIE6KNUnxMrh3OmV_OHBn19kkrANcdi5j&lib=MW9gMCtm5d85rgJvqJ-KZyvrfAuVRiGKo"; 
+    /************ 你只要改這裡 3 個 ************/
+    const WEBAPP_BASE   = "https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLgcYkDSNPKfesnBFYwAd0BLJvYhwOiloUpHJYNSRITAHYX6nplZzuZvYG_Wm7I5j_nfWIEy6xFcxWz2a9kBQXxkITmHPWH6f3vRT12-Oy7rzjCgIpE-F-Q6pIAOn5WEoEPpPmA93--NZz80FAWAj0r7DmdFWHIFzXrAeFOCeg3t_x964hXYAfUZEE-jNHMdgyuyNFPLJv0Q_q6viZNsMOcrV3ufpfokSuy-OyTTXwDM9sucaiTGI0WY0jI2R0SNGGgjixxgIE6KNUnxMrh3OmV_OHBn19kkrANcdi5j&lib=MW9gMCtm5d85rgJvqJ-KZyvrfAuVRiGKo"; // 例如 https://script.google.com/macros/s/XXXX/exec
+    const SHEET_MAIN    = "歷年積分與段級位";         // 第一張表單工作表名稱
+    const SHEET_DETAIL  = "戰績表";         // 第二張表單工作表名稱
+    const KEY_COL       = "選手編號";           // 用來關聯的欄位名稱（兩張表都要有）
+    /******************************************/
 
     const elStatus = document.getElementById("status");
     const elTbl = document.getElementById("tbl");
     const elThead = document.getElementById("thead");
     const elTbody = document.getElementById("tbody");
     const elMeta = document.getElementById("meta");
-    const elQ = document.getElementById("q");
-    const elLimit = document.getElementById("limit");
 
-    let rawData = [];
-    let headers = [];
+    let mainData = [];
+    let mainHeaders = [];
+    let detailData = null;   // 快取第二張表單資料
+    let detailHeaders = [];
 
-    function withLimit(url, limit) {
-      const u = new URL(url);
-      u.searchParams.set("limit", String(limit));
+    // 記錄目前展開的 master index（一次只展開一個，你也可改成多個）
+    let expandedIndex = null;
+
+    function apiUrl(sheetName) {
+      const u = new URL(WEBAPP_BASE);
+      if (sheetName) u.searchParams.set("sheet", sheetName);
+      u.searchParams.set("limit", "5000"); // 依需要調整
       return u.toString();
     }
 
@@ -85,85 +109,203 @@
       elTbl.style.display = "none";
     }
 
-    function renderTable(data) {
-      // 表頭
+    async function fetchSheet(sheetName) {
+      const res = await fetch(apiUrl(sheetName));
+      const json = await res.json();
+      if (!json || json.ok === false) throw new Error(json?.error || `API error: ${sheetName}`);
+      return json.data || [];
+    }
+
+    function renderMainHeader() {
       elThead.innerHTML = "";
-      for (const h of headers) {
+      for (const h of mainHeaders) {
         const th = document.createElement("th");
         th.textContent = h;
         elThead.appendChild(th);
       }
+    }
 
-      // 內容
+    function clearBody() {
       elTbody.innerHTML = "";
-      for (const row of data) {
-        const tr = document.createElement("tr");
-        for (const h of headers) {
-          const td = document.createElement("td");
-          const v = row[h];
-          td.textContent = (v === null || v === undefined) ? "" : String(v);
-          tr.appendChild(td);
+    }
+
+    function makeTd(text) {
+      const td = document.createElement("td");
+      td.textContent = (text === null || text === undefined) ? "" : String(text);
+      return td;
+    }
+
+    function closeExpanded() {
+      if (expandedIndex === null) return;
+
+      // 移除 detail row（它就在 master row 後一行）
+      const masterRow = elTbody.querySelector(`tr[data-idx="${expandedIndex}"]`);
+      if (masterRow && masterRow.nextElementSibling?.classList.contains("detail-row")) {
+        masterRow.nextElementSibling.remove();
+      }
+      expandedIndex = null;
+    }
+
+    async function ensureDetailLoaded() {
+      if (detailData !== null) return;
+      detailData = await fetchSheet(SHEET_DETAIL);
+      detailHeaders = detailData.length ? Object.keys(detailData[0]) : [];
+    }
+
+    function renderDetailRow(afterTr, playerId, matches) {
+      const detailTr = document.createElement("tr");
+      detailTr.className = "detail-row";
+
+      const td = document.createElement("td");
+      td.colSpan = mainHeaders.length;
+
+      const wrap = document.createElement("div");
+      wrap.className = "detail-wrap";
+
+      const title = document.createElement("div");
+      title.className = "detail-title";
+      title.innerHTML = `
+        <div>選手編號：${escapeHtml(playerId)} 的第二張表單資料</div>
+        <div class="pill">共 ${matches.length} 筆</div>
+      `;
+
+      wrap.appendChild(title);
+
+      if (matches.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "small";
+        empty.textContent = "沒有找到相同選手編號的第二張表單資料。";
+        wrap.appendChild(empty);
+      } else {
+        const box = document.createElement("div");
+        box.className = "detail-table";
+
+        const t = document.createElement("table");
+        const thead = document.createElement("thead");
+        const thr = document.createElement("tr");
+        for (const h of detailHeaders) {
+          const th = document.createElement("th");
+          th.textContent = h;
+          thr.appendChild(th);
         }
-        elTbody.appendChild(tr);
+        thead.appendChild(thr);
+
+        const tbody = document.createElement("tbody");
+        for (const row of matches) {
+          const tr = document.createElement("tr");
+          for (const h of detailHeaders) {
+            tr.appendChild(makeTd(row[h]));
+          }
+          tbody.appendChild(tr);
+        }
+
+        t.appendChild(thead);
+        t.appendChild(tbody);
+        box.appendChild(t);
+        wrap.appendChild(box);
       }
 
-      elStatus.style.display = "none";
-      elTbl.style.display = "table";
-      elMeta.innerHTML = `<span class="pill">顯示 ${data.length} 筆</span>`;
+      td.appendChild(wrap);
+      detailTr.appendChild(td);
+
+      afterTr.insertAdjacentElement("afterend", detailTr);
     }
 
-    function applyFilter() {
-      const q = elQ.value.trim().toLowerCase();
-      if (!q) return renderTable(rawData);
-
-      const filtered = rawData.filter(row => {
-        // 任一欄位包含關鍵字就算符合
-        return headers.some(h => String(row[h] ?? "").toLowerCase().includes(q));
-      });
-
-      renderTable(filtered);
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, m => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+      }[m]));
     }
 
-    async function load() {
-      try {
-        setStatus("載入中…");
-        const limit = Number(elLimit.value || 100);
-        const api = withLimit(BASE_API_URL, limit);
+    function renderMainTable() {
+      renderMainHeader();
+      clearBody();
 
-        const res = await fetch(api);
-        const json = await res.json();
+      mainData.forEach((row, idx) => {
+        const tr = document.createElement("tr");
+        tr.className = "master-row";
+        tr.dataset.idx = String(idx);
 
-        if (!json || json.ok === false) {
-          throw new Error(json?.error || "API 回傳格式不正確");
+        for (const h of mainHeaders) {
+          tr.appendChild(makeTd(row[h]));
         }
 
-        rawData = Array.isArray(json.data) ? json.data : [];
-        headers = rawData.length ? Object.keys(rawData[0]) : [];
+        tr.addEventListener("click", async () => {
+          const playerId = row[KEY_COL];
 
-        if (!headers.length) {
-          setStatus("目前沒有資料或工作表沒有內容。");
+          // 沒有選手編號就不展開
+          if (playerId === undefined || playerId === null || String(playerId).trim() === "") {
+            closeExpanded();
+            alert(`這筆資料沒有「${KEY_COL}」，無法對應第二張表單。`);
+            return;
+          }
+
+          // 點同一列：切換開/關
+          if (expandedIndex === idx) {
+            closeExpanded();
+            return;
+          }
+
+          // 先關掉其他已展開
+          closeExpanded();
+
+          // 展開本列
+          expandedIndex = idx;
+
+          // 先插入一個 loading 的 detail row（讓使用者有回饋）
+          const loadingTr = document.createElement("tr");
+          loadingTr.className = "detail-row";
+          const td = document.createElement("td");
+          td.colSpan = mainHeaders.length;
+          td.innerHTML = `<div class="detail-wrap">載入第二張表單資料中…</div>`;
+          loadingTr.appendChild(td);
+          tr.insertAdjacentElement("afterend", loadingTr);
+
+          try {
+            await ensureDetailLoaded();
+
+            // 過濾：第二張表單中 KEY_COL 相同者
+            const pid = String(playerId).trim();
+            const matches = detailData.filter(r => String(r[KEY_COL] ?? "").trim() === pid);
+
+            // 用真正內容取代 loading row
+            loadingTr.remove();
+            // 如果使用者很快切到別列，expandedIndex 可能已變，保護一下
+            if (expandedIndex !== idx) return;
+
+            renderDetailRow(tr, pid, matches);
+          } catch (e) {
+            loadingTr.querySelector(".detail-wrap").textContent = "載入失敗：" + e.message;
+          }
+        });
+
+        elTbody.appendChild(tr);
+      });
+    }
+
+    async function init() {
+      try {
+        setStatus("載入第一張表單資料中…");
+        mainData = await fetchSheet(SHEET_MAIN);
+        mainHeaders = mainData.length ? Object.keys(mainData[0]) : [];
+
+        if (!mainHeaders.length) {
+          setStatus("第一張表單目前沒有資料。");
           return;
         }
 
-        // 顯示一些 meta（如果 API 有提供）
-        const metaBits = [];
-        if (json.meta?.sheet) metaBits.push(`工作表：${json.meta.sheet}`);
-        if (typeof json.meta?.totalRows === "number") metaBits.push(`總筆數：${json.meta.totalRows}`);
-        if (json.meta?.updatedAt) metaBits.push(`更新：${json.meta.updatedAt}`);
-        if (metaBits.length) elMeta.innerHTML = `<span class="pill">${metaBits.join("｜")}</span>`;
+        elMeta.innerHTML = `<span class="pill">主表：${SHEET_MAIN}</span> <span class="pill">明細表：${SHEET_DETAIL}</span> <span class="pill">關聯欄：${KEY_COL}</span>`;
 
-        renderTable(rawData);
+        elStatus.style.display = "none";
+        elTbl.style.display = "table";
+        renderMainTable();
       } catch (err) {
         console.error(err);
         setStatus("載入失敗：" + err.message, true);
       }
     }
 
-    // 事件：搜尋與切換筆數
-    elQ.addEventListener("input", () => applyFilter());
-    elLimit.addEventListener("change", () => load());
-
-    load();
+    init();
   </script>
 </body>
 </html>
