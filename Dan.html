@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>黑白棋段級位v1.0</title>
+  <title>黑白棋段級位</title>
   <style>
     body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans TC", Arial, sans-serif; margin: 16px; }
     .meta { color:#666; font-size: 14px; }
@@ -62,7 +62,7 @@
   </style>
 </head>
 <body>
-  <h2 style="margin:0 0 10px 0;">黑白棋段級位</h2>
+  <h2 style="margin:0 0 10px 0;">黑白棋段級位v1.1</h2>
   <div id="meta" class="meta"></div>
 
   <div class="box">
@@ -165,9 +165,7 @@
       if (detailData !== null) return;
       const jsonDetail = await fetchSheetWithHeaders(SHEET_DETAIL);
       detailData = jsonDetail.data || [];
-      detailHeaders = (jsonDetail.headers && jsonDetail.headers.length)
-        ? jsonDetail.headers
-        : headersFromDataPreserveOrder(detailData);
+      detailHeaders = jsonDetail.headers || [];;
     }
 
     function renderDetailRow(afterTr, playerId, matches) {
@@ -306,9 +304,11 @@
         setStatus("載入第一張表單資料中…");
         const jsonMain = await fetchSheetWithHeaders(SHEET_MAIN);
         mainData = jsonMain.data || [];
-        mainHeaders = (jsonMain.headers && jsonMain.headers.length)
-          ? jsonMain.headers
-          : headersFromDataPreserveOrder(mainData);
+        
+        if (!Array.isArray(jsonMain.headers) || jsonMain.headers.length === 0) {
+          throw new Error("API 沒有回傳 headers，請更新 Apps Script 讓它回傳試算表第一列的 headers。");
+        }
+        mainHeaders = jsonMain.headers;
 
         if (!mainHeaders.length) {
           setStatus("第一張表單目前沒有資料。");
