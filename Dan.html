@@ -62,7 +62,7 @@
   </style>
 </head>
 <body>
-  <h2 style="margin:0 0 10px 0;">表單回應列表（點選手列可展開第二張表單）</h2>
+  <h2 style="margin:0 0 10px 0;">黑白棋段級位</h2>
   <div id="meta" class="meta"></div>
 
   <div class="box">
@@ -109,11 +109,11 @@
       elTbl.style.display = "none";
     }
 
-    async function fetchSheet(sheetName) {
+    async function fetchSheetWithHeaders(sheetName) {
       const res = await fetch(apiUrl(sheetName));
       const json = await res.json();
       if (!json || json.ok === false) throw new Error(json?.error || `API error: ${sheetName}`);
-      return json.data || [];
+      return json;
     }
 
     function renderMainHeader() {
@@ -286,8 +286,9 @@
     async function init() {
       try {
         setStatus("載入第一張表單資料中…");
-        mainData = await fetchSheet(SHEET_MAIN);
-        mainHeaders = mainData.length ? Object.keys(mainData[0]) : [];
+        const jsonMain = await fetchSheetWithHeaders(SHEET_MAIN);
+        mainData = jsonMain.data || [];
+        mainHeaders = (jsonMain.headers && jsonMain.headers.length) ? jsonMain.headers : [];
 
         if (!mainHeaders.length) {
           setStatus("第一張表單目前沒有資料。");
