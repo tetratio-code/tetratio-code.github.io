@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>黑白棋段級位</title>
+  <title>黑白棋段級位v1.0</title>
   <style>
     body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans TC", Arial, sans-serif; margin: 16px; }
     .meta { color:#666; font-size: 14px; }
@@ -116,6 +116,21 @@
       return json;
     }
 
+    function headersFromDataPreserveOrder(data) {
+      // 依資料出現順序收集 keys（避免只看第一列）
+      const seen = new Set();
+      const out = [];
+      for (const row of data) {
+        for (const k of Object.keys(row || {})) {
+          if (!seen.has(k)) {
+            seen.add(k);
+            out.push(k);
+          }
+        }
+      }
+      return out;
+    }
+
     function renderMainHeader() {
       elThead.innerHTML = "";
       for (const h of mainHeaders) {
@@ -148,8 +163,11 @@
 
     async function ensureDetailLoaded() {
       if (detailData !== null) return;
-      detailData = await fetchSheet(SHEET_DETAIL);
-      detailHeaders = detailData.length ? Object.keys(detailData[0]) : [];
+      const jsonDetail = await fetchSheetWithHeaders(SHEET_DETAIL);
+      detailData = jsonDetail.data || [];
+      detailHeaders = (jsonDetail.headers && jsonDetail.headers.length)
+        ? jsonDetail.headers
+        : headersFromDataPreserveOrder(detailData);
     }
 
     function renderDetailRow(afterTr, playerId, matches) {
@@ -288,7 +306,9 @@
         setStatus("載入第一張表單資料中…");
         const jsonMain = await fetchSheetWithHeaders(SHEET_MAIN);
         mainData = jsonMain.data || [];
-        mainHeaders = (jsonMain.headers && jsonMain.headers.length) ? jsonMain.headers : [];
+        mainHeaders = (jsonMain.headers && jsonMain.headers.length)
+          ? jsonMain.headers
+          : headersFromDataPreserveOrder(mainData);
 
         if (!mainHeaders.length) {
           setStatus("第一張表單目前沒有資料。");
