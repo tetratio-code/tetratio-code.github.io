@@ -8,7 +8,6 @@
     body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans TC", Arial, sans-serif; margin: 16px; }
     .meta { color:#666; font-size: 14px; }
     .pill { display:inline-block; padding:2px 8px; border-radius:999px; background:#f2f2f2; font-size:12px; color:#333; }
-
     .box {
       border:1px solid #ddd;
       border-radius: 12px;
@@ -27,12 +26,8 @@
       white-space: nowrap;
     }
     td { white-space: pre-wrap; word-break: break-word; }
-
-    /* 主表 hover/可點 */
     tr.master-row { cursor: pointer; }
     tr.master-row:hover td { background: #fcfcff; }
-
-    /* 展開區 */
     tr.detail-row td {
       background: #fbfbfb;
       border-bottom: 1px solid #eaeaea;
@@ -53,7 +48,7 @@
       border: 1px solid #eee;
       border-radius: 10px;
       overflow: auto;
-      max-height: 320px;  /* 明細區內也可滾 */
+      max-height: 320px;
     }
     .detail-table table { min-width: 700px; }
     .small { font-size: 13px; color:#666; }
@@ -74,13 +69,10 @@
   </div>
 
   <script>
-    /************ 你只要改這裡 3 個 ************/
-    const WEBAPP_BASE   = "https://script.google.com/macros/s/AKfycbwB-hJXPWx9aztU5scq7Hf_XkZhVUPWNAq4Z5SUteXDOlClOUXpiNW1VSUjvo87Hldr7Q/exec"; // 例如 https://script.google.com/macros/s/XXXX/exec
+    const WEBAPP_BASE   = "https://script.google.com/macros/s/AKfycbwB-hJXPWx9aztU5scq7Hf_XkZhVUPWNAq4Z5SUteXDOlClOUXpiNW1VSUjvo87Hldr7Q/exec";
     const SHEET_MAIN    = "歷年積分與段級位";         // 第一張表單工作表名稱
     const SHEET_DETAIL  = "戰績表";         // 第二張表單工作表名稱
-    const KEY_COL       = "選手編號";           // 用來關聯的欄位名稱（兩張表都要有）
-    /******************************************/
-
+    const KEY_COL       = "選手編號";
     const elStatus = document.getElementById("status");
     const elTbl = document.getElementById("tbl");
     const elThead = document.getElementById("thead");
@@ -89,16 +81,14 @@
 
     let mainData = [];
     let mainHeaders = [];
-    let detailData = null;   // 快取第二張表單資料
+    let detailData = null;
     let detailHeaders = [];
-
-    // 記錄目前展開的 master index（一次只展開一個，你也可改成多個）
     let expandedIndex = null;
 
     function apiUrl(sheetName) {
       const u = new URL(WEBAPP_BASE);
       if (sheetName) u.searchParams.set("sheet", sheetName);
-      u.searchParams.set("limit", "5000"); // 依需要調整
+      u.searchParams.set("limit", "5000");
       return u.toString();
     }
 
@@ -137,8 +127,6 @@
 
     function closeExpanded() {
       if (expandedIndex === null) return;
-
-      // 移除 detail row（它就在 master row 後一行）
       const masterRow = elTbody.querySelector(`tr[data-idx="${expandedIndex}"]`);
       if (masterRow && masterRow.nextElementSibling?.classList.contains("detail-row")) {
         masterRow.nextElementSibling.remove();
@@ -174,9 +162,7 @@
         <div>選手編號：${escapeHtml(playerId)} 的第二張表單資料</div>
         <div class="pill">共 ${matches.length} 筆</div>
       `;
-
       wrap.appendChild(title);
-
       if (matches.length === 0) {
         const empty = document.createElement("div");
         empty.className = "small";
@@ -185,7 +171,6 @@
       } else {
         const box = document.createElement("div");
         box.className = "detail-table";
-
         const t = document.createElement("table");
         const thead = document.createElement("thead");
         const thr = document.createElement("tr");
@@ -195,7 +180,6 @@
           thr.appendChild(th);
         }
         thead.appendChild(thr);
-
         const tbody = document.createElement("tbody");
         for (const row of matches) {
           const tr = document.createElement("tr");
@@ -204,61 +188,45 @@
           }
           tbody.appendChild(tr);
         }
-
         t.appendChild(thead);
         t.appendChild(tbody);
         box.appendChild(t);
         wrap.appendChild(box);
       }
-
       td.appendChild(wrap);
       detailTr.appendChild(td);
-
       afterTr.insertAdjacentElement("afterend", detailTr);
     }
-
+    
     function escapeHtml(s) {
       return String(s).replace(/[&<>"']/g, m => ({
         "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
       }[m]));
+    
     }
-
     function renderMainTable() {
       renderMainHeader();
       clearBody();
-
       mainData.forEach((row, idx) => {
         const tr = document.createElement("tr");
         tr.className = "master-row";
         tr.dataset.idx = String(idx);
-
         for (const h of mainHeaders) {
           tr.appendChild(makeTd(row[h]));
         }
-
         tr.addEventListener("click", async () => {
           const playerId = row[KEY_COL];
-
-          // 沒有選手編號就不展開
           if (playerId === undefined || playerId === null || String(playerId).trim() === "") {
             closeExpanded();
             alert(`這筆資料沒有「${KEY_COL}」，無法對應第二張表單。`);
             return;
           }
-
-          // 點同一列：切換開/關
           if (expandedIndex === idx) {
             closeExpanded();
             return;
           }
-
-          // 先關掉其他已展開
           closeExpanded();
-
-          // 展開本列
           expandedIndex = idx;
-
-          // 先插入一個 loading 的 detail row（讓使用者有回饋）
           const loadingTr = document.createElement("tr");
           loadingTr.className = "detail-row";
           const td = document.createElement("td");
@@ -266,29 +234,20 @@
           td.innerHTML = `<div class="detail-wrap">載入第二張表單資料中…</div>`;
           loadingTr.appendChild(td);
           tr.insertAdjacentElement("afterend", loadingTr);
-
           try {
             await ensureDetailLoaded();
-
-            // 過濾：第二張表單中 KEY_COL 相同者
             const pid = String(playerId).trim();
             const matches = detailData.filter(r => String(r[KEY_COL] ?? "").trim() === pid);
-
-            // 用真正內容取代 loading row
             loadingTr.remove();
-            // 如果使用者很快切到別列，expandedIndex 可能已變，保護一下
             if (expandedIndex !== idx) return;
-
             renderDetailRow(tr, pid, matches);
           } catch (e) {
             loadingTr.querySelector(".detail-wrap").textContent = "載入失敗：" + e.message;
           }
         });
-
         elTbody.appendChild(tr);
       });
     }
-
     async function init() {
       try {
         setStatus("載入第一張表單資料中…");
@@ -300,14 +259,11 @@
           throw new Error("API 沒有回傳 headers，請更新 Apps Script 讓它回傳試算表第一列的 headers。");
         }
         mainHeaders = jsonMain.headers;
-
         if (!mainHeaders.length) {
           setStatus("第一張表單目前沒有資料。");
           return;
         }
-
         elMeta.innerHTML = `<span class="pill">主表：${SHEET_MAIN}</span> <span class="pill">明細表：${SHEET_DETAIL}</span> <span class="pill">關聯欄：${KEY_COL}</span>`;
-
         elStatus.style.display = "none";
         elTbl.style.display = "table";
         renderMainTable();
@@ -316,7 +272,6 @@
         setStatus("載入失敗：" + err.message, true);
       }
     }
-
     init();
   </script>
 </body>
