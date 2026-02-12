@@ -62,7 +62,7 @@
   </style>
 </head>
 <body>
-  <h2 style="margin:0 0 10px 0;">黑白棋段級位v1.1</h2>
+  <h2 style="margin:0 0 10px 0;">黑白棋段級位v1.2</h2>
   <div id="meta" class="meta"></div>
 
   <div class="box">
@@ -294,6 +294,7 @@
         setStatus("載入第一張表單資料中…");
         const jsonMain = await fetchSheetWithHeaders(SHEET_MAIN);
         mainData = jsonMain.data || [];
+        console.log("API headers:", jsonMain.headers); //可刪
         
         if (!Array.isArray(jsonMain.headers) || jsonMain.headers.length === 0) {
           throw new Error("API 沒有回傳 headers，請更新 Apps Script 讓它回傳試算表第一列的 headers。");
