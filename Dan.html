@@ -57,7 +57,12 @@
   </style>
 </head>
 <body>
-  <h2 style="margin:0 0 10px 0;">黑白棋段級位v1.2</h2>
+  <h2 style="margin:0 0 10px 0;">黑白棋段級位v1.3</h2>
+  <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin: 10px 0 8px 0;">
+    <input id="q" type="search" placeholder="搜尋（選手編號／姓名／年份積分…）" 
+           style="padding:10px 12px; border:1px solid #ccc; border-radius:10px; width:min(520px, 100%);" />
+    <span id="count" class="pill">顯示 0 / 0</span>
+  </div>
   <div id="meta" class="meta"></div>
 
   <div class="box">
@@ -78,13 +83,41 @@
     const elThead = document.getElementById("thead");
     const elTbody = document.getElementById("tbody");
     const elMeta = document.getElementById("meta");
-
+    const elQ = document.getElementById("q");    //原本放let_filteredData之後
+    const elCount = document.getElementById("count");    //原本放let_filteredData之後
+    
     let mainData = [];
     let mainHeaders = [];
     let detailData = null;
     let detailHeaders = [];
     let expandedIndex = null;
-
+    let filteredData = [];
+    
+    function updateCount() {
+      elCount.textContent = `顯示 ${filteredData.length} / ${mainData.length}`;
+    }
+    
+    function matchRow(row, q) {
+      if (!q) return true;
+      const s = q.toLowerCase();
+    
+      for (const h of mainHeaders) {
+        const v = row[h];
+        if (v !== null && v !== undefined) {
+          if (String(v).toLowerCase().includes(s)) return true;
+        }
+      }
+      return false;
+    }
+    
+    function applySearch() {
+      const q = (elQ?.value || "").trim();
+      closeExpanded();
+      filteredData = mainData.filter(r => matchRow(r, q));
+      renderMainTable();
+      updateCount();
+    }
+    
     function apiUrl(sheetName) {
       const u = new URL(WEBAPP_BASE);
       if (sheetName) u.searchParams.set("sheet", sheetName);
@@ -207,7 +240,7 @@
     function renderMainTable() {
       renderMainHeader();
       clearBody();
-      mainData.forEach((row, idx) => {
+      filteredData.forEach((row, idx) => {
         const tr = document.createElement("tr");
         tr.className = "master-row";
         tr.dataset.idx = String(idx);
@@ -259,6 +292,9 @@
           throw new Error("API 沒有回傳 headers，請更新 Apps Script 讓它回傳試算表第一列的 headers。");
         }
         mainHeaders = jsonMain.headers;
+        filteredData = [...mainData];
+        updateCount();
+        elQ.addEventListener("input", applySearch);
         if (!mainHeaders.length) {
           setStatus("第一張表單目前沒有資料。");
           return;
@@ -267,6 +303,7 @@
         elStatus.style.display = "none";
         elTbl.style.display = "table";
         renderMainTable();
+        updateCount();
       } catch (err) {
         console.error(err);
         setStatus("載入失敗：" + err.message, true);
