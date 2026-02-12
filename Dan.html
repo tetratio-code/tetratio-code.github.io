@@ -116,21 +116,6 @@
       return json;
     }
 
-    function headersFromDataPreserveOrder(data) {
-      // 依資料出現順序收集 keys（避免只看第一列）
-      const seen = new Set();
-      const out = [];
-      for (const row of data) {
-        for (const k of Object.keys(row || {})) {
-          if (!seen.has(k)) {
-            seen.add(k);
-            out.push(k);
-          }
-        }
-      }
-      return out;
-    }
-
     function renderMainHeader() {
       elThead.innerHTML = "";
       for (const h of mainHeaders) {
@@ -163,9 +148,14 @@
 
     async function ensureDetailLoaded() {
       if (detailData !== null) return;
+    
       const jsonDetail = await fetchSheetWithHeaders(SHEET_DETAIL);
       detailData = jsonDetail.data || [];
-      detailHeaders = jsonDetail.headers || [];;
+    
+      if (!Array.isArray(jsonDetail.headers) || jsonDetail.headers.length === 0) {
+        throw new Error(`明細表（${SHEET_DETAIL}）API 沒有回傳 headers，請確認 Apps Script 已重新部署最新版本。`);
+      }
+      detailHeaders = jsonDetail.headers;
     }
 
     function renderDetailRow(afterTr, playerId, matches) {
