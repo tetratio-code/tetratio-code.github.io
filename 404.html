@@ -9,45 +9,36 @@
 <body>
   <script>
     (function () {
-      // 取得目前網址資訊
+      // ===== 重要：請依你的 Pages 型態設定 =====
+      // 0 = https://username.github.io/    或自訂網域 https://example.com/
+      // 1 = https://username.github.io/repo/
+      var segmentCount = 0; // <-- 如果你是 Project Pages 改成 1
+
       var l = window.location;
 
-      // GitHub Pages project site 通常是 /<repo-name>/ 開頭；user site / 自訂網域通常是 /
-      // base = 第一段 path（如果只有一段，例如 /repo/xxx 才需要保留 /repo）
-      var path = l.pathname;
-
-      // 假如 path 是 "/repo/about" 我們希望 base="/repo" 以及 rest="/about"
-      // 假如 path 是 "/about" 我們希望 base="" 以及 rest="/about"
-      var segments = path.split("/").filter(Boolean);
-
-      // 推斷 base path：
-      // - 若在 username.github.io/repo/... 形式，第一段 segments[0] 會是 repo
-      // - 若自訂網域或 user pages，第一段通常就是實際路由，不應當作 base
-      // 可靠做法：用 <base> 或全域變數會更穩，但這裡做一個常用、可手動覆蓋的策略：
-      // 如果你是 Project Pages（網址含 github.io 且 segments 長度>=1），通常第一段是 repo。
-      // 若你綁自訂網域，這段會判斷為非 github.io，就不取 base。
-      var isGithubIoHost = /\.github\.io$/i.test(l.hostname);
-      var base = "";
-
-      if (isGithubIoHost && segments.length >= 1) {
-        base = "/" + segments[0];                 // "/repo"
-        path = "/" + segments.slice(1).join("/"); // "/about"
-        if (path === "/") path = "/";             // 保底
-        if (path === "") path = "/";              // 保底
-      } else {
-        // user pages 或自訂網域：不取 base
-        base = "";
-        path = l.pathname; // 原樣保留，例如 "/about"
+      // 防呆：如果已經帶了 p=...，代表剛剛導過一次了，避免再次包一層造成無限增長
+      if (l.search.indexOf("p=") !== -1) {
+        // 直接回首頁，避免迴圈
+        l.replace(l.origin + l.pathname.replace(/\/404\.html$/, "/"));
+        return;
       }
 
-      // 組出要帶回 index.html 的 query
-      // p=原本的路徑（含前導 /），q=原本 query（不含 ?），h=原本 hash（不含 #）
+      var path = l.pathname;
+      // 取出 base，例如 /repo
+      var base = path.split("/").slice(0, 1 + segmentCount).join("/");
+
+      // 把剩下的路徑還原成 /about 這種
+      var rest = "/" + path.split("/").slice(1 + segmentCount).join("/");
+      rest = rest.replace(/\/404\.html$/, "/"); // 如果 404.html 在子路徑被抓到，保底修一下
+      if (rest === "//" || rest === "") rest = "/";
+
       var newUrl =
-        base + "/?p=" + encodeURIComponent(path) +
+        l.origin +
+        base +
+        "/?p=" + encodeURIComponent(rest) +
         "&q=" + encodeURIComponent(l.search.slice(1)) +
         "&h=" + encodeURIComponent(l.hash.slice(1));
 
-      // 用 replace 避免回上一頁再觸發 404
       l.replace(newUrl);
     })();
   </script>
