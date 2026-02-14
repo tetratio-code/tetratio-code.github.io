@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Manga Viewer</title>
+  <style>
+    :root{
+      --page-bg:#0b0d10;
+      --panel-bg:rgba(20,24,30,.75);
+      --text:#e9eef6;
+      --muted:#9aa7b5;
+
+      --img-width: min(920px, 92vw); /* 等寬（可由 UI 改） */
+      --stagger: 24px;              /* 錯動（可由 UI 改） */
+      --gap: 16px;
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans TC", Arial, sans-serif;
+      background: radial-gradient(1200px 800px at 30% 0%, #121722 0%, var(--page-bg) 60%, #07080a 100%);
+      color:var(--text);
+      overflow-y:auto; /* 滾輪自然捲動 */
+    }
+
+    /* 頂部控制列（固定） */
+    .toolbar{
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(10px);
+      background: linear-gradient(to bottom, rgba(10,12,16,.9), rgba(10,12,16,.55));
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .toolbar-inner{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 10px 14px;
+      display:flex;
+      gap: 12px;
+      align-items:center;
+      flex-wrap: wrap;
+    }
+    .title{
+      font-weight: 700;
+      letter-spacing:.2px;
+      margin-right: 8px;
+    }
+    .hint{
+      color: var(--muted);
+      font-size: 12px;
+      margin-left:auto;
+      white-space: nowrap;
+    }
+
+    .control{
+      display:flex;
+      align-items:center;
+      gap: 8px;
+      padding: 8px 10px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: var(--panel-bg);
+      border-radius: 12px;
+    }
+    .control label{
+      font-size: 12px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    input[type="range"]{ width: 180px; }
+    input[type="number"]{
+      width: 86px;
+      padding: 6px 8px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.25);
+      color: var(--text);
+      outline: none;
+    }
+    button{
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      cursor: pointer;
+    }
+    button:hover{ background: rgba(255,255,255,.10); }
+
+    /* 主內容 */
+    .wrap{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 16px 12px 40px;
+    }
+    .stack{
+      display:flex;
+      flex-direction: column;
+      align-items: center; /* 讓等寬圖片置中 */
+      gap: var(--gap);
+    }
+
+    figure{
+      margin:0;
+      width: var(--img-width);
+      position: relative;
+    }
+    img.page{
+      width: 100%;
+      height: auto;      /* 高度自適應（圖片大小不一沒問題） */
+      display:block;
+      border-radius: 14px;
+      box-shadow: 0 10px 35px rgba(0,0,0,.35);
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      transform: translateX(0);
+      transition: transform 120ms ease;
+    }
+
+    /* 錯動：奇數向右、偶數向左 */
+    figure[data-index="odd"] img.page{
+      transform: translateX(var(--stagger));
+    }
+    figure[data-index="even"] img.page{
+      transform: translateX(calc(var(--stagger) * -1));
+    }
+
+    /* 小小的頁碼浮標（可有可無） */
+    .badge{
+      position:absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 12px;
+      color: rgba(255,255,255,.85);
+      background: rgba(0,0,0,.45);
+      border: 1px solid rgba(255,255,255,.14);
+      padding: 4px 8px;
+      border-radius: 999px;
+      backdrop-filter: blur(6px);
+    }
+
+    .footer{
+      text-align:center;
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 18px;
+    }
+
+    @media (max-width: 520px){
+      input[type="range"]{ width: 140px; }
+      .hint{ width: 100%; margin-left: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <div class="toolbar-inner">
+      <div class="title">📚 Manga Viewer</div>
+
+      <div class="control">
+        <label for="widthRange">等寬</label>
+        <input id="widthRange" type="range" min="320" max="1200" step="10" value="920">
+        <input id="widthNum" type="number" min="320" max="1200" step="10" value="920"> px
+      </div>
+
+      <div class="control">
+        <label for="staggerRange">錯動</label>
+        <input id="staggerRange" type="range" min="0" max="200" step="1" value="24">
+        <input id="staggerNum" type="number" min="0" max="200" step="1" value="24"> px
+      </div>
+
+      <button id="toggleStagger" type="button" aria-pressed="true">關閉錯動</button>
+
+      <div class="hint">滑鼠滾輪向下瀏覽（一般頁面捲動即可）</div>
+    </div>
+  </div>
+
+  <main class="wrap">
+    <div id="stack" class="stack" aria-label="manga pages"></div>
+    <div class="footer">Images: <code>../data/manga/1.png</code> ~ <code>30.png</code></div>
+  </main>
+
+  <script>
+    // ====== 設定 ======
+    const BASE_PATH = "../data/manga/";
+    const FIRST = 1;
+    const LAST = 30;
+
+    const stack = document.getElementById("stack");
+
+    // ====== 產生圖片列表（支援 lazy loading） ======
+    function buildPages() {
+      const frag = document.createDocumentFragment();
+
+      for (let i = FIRST; i <= LAST; i++) {
+        const fig = document.createElement("figure");
+        fig.dataset.index = (i % 2 === 1) ? "odd" : "even";
+
+        const badge = document.createElement("div");
+        badge.className = "badge";
+        badge.textContent = `${i}/${LAST}`;
+
+        const img = document.createElement("img");
+        img.className = "page";
+        img.loading = "lazy";
+        img.decoding = "async";
+        img.alt = `page ${i}`;
+        img.src = `${BASE_PATH}${i}.png`;
+
+        // 404/載入失敗時顯示提示
+        img.addEventListener("error", () => {
+          img.style.opacity = "0.35";
+          img.alt = `missing: ${BASE_PATH}${i}.png`;
+          badge.textContent = `missing ${i}`;
+        });
+
+        fig.appendChild(badge);
+        fig.appendChild(img);
+        frag.appendChild(fig);
+      }
+
+      stack.appendChild(frag);
+    }
+
+    // ====== UI：等寬（寬度） ======
+    const widthRange = document.getElementById("widthRange");
+    const widthNum = document.getElementById("widthNum");
+
+    function setWidth(px) {
+      const v = clamp(px, Number(widthRange.min), Number(widthRange.max));
+      document.documentElement.style.setProperty("--img-width", `min(${v}px, 92vw)`);
+      widthRange.value = v;
+      widthNum.value = v;
+      savePrefs();
+    }
+
+    // ====== UI：錯動 ======
+    const staggerRange = document.getElementById("staggerRange");
+    const staggerNum = document.getElementById("staggerNum");
+    const toggleBtn = document.getElementById("toggleStagger");
+
+    let staggerEnabled = true;
+
+    function setStagger(px) {
+      const v = clamp(px, Number(staggerRange.min), Number(staggerRange.max));
+      document.documentElement.style.setProperty("--stagger", `${v}px`);
+      staggerRange.value = v;
+      staggerNum.value = v;
+      savePrefs();
+    }
+
+    function setStaggerEnabled(on) {
+      staggerEnabled = !!on;
+      document.documentElement.style.setProperty("--stagger", `${staggerEnabled ? staggerRange.value : 0}px`);
+      toggleBtn.textContent = staggerEnabled ? "關閉錯動" : "開啟錯動";
+      toggleBtn.setAttribute("aria-pressed", String(staggerEnabled));
+      savePrefs();
+    }
+
+    // ====== 偏好保存（localStorage） ======
+    const KEY = "manga_viewer_prefs_v1";
+    function savePrefs() {
+      try {
+        localStorage.setItem(KEY, JSON.stringify({
+          width: Number(widthRange.value),
+          stagger: Number(staggerRange.value),
+          enabled: staggerEnabled
+        }));
+      } catch {}
+    }
+    function loadPrefs() {
+      try {
+        const raw = localStorage.getItem(KEY);
+        if (!raw) return;
+        const p = JSON.parse(raw);
+        if (typeof p.width === "number") setWidth(p.width);
+        if (typeof p.stagger === "number") setStagger(p.stagger);
+        if (typeof p.enabled === "boolean") setStaggerEnabled(p.enabled);
+      } catch {}
+    }
+
+    // ====== 小工具 ======
+    function clamp(n, min, max) { return Math.max(min, Math.min(max, n)); }
+
+    // ====== 事件綁定 ======
+    widthRange.addEventListener("input", (e) => setWidth(Number(e.target.value)));
+    widthNum.addEventListener("change", (e) => setWidth(Number(e.target.value)));
+
+    staggerRange.addEventListener("input", (e) => {
+      setStagger(Number(e.target.value));
+      if (!staggerEnabled) setStaggerEnabled(true);
+    });
+    staggerNum.addEventListener("change", (e) => {
+      setStagger(Number(e.target.value));
+      if (!staggerEnabled) setStaggerEnabled(true);
+    });
+
+    toggleBtn.addEventListener("click", () => setStaggerEnabled(!staggerEnabled));
+
+    // ====== 啟動 ======
+    buildPages();
+    // 預設值先套用一次
+    setWidth(Number(widthRange.value));
+    setStagger(Number(staggerRange.value));
+    setStaggerEnabled(true);
+    // 再讀偏好覆蓋
+    loadPrefs();
+  </script>
+</body>
+</html>
