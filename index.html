@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>台灣黑白棋協會</title>
+  <style>
+    body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif; }
+    header { position: sticky; top: 0; background: #fff; border-bottom: 1px solid #eee; }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 14px 18px; display: flex; justify-content: space-between; gap: 18px; align-items: center; }
+    .brand { font-size: 20px; font-weight: 700; text-decoration: none; color: #111; }
+    nav { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+    nav a { padding: 8px 12px; border: 1px solid #eee; border-radius: 999px; text-decoration: none; color: #111; }
+    nav a.active { background: #111; color: #fff; border-color: #111; }
+    main { max-width: 1100px; margin: 0 auto; padding: 22px 18px 60px; }
+    .card { border: 1px solid #eee; border-radius: 14px; padding: 18px; background: #fafafa; }
+    .hint { color: #666; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <a class="brand" href="/" data-link>台灣黑白棋協會</a>
+      <nav>
+        <a href="/about" data-link>關於協會</a>
+        <a href="/tournaments" data-link>比賽資訊</a>
+        <a href="/learn" data-link>學習資源</a>
+        <a href="/rank" data-link>段位查詢</a>
+        <a href="/fun" data-link>休閒娛樂</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="card">
+      <h2 id="page-title">首頁</h2>
+      <p id="page-subtitle" class="hint">（使用 404.html fallback 的 History Router 範本）</p>
+      <div id="app" style="margin-top:12px;"></div>
+    </div>
+  </main>
+
+  <script>
+    // ====== (A) 還原 404.html 帶回來的路徑 ======
+    (function restorePathFrom404() {
+      var url = new URL(window.location.href);
+      var p = url.searchParams.get("p");
+      var q = url.searchParams.get("q");
+      var h = url.searchParams.get("h");
+
+      if (!p) return; // 不是從 404 回來的，就不用還原
+
+      // 組回原本的完整網址（path + ?query + #hash）
+      var newPath = p;
+      var newQuery = q ? ("?" + q) : "";
+      var newHash = h ? ("#" + h) : "";
+
+      // 清掉 p/q/h，換成原本的路徑（不刷新頁面）
+      window.history.replaceState(null, "", newPath + newQuery + newHash);
+    })();
+
+    // ====== (B) 一個超小的 SPA 路由器（原生 History API）======
+    const routes = {
+      "/": {
+        title: "首頁",
+        subtitle: "歡迎來到台灣黑白棋協會（示範官網）。",
+        render: () => `
+          <p>這是「不帶 #」的路由版本，例如 <code>/about</code>。</p>
+          <p class="hint">提示：你可直接重新整理 <code>/about</code>，會先到 404.html，再被導回這裡並還原路徑。</p>
+        `
+      },
+      "/about": {
+        title: "關於協會",
+        subtitle: "協會宗旨、沿革、章程與聯絡方式。",
+        render: () => `<p>在此放協會介紹內容。</p>`
+      },
+      "/tournaments": {
+        title: "比賽資訊",
+        subtitle: "賽事行事曆、報名方式、賽程與成績。",
+        render: () => `<p>在此放賽事公告與報名資訊。</p>`
+      },
+      "/learn": {
+        title: "學習資源",
+        subtitle: "規則、教材、戰術與練習。",
+        render: () => `<p>在此放入門教學、棋譜、練習題等。</p>`
+      },
+      "/rank": {
+        title: "段位查詢",
+        subtitle: "查詢選手段位、歷史成績與排名。",
+        render: () => `<p>在此放查詢介面與結果。</p>`
+      },
+      "/fun": {
+        title: "休閒娛樂",
+        subtitle: "小遊戲、棋譜分享、趣味內容。",
+        render: () => `<p>在此放趣味內容或社群連結。</p>`
+      }
+    };
+
+    function matchRoute(pathname) {
+      return routes[pathname] ? pathname : "/";
+    }
+
+    function setActiveNav(pathname) {
+      document.querySelectorAll("nav a[data-link]").forEach(a => {
+        a.classList.toggle("active", a.getAttribute("href") === pathname);
+      });
+    }
+
+    function render(pathname) {
+      const key = matchRoute(pathname);
+      const r = routes[key];
+
+      document.getElementById("page-title").textContent = r.title;
+      document.getElementById("page-subtitle").textContent = r.subtitle;
+      document.getElementById("app").innerHTML = r.render();
+
+      setActiveNav(key);
+      document.title = `台灣黑白棋協會｜${r.title}`;
+    }
+
+    // 攔截站內連結，改用 pushState
+    document.addEventListener("click", (e) => {
+      const a = e.target.closest("a[data-link]");
+      if (!a) return;
+
+      // 只攔截同源左鍵點擊（避免影響新分頁、下載等）
+      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+
+      e.preventDefault();
+      const href = a.getAttribute("href");
+      window.history.pushState(null, "", href);
+      render(window.location.pathname);
+    });
+
+    // 瀏覽器上一頁/下一頁
+    window.addEventListener("popstate", () => render(window.location.pathname));
+
+    // 首次渲染
+    render(window.location.pathname);
+  </script>
+</body>
+</html>
