@@ -15,6 +15,9 @@
     main { max-width: 1100px; margin: 0 auto; padding: 22px 18px 60px; }
     .card { border: 1px solid #eee; border-radius: 14px; padding: 18px; background: #fafafa; }
     .hint { color: #666; }
+    .loading { color:#666; }
+    .error { color:#b00020; }
+    code { background: #fff; border: 1px solid #e6e6e6; padding: 2px 6px; border-radius: 6px; }
   </style>
 </head>
 <body>
@@ -34,7 +37,7 @@
   <main>
     <div class="card">
       <h2 id="page-title">首頁</h2>
-      <p id="page-subtitle" class="hint">（使用 404.html fallback 的 History Router 範本）</p>
+      <p id="page-subtitle" class="hint"></p>
       <div id="app" style="margin-top:12px;"></div>
     </div>
   </main>
@@ -42,49 +45,47 @@
   <script>
     // ====== (A) 還原 404.html 帶回來的路徑 ======
     (function restorePathFrom404() {
-    var url = new URL(window.location.href);
-    var p = url.searchParams.get("p");
-    var q = url.searchParams.get("q");
-    var h = url.searchParams.get("h");
-    if (!p) return;
+      var url = new URL(window.location.href);
+      var p = url.searchParams.get("p");
+      var q = url.searchParams.get("q");
+      var h = url.searchParams.get("h");
+      if (!p) return;
 
-    var newUrl = p + (q ? ("?" + q) : "") + (h ? ("#" + h) : "");
-    window.history.replaceState(null, "", newUrl);
-  })();
-    // ====== (B) 一個超小的 SPA 路由器（原生 History API）======
+      var newUrl = p + (q ? ("?" + q) : "") + (h ? ("#" + h) : "");
+      window.history.replaceState(null, "", newUrl);
+    })();
+
+    // ====== (B) 路由設定：每頁對應一個 /pages/*.html 片段 ======
     const routes = {
       "/": {
         title: "首頁",
         subtitle: "歡迎來到台灣黑白棋協會（示範官網）。",
-        render: () => `
-          <p>這是「不帶 #」的路由版本，例如 <code>/about</code>。</p>
-          <p class="hint">提示：你可直接重新整理 <code>/about</code>，會先到 404.html，再被導回這裡並還原路徑。</p>
-        `
+        file: "/pages/home.html"
       },
       "/about": {
         title: "關於協會",
         subtitle: "協會宗旨、沿革、章程與聯絡方式。",
-        render: () => `<p>在此放協會介紹內容。</p>`
+        file: "/pages/about.html"
       },
       "/tournaments": {
         title: "比賽資訊",
         subtitle: "賽事行事曆、報名方式、賽程與成績。",
-        render: () => `<p>在此放賽事公告與報名資訊。</p>`
+        file: "/pages/tournaments.html"
       },
       "/learn": {
         title: "學習資源",
         subtitle: "規則、教材、戰術與練習。",
-        render: () => `<p>在此放入門教學、棋譜、練習題等。</p>`
+        file: "/pages/learning.html"
       },
       "/rank": {
         title: "段位查詢",
         subtitle: "查詢選手段位、歷史成績與排名。",
-        render: () => `<p>在此放查詢介面與結果。</p>`
+        file: "/pages/rank.html"
       },
       "/fun": {
         title: "休閒娛樂",
         subtitle: "小遊戲、棋譜分享、趣味內容。",
-        render: () => `<p>在此放趣味內容或社群連結。</p>`
+        file: "/pages/fun.html"
       }
     };
 
@@ -98,16 +99,42 @@
       });
     }
 
-    function render(pathname) {
+    // 快取已載入的片段（避免重複 fetch）
+    const pageCache = new Map();
+
+    async function loadFragment(file) {
+      if (pageCache.has(file)) return pageCache.get(file);
+
+      const res = await fetch(file, { cache: "no-store" });
+      if (!res.ok) throw new Error(`載入失敗：${res.status} ${res.statusText}（${file}）`);
+
+      const html = await res.text();
+      pageCache.set(file, html);
+      return html;
+    }
+
+    async function render(pathname) {
       const key = matchRoute(pathname);
       const r = routes[key];
 
       document.getElementById("page-title").textContent = r.title;
       document.getElementById("page-subtitle").textContent = r.subtitle;
-      document.getElementById("app").innerHTML = r.render();
-
       setActiveNav(key);
       document.title = `台灣黑白棋協會｜${r.title}`;
+
+      const app = document.getElementById("app");
+      app.innerHTML = `<p class="loading">載入中…</p>`;
+
+      try {
+        const html = await loadFragment(r.file);
+        app.innerHTML = html;
+      } catch (err) {
+        app.innerHTML = `
+          <p class="error">內容載入失敗。</p>
+          <p class="hint">${String(err.message || err)}</p>
+          <p class="hint">請確認檔案存在：<code>${r.file}</code></p>
+        `;
+      }
     }
 
     // 攔截站內連結，改用 pushState
