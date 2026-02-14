@@ -9,7 +9,6 @@
     body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; margin: 0; padding: 18px; background:#0f172a; color:#e2e8f0; }
     .app { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1.05fr 0.95fr; gap: var(--gap); }
     @media (max-width: 980px){ .app{ grid-template-columns: 1fr; } :root{ --cell: 46px; } }
-
     .panel { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; padding: 14px; }
     h1 { font-size: 18px; margin: 0 0 10px; }
     .row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between; }
@@ -24,14 +23,12 @@
     }
     select option { background-color: #0f172a; color: #e2e8f0; }
     select option:hover, select option:checked { background-color: #1c4e80; color: #ffffff; }
-
     button { cursor:pointer; }
     button:hover { background: rgba(255,255,255,0.12); }
     button:active { transform: translateY(1px); }
     button:disabled { opacity: 0.5; cursor:not-allowed; }
     .pill { padding: 4px 10px; border-radius: 999px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); font-size: 17px; line-height: 1.2; }
     .muted { opacity: 0.85; font-size: 14px; line-height:1.45; }
-
     .boardFrame{
       position: relative;
       padding-left: var(--coord);
@@ -66,7 +63,6 @@
       font-size: 18px;
       opacity: 0.9;
     }
-
     .boardWrap { display:flex; justify-content:center; }
     .board{
       display:grid;
@@ -100,7 +96,6 @@
     body.varMode .cell { background:#1c4e80; }
     body.varMode .board { border-color: rgba(147,197,253,0.35); }
     body.varMode .item.active { background: rgba(147,197,253,0.14); outline-color: rgba(147,197,253,0.25); }
-
     #variationBox { display:flex; flex-direction:column; gap:8px; }
     .varBtn {
       display:flex; justify-content:space-between; align-items:center;
@@ -112,7 +107,6 @@
     }
     .varBtn:hover { background: rgba(255,255,255,0.12); }
     .varBtn small { opacity: .85; }
-
     .disc {
       width: calc(var(--cell) * 0.82);
       height: calc(var(--cell) * 0.82);
@@ -123,7 +117,6 @@
     }
     .black { background: radial-gradient(circle at 35% 30%, #64748b 0%, #111827 60%, #0b1220 100%); }
     .white { background: radial-gradient(circle at 35% 30%, #ffffff 0%, #e2e8f0 55%, #cbd5e1 100%); }
-
     .lastMove::after{
       content:"";
       position:absolute;
@@ -133,7 +126,6 @@
       border: 2px solid rgba(250,204,21,0.95);
       box-shadow: 0 0 0 3px rgba(250,204,21,0.18);
     }
-
     .right {
       display:flex;
       flex-direction:column;
@@ -146,7 +138,6 @@
       gap: 10px;
       min-height: 0;
     }
-
     .moveSection { order: 1; }
     .detailWrap  { order: 2; }
     .moveSection > .row { margin-bottom: 8px;}
@@ -188,9 +179,7 @@
       line-height: 1.5;
       font-size: 18px;
     }
-
     .kbd { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; padding: 2px 6px; border-radius: 8px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); }
-
     .error {
       margin-top: 10px;
       padding: 10px 12px;
@@ -202,7 +191,6 @@
       line-height: 1.45;
       white-space: pre-wrap;
     }
-
     @media (max-width: 980px){
       .detailWrap  { order: 1; }
       .moveSection { order: 2; }
@@ -214,22 +202,18 @@
 <body>
   <div class="app">
     <div class="panel">
-      <h1>黑白棋教學網v2.16</h1>
+      <h1>黑白棋教學網v2.16A</h1>
       <div class="row">
         <div class="rowLeft">
           <select id="modeSelect" aria-label="Select mode">
             <option value="learning">教學</option>
             <option value="games">解說</option>
           </select>
-
           <select id="gameSelect" aria-label="Select item"></select>
-
           <span class="pill">黑：<b id="bCount">2</b>　白：<b id="wCount">2</b></span>
         </div>
       </div>
-
       <div id="errorBox" class="error" style="display:none;"></div>
-
       <div style="height:12px;"></div>
       <div class="boardWrap">
         <div class="boardFrame">
@@ -238,7 +222,6 @@
           <div class="board" id="board" aria-label="Othello board"></div>
         </div>
       </div>
-
       <div class="boardControls">
         <div class="rowLeft">
           <button id="firstBtn">⏮ 第一手</button>
@@ -249,14 +232,12 @@
         </div>
       </div>
     </div>
-
     <div class="right">
       <div class="panel moves">
         <div class="detailWrap">
           <div class="detailBox" id="detailBox">（尚未載入）</div>
           <div id="variationBox" style="margin-top:10px;"></div>
         </div>
-
         <div class="moveSection">
           <div class="row">
             <div class="rowLeft">
@@ -271,7 +252,6 @@
       </div>
     </div>
   </div>
-
 <script>
 (() => {
   // ===== Core constants =====
@@ -284,16 +264,12 @@
   ];
   function other(p){ return p===BLACK ? WHITE : BLACK; }
   function inBounds(r,c){ return r>=0 && r<N && c>=0 && c<N; }
-
-  // ===== Default init board =====
   function initBoard(){
     const b = Array.from({length:N}, () => Array(N).fill(EMPTY));
     b[3][3] = WHITE; b[3][4] = BLACK;
     b[4][3] = BLACK; b[4][4] = WHITE;
     return b;
   }
-
-  // ===== Record token parsing (still keeps original record format) =====
   function parseMove(s){
     if (!s) return null;
     const t = String(s).trim().toLowerCase();
@@ -303,7 +279,6 @@
     if (Number.isNaN(rank) || file < 0 || file >= 8 || rank < 0 || rank >= 8) return null;
     return { r: rank, c: file, pass:false };
   }
-
   function getFlips(board, r, c, p){
     if (board[r][c] !== EMPTY) return [];
     const opp = other(p);
@@ -319,7 +294,6 @@
     }
     return flips;
   }
-
   function hasAnyLegalMove(board, p){
     for (let r=0;r<N;r++){
       for (let c=0;c<N;c++){
@@ -329,7 +303,6 @@
     }
     return false;
   }
-
   function applyMove(board, moveObj, p){
     if (moveObj.pass) return { ok:true, last:null, board };
     const {r,c} = moveObj;
@@ -339,7 +312,6 @@
     for (const [rr,cc] of flips) board[rr][cc] = p;
     return { ok:true, last:{r,c}, board };
   }
-
   function countDiscs(board){
     let b=0,w=0;
     for (let r=0;r<N;r++){
@@ -350,7 +322,6 @@
     }
     return {b,w};
   }
-
   // ===== UI elements =====
   const boardEl = document.getElementById("board");
   const modeSelect = document.getElementById("modeSelect");
@@ -360,20 +331,16 @@
   const hotkeysEl = document.getElementById("hotkeysText");
   const detailBox = document.getElementById("detailBox");
   const errorBox = document.getElementById("errorBox");
-
   const bCountEl = document.getElementById("bCount");
   const wCountEl = document.getElementById("wCount");
-
   const firstBtn = document.getElementById("firstBtn");
   const prevBtn = document.getElementById("prevBtn");
   const nextBtn = document.getElementById("nextBtn");
   const lastBtn = document.getElementById("lastBtn");
   const backBtn = document.getElementById("backBtn");
-
   const variationBox = document.getElementById("variationBox");
   const coordTopEl  = document.querySelector(".coordTop");
   const coordLeftEl = document.querySelector(".coordLeft");
-
   function renderCoords(){
     if (coordTopEl){
       coordTopEl.innerHTML = "";
@@ -392,25 +359,16 @@
       }
     }
   }
-
-  // ===== App state =====
   let appMode = "learning";
-
-  // shared playback state
   let step = 0;
-
-  // games mode state
   let gameIndex = [];
   let currentGame = null;
   let currentIndex = 0;
   let mode = "main";   // "main" | "var"
   let varCtx = null;
-
-  // learning mode state
   let lessonIndex = [];
   let currentLesson = null;   // { id,title,positions:[{title,meta,playableGame}] }
-  let lessonPos = 0;          // current position index
-
+  let lessonPos = 0;
   function showError(msg){
     errorBox.style.display = "block";
     errorBox.textContent = msg;
@@ -419,13 +377,11 @@
     errorBox.style.display = "none";
     errorBox.textContent = "";
   }
-
   async function fetchJson(url){
     const res = await fetch(url, { cache: "no-store" });
     if (!res.ok) throw new Error(`${url} 讀取失敗（HTTP ${res.status}）`);
     return await res.json();
   }
-
   function normalizeIndexEntry(e){
     const id = String(e?.id ?? "");
     const title = String(e?.title ?? id ?? "Untitled");
@@ -433,7 +389,6 @@
     if (!id || !file) return null;
     return { id, title, file };
   }
-
   function buildMovesFromRecord(record, comments){
     const rec = String(record ?? "").trim().toLowerCase();
     if (!rec) return [];
@@ -447,8 +402,6 @@
     }
     return moves;
   }
-
-  // ===== Future-friendly start board / start turn parsing =====
   function parseStartBoard(raw){
     // games old json: default init
     return initBoard();
@@ -456,15 +409,12 @@
   function parseStartTurn(raw){
     return BLACK;
   }
-
   function parseStartBoardFromPosition(posRaw){
   const v = posRaw?.startBoard ?? posRaw?.initBoard ?? posRaw?.board ?? null;
   if (!v) return initBoard();
   if (typeof v !== "string") return initBoard();
-
   const rows = v.split("/").map(s => s.trim()).filter(Boolean);
   if (rows.length !== 8) return initBoard();
-
   const b = Array.from({length:8}, () => Array(8).fill(EMPTY));
   for (let r=0;r<8;r++){
     const line = rows[r];
@@ -478,15 +428,12 @@
   }
   return b;
 }
-
   function parseStartTurnFromPosition(posRaw){
     const t = posRaw?.startTurn ?? posRaw?.turn ?? posRaw?.startPlayer ?? null;
     if (t === WHITE || t === "W" || t === "w" || t === "white") return WHITE;
     if (t === BLACK || t === "B" || t === "b" || t === "black") return BLACK;
     return BLACK;
   }
-
-  // ===== Games data model =====
   function normalizeGame(g){
     const id = String(g?.id ?? "");
     const title = String(g?.title ?? id ?? "");
@@ -500,25 +447,18 @@
     const moves = record
       ? buildMovesFromRecord(record, comments)
       : [];
-
     const variations = (g?.variations && typeof g.variations === "object") ? g.variations : {};
-
     const startBoard = parseStartBoard(g);
     const startTurn = parseStartTurn(g);
-
     return { type:"game", id, title, meta, moves, variations, startBoard, startTurn };
   }
-
-  // ===== Learning data model =====
   function normalizeLesson(raw){
     const type = String(raw?.type ?? "lesson");
     if (type !== "lesson") throw new Error("教學檔格式錯誤：type 必須是 lesson");
-
     const id = String(raw?.id ?? "");
     const title = String(raw?.title ?? id ?? "Lesson");
     const positionsRaw = Array.isArray(raw?.positions) ? raw.positions : [];
     if (!positionsRaw.length) throw new Error("教學檔格式錯誤：positions 必須是非空陣列");
-
     const positions = positionsRaw.map((p, idx) => {
       const pTitle = String(p?.title ?? `局面 ${idx+1}`);
       const pMeta  = String(p?.meta ?? "");
@@ -531,10 +471,8 @@
       const moves = record
         ? buildMovesFromRecord(record, comments)
         : [];
-
       const startBoard = parseStartBoardFromPosition(p);
       const startTurn = parseStartTurnFromPosition(p);
-
       const playable = {
         type: "position",
         id: `pos_${idx+1}`,
@@ -547,24 +485,18 @@
         // 讓 renderDetail 能在 step=0 顯示額外說明（例如 comments["0"]）
         comments0: String(comments["0"] ?? comments[0] ?? "")
       };
-
       return { title: pTitle, meta: pMeta, playable };
     });
     return { type:"lesson", id, title, positions };
   }
-
-  // ===== Replay core (PASS via legal-move guard; shared by game/position) =====
   function computePositionFrom(startBoard, startTurn, game, step){
     let board = startBoard.map(row => row.slice());
     let turn = startTurn;
     let last = null;
-
     for (let i=0;i<step;i++){
       const m = game.moves[i];
       const mo = parseMove(m.move);
       if (!mo) continue;
-
-      // auto PASS: if current turn has no legal move, skip to other; up to 2 times
       let guard = 0;
       while (!hasAnyLegalMove(board, turn)) {
         turn = other(turn);
@@ -572,15 +504,10 @@
         if (guard >= 2) break;
       }
       if (guard >= 2 && !hasAnyLegalMove(board, turn)) break;
-
-      // explicit PASS token: do nothing but keep "turn" (because our record may not contain pass)
       if (mo.pass){
         continue;
       }
-
       const res = applyMove(board, mo, turn);
-
-      // if token seems belong to other side (legacy data), try alternate
       if (!res.ok) {
         const alt = other(turn);
         const res2 = applyMove(board, mo, alt);
@@ -591,31 +518,26 @@
         }
         continue;
       }
-
       last = res.last;
       turn = other(turn);
     }
     return { board, turn, last };
   }
-
   function computePosition(game, step){
     const startBoard = game?.startBoard ? game.startBoard : initBoard();
     const startTurn  = (game && (game.startTurn===BLACK || game.startTurn===WHITE)) ? game.startTurn : BLACK;
     return computePositionFrom(startBoard, startTurn, game, step);
   }
-
   function buildPlayersForMoves(startBoard, startTurn, game){
     const players = [];
     let board = startBoard.map(row => row.slice());
     let turn = startTurn;
-
     for (let i=0;i<game.moves.length;i++){
       const mo = parseMove(game.moves[i].move);
       if (!mo){
         players[i] = turn;
         continue;
       }
-
       let guard = 0;
       while (!hasAnyLegalMove(board, turn)) {
         turn = other(turn);
@@ -626,11 +548,8 @@
         players[i] = turn;
         continue;
       }
-
       players[i] = turn;
-
       if (mo.pass) continue;
-
       const res = applyMove(board, mo, turn);
       if (!res.ok) {
         const alt = other(turn);
@@ -645,8 +564,6 @@
     }
     return players;
   }
-
-  // ===== Renderers =====
   function renderBoard(board, last){
     boardEl.innerHTML = "";
     for (let r=0;r<N;r++){
@@ -654,7 +571,6 @@
         const cell = document.createElement("div");
         cell.className = "cell";
         if (last && last.r===r && last.c===c) cell.classList.add("lastMove");
-
         const v = board[r][c];
         if (v !== EMPTY){
           const d = document.createElement("div");
@@ -665,28 +581,21 @@
       }
     }
   }
-
   function scrollActiveInList(){
     if (!moveListEl) return;
     const active = moveListEl.querySelector(".item.active");
     if (!active) return;
-
     const top = active.offsetTop;
     const bottom = top + active.offsetHeight;
-
     const viewTop = moveListEl.scrollTop;
     const viewBottom = viewTop + moveListEl.clientHeight;
-
     if (top < viewTop) moveListEl.scrollTop = top - 8;
     else if (bottom > viewBottom) moveListEl.scrollTop = bottom - moveListEl.clientHeight + 8;
   }
-
   function renderMoveList(game, startBoardForThisGame, startTurnForThisGame){
     moveListEl.innerHTML = "";
     const activeStep = (mode === "var" && varCtx) ? varCtx.varStep : step;
-
     const players = buildPlayersForMoves(startBoardForThisGame, startTurnForThisGame, game);
-
     const initItem = document.createElement("div");
     initItem.className = "item" + (activeStep===0 ? " active":"");
     initItem.innerHTML = `
@@ -708,19 +617,14 @@
       const s = i+1;
       const key = String(s);
       const hasVar = Array.isArray(game.variations?.[key]?.entries) && game.variations[key].entries.length;
-
       const item = document.createElement("div");
       item.className = "item" + (activeStep===s ? " active":"") + (hasVar ? " hasVar" : "");
-
       const p = players[i];
       const playerLabel = (p === BLACK) ? "黑" : "白";
-
       const moveLower = String(m.move).toLowerCase();
       const moveText = (moveLower === "pass") ? "PASS" : String(m.move);
-
       const shortComment = (m.comment || "").trim().replace(/\s+/g," ");
       const preview = shortComment.length ? shortComment.slice(0, 24) + (shortComment.length>24 ? "…" : "") : "";
-
       item.innerHTML = `
         <div>
           <div class="mainText"><b>${playerLabel}</b>：${moveText}</div>
@@ -735,14 +639,11 @@
       });
       moveListEl.appendChild(item);
     }
-
     scrollActiveInList();
   }
-
   function renderPositionList(lesson){
     moveListEl.innerHTML = "";
     const active = lessonPos;
-
     for (let i=0;i<lesson.positions.length;i++){
       const p = lesson.positions[i];
       const item = document.createElement("div");
@@ -760,10 +661,8 @@
       });
       moveListEl.appendChild(item);
     }
-
     scrollActiveInList();
   }
-
   function escapeHtml(s){
     return String(s ?? "")
       .replaceAll("&","&amp;")
@@ -772,10 +671,8 @@
       .replaceAll('"',"&quot;")
       .replaceAll("'","&#039;");
   }
-
   function renderDetail(game, pos){
     if (variationBox) variationBox.innerHTML = "";
-
     if (appMode === "learning"){
       if (step === 0){
         const base = (game.meta || "").trim();
@@ -790,8 +687,6 @@
       }
       return;
     }
-
-    // ===== games mode (same as your current behavior) =====
     if (mode === "var" && varCtx){
       if (varCtx.varStep === 0){
         detailBox.textContent = `【變化分支】${varCtx.varTitle}`;
@@ -802,7 +697,6 @@
       }
       return;
     }
-
     if (step === 0){
       detailBox.textContent = game.meta ? `【對局資訊】\n${game.meta}` : "（初始局面）";
     } else {
@@ -814,7 +708,6 @@
       const hasVarHere = Array.isArray(entries) && entries.length;
       detailBox.textContent = hasVarHere ? `【變化圖】\n${comment}`: comment;
     }
-
     const key = String(step);
     const vPack = game.variations?.[key];
     const entries = vPack?.entries;
@@ -831,50 +724,38 @@
       });
     }
   }
-
   function renderHeaderCounts(pos){
     const {b,w} = countDiscs(pos.board);
     if (bCountEl) bCountEl.textContent = b;
     if (wCountEl) wCountEl.textContent = w;
   }
-
   function renderControlsState(game){
     if (appMode === "learning"){
       // labels
       firstBtn.textContent = "◀ 上一題";
       lastBtn.textContent  = "下一題 ▶";
-
       const atStartStep = (step === 0);
       const atEndStep = (step === game.moves.length);
       const atFirstPos = (lessonPos <= 0);
       const atLastPos = (currentLesson ? lessonPos >= currentLesson.positions.length - 1 : true);
-
       firstBtn.disabled = atFirstPos;
       lastBtn.disabled = atLastPos;
-
       prevBtn.disabled = atStartStep;
       nextBtn.disabled = atEndStep;
-
-      // learning has no variations / back button
       backBtn.style.display = "none";
       firstBtn.style.display = "";
       document.body.classList.remove("varMode");
       return;
     }
-
-    // games mode labels
     firstBtn.textContent = "⏮ 第一手";
     lastBtn.textContent  = "最後一手 ⏭";
-
     const atStart = (mode === "var" && varCtx) ? (varCtx.varStep === 0) : (step === 0);
     const atEnd = (mode === "var" && varCtx) ? (varCtx.varStep === varCtx.varGame.moves.length) : (step === game.moves.length);
     const inVar = (mode === "var" && varCtx);
-
     firstBtn.disabled = atStart;
     prevBtn.disabled  = inVar ? false : atStart;
     nextBtn.disabled  = atEnd;
     lastBtn.disabled  = atEnd;
-
     if (mode === "var") {
       backBtn.style.display  = "";
       firstBtn.style.display = "none";
@@ -885,7 +766,6 @@
       document.body.classList.remove("varMode");
     }
   }
-
   function renderListHeader(){
     if (appMode === "learning"){
       listTitleEl.textContent = "局面清單";
@@ -895,11 +775,8 @@
     listTitleEl.textContent = "步驟清單";
     hotkeysEl.innerHTML = `快捷鍵：<span class="kbd">←</span>/<span class="kbd">→</span> 前後手、<span class="kbd">Home</span>/<span class="kbd">End</span> 首尾。`;
   }
-
-  // ===== Main renderAll() routing by appMode =====
   function renderAll(){
     renderListHeader();
-
     if (appMode === "learning"){
       if (!currentLesson){
         detailBox.textContent = "（尚未載入教學）";
@@ -907,7 +784,6 @@
         moveListEl.innerHTML = "";
         return;
       }
-
       const posObj = currentLesson.positions[lessonPos]?.playable;
       if (!posObj){
         detailBox.textContent = "（找不到教學局面）";
@@ -915,7 +791,6 @@
         moveListEl.innerHTML = "";
         return;
       }
-
       const pos = computePosition(posObj, step);
       renderBoard(pos.board, pos.last);
       renderPositionList(currentLesson);
@@ -924,15 +799,12 @@
       renderControlsState(posObj);
       return;
     }
-
-    // ===== games mode =====
     if (!currentGame){
       detailBox.textContent = "（尚未載入對局）";
       if (variationBox) variationBox.innerHTML = "";
       moveListEl.innerHTML = "";
       return;
     }
-
     if (mode === "var" && varCtx){
       const pos = computePositionFrom(varCtx.baseBoard, varCtx.baseTurn, varCtx.varGame, varCtx.varStep);
       renderBoard(pos.board, pos.last);
@@ -942,7 +814,6 @@
       renderControlsState(varCtx.varGame);
       return;
     }
-
     const pos = computePosition(currentGame, step);
     renderBoard(pos.board, pos.last);
     renderMoveList(currentGame, currentGame.startBoard ?? initBoard(), currentGame.startTurn ?? BLACK);
@@ -950,17 +821,12 @@
     renderHeaderCounts(pos);
     renderControlsState(currentGame);
   }
-
-  // ===== Variations (games only) =====
   function enterVariation(parentStep, entry, vPack){
     if (!currentGame) throw new Error("currentGame 尚未載入");
-
     const baseStep = (vPack && Number.isInteger(vPack.baseStep))
       ? vPack.baseStep
       : parentStep;
-
     const basePos = computePosition(currentGame, baseStep);
-
     const varGame = {
       type: "var",
       id: "var",
@@ -971,7 +837,6 @@
       startBoard: basePos.board,
       startTurn: basePos.turn
     };
-
     if (!varGame.moves.length) throw new Error("這個變化圖的 record 是空的，無法進入");
     appMode = "games";
     document.body.classList.add("gamesMode");
@@ -986,19 +851,15 @@
       varTitle: entry?.name || "變化",
       returnStep: step
     };
-
     clearError();
     renderAll();
   }
-
   function exitVariation(){
     if (varCtx && Number.isInteger(varCtx.returnStep)) step = varCtx.returnStep;
     mode = "main";
     varCtx = null;
     renderAll();
   }
-
-  // ===== Loaders for two indexes =====
   async function loadIndexGames(){
     const idx = await fetchJson("./data/games/index.json?v=" + Date.now());
     if (!Array.isArray(idx)) throw new Error("data/games/index.json 格式錯誤：必須是 JSON 陣列");
@@ -1006,7 +867,6 @@
     if (!normalized.length) throw new Error("data/games/index.json 沒有任何有效項目（需要 id + file）");
     gameIndex = normalized;
   }
-
   async function loadIndexLearning(){
     const idx = await fetchJson("./data/learning/index.json?v=" + Date.now());
     if (!Array.isArray(idx)) throw new Error("data/learning/index.json 格式錯誤：必須是 JSON 陣列");
@@ -1014,7 +874,6 @@
     if (!normalized.length) throw new Error("data/learning/index.json 沒有任何有效項目（需要 id + file）");
     lessonIndex = normalized;
   }
-
   function populateSelectFromIndex(indexArr){
     gameSelect.innerHTML = "";
     indexArr.forEach((g, i) => {
@@ -1025,7 +884,6 @@
     });
     gameSelect.value = "0";
   }
-
   async function loadGamesMode(first=true){
     clearError();
     step = 0;
@@ -1034,20 +892,16 @@
     currentGame = null;
     currentLesson = null;
     lessonPos = 0;
-
     await loadIndexGames();
     populateSelectFromIndex(gameIndex);
-
     gameSelect.onchange = async () => {
       currentIndex = Number(gameSelect.value);
       await loadGame(currentIndex);
       gameSelect.blur();
     };
-
     currentIndex = 0;
     if (first) await loadGame(0);
   }
-
   async function loadLearningMode(first=true){
     clearError();
     step = 0;
@@ -1056,19 +910,15 @@
     currentGame = null;
     currentLesson = null;
     lessonPos = 0;
-
     await loadIndexLearning();
     populateSelectFromIndex(lessonIndex);
-
     gameSelect.onchange = async () => {
       const idx = Number(gameSelect.value);
       await loadLesson(idx);
       gameSelect.blur();
     };
-
     if (first) await loadLesson(0);
   }
-
   async function loadGame(i){
     clearError();
     step = 0;
@@ -1076,20 +926,15 @@
     varCtx = null;
     currentGame = null;
     renderAll();
-
     const entry = gameIndex[i];
     if (!entry) throw new Error("找不到對局索引項目（games）");
-
     const raw = await fetchJson("./data/games/" + entry.file + "?v=" + Date.now());
     const game = normalizeGame(raw);
-
     if (!game.title) game.title = entry.title;
     if (!game.id) game.id = entry.id;
-
     currentGame = game;
     renderAll();
   }
-
   async function loadLesson(i){
     clearError();
     step = 0;
@@ -1098,22 +943,16 @@
     currentLesson = null;
     lessonPos = 0;
     renderAll();
-
     const entry = lessonIndex[i];
     if (!entry) throw new Error("找不到教學索引項目（learning）");
-
     const raw = await fetchJson("./data/learning/" + entry.file + "?v=" + Date.now());
     const lesson = normalizeLesson(raw);
-
     if (!lesson.title) lesson.title = entry.title;
     if (!lesson.id) lesson.id = entry.id;
-
     currentLesson = lesson;
     lessonPos = 0;
     renderAll();
   }
-
-  // ===== Controls wiring =====
   function gotoPrevQuestion(){
     if (!currentLesson) return;
     if (lessonPos > 0){
@@ -1130,7 +969,6 @@
       renderAll();
     }
   }
-
   function wireControls(){
     backBtn.addEventListener("click", exitVariation);
 
@@ -1140,7 +978,6 @@
       if (mode === "var" && varCtx){ varCtx.varStep = 0; renderAll(); return; }
       step = 0; renderAll();
     });
-
     prevBtn.addEventListener("click", () => {
       if (appMode === "learning"){
         step = Math.max(0, step-1);
@@ -1156,7 +993,6 @@
       step = Math.max(0, step-1);
       renderAll();
     });
-
     nextBtn.addEventListener("click", () => {
       if (appMode === "learning"){
         const g = currentLesson?.positions?.[lessonPos]?.playable;
@@ -1165,7 +1001,6 @@
         renderAll();
         return;
       }
-
       if (mode === "var" && varCtx){
         const L = varCtx.varGame.moves.length;
         varCtx.varStep = Math.min(L, varCtx.varStep+1);
@@ -1176,7 +1011,6 @@
       step = Math.min(L, step+1);
       renderAll();
     });
-
     lastBtn.addEventListener("click", () => {
       if (appMode === "learning") { gotoNextQuestion(); return; }
 
@@ -1189,18 +1023,15 @@
       step = L;
       renderAll();
     });
-
     window.addEventListener("keydown", (e) => {
       const ae = document.activeElement;
       if (ae && ae.tagName === "SELECT") {
         if (["ArrowLeft","ArrowRight","ArrowUp","ArrowDown","Home","End"].includes(e.key)) e.preventDefault();
         return;
       }
-
       if (appMode === "learning"){
         const g = currentLesson?.positions?.[lessonPos]?.playable;
         if (!g) return;
-
         const L = g.moves.length;
         if (e.key === "ArrowLeft") { if (step>0) { step--; renderAll(); } }
         if (e.key === "ArrowRight") { if (step<L) { step++; renderAll(); } }
@@ -1208,9 +1039,7 @@
         if (e.key === "End") { step = L; renderAll(); }
         return;
       }
-
       if (!currentGame) return;
-
       if (mode === "var" && varCtx){
         const L = varCtx.varGame.moves.length;
         if (e.key === "ArrowLeft") {
@@ -1222,14 +1051,12 @@
         if (e.key === "End") { varCtx.varStep = L; renderAll(); }
         return;
       }
-
       const L = currentGame.moves.length;
       if (e.key === "ArrowLeft") { if (step>0) { step--; renderAll(); } }
       if (e.key === "ArrowRight") { if (step<L) { step++; renderAll(); } }
       if (e.key === "Home") { step = 0; renderAll(); }
       if (e.key === "End") { step = L; renderAll(); }
     });
-
     modeSelect.addEventListener("change", async () => {
       try{
         clearError();
@@ -1251,7 +1078,6 @@
         currentGame = null;
         currentLesson = null;
         lessonPos = 0;
-
         if (appMode === "learning") await loadLearningMode(true);
         else await loadGamesMode(true);
         renderAll();
@@ -1260,7 +1086,6 @@
       }
     });
   }
-
   async function init(){
     try{
       wireControls();
@@ -1273,49 +1098,8 @@
       showError(String(err?.message ?? err));
     }
   }
-
   init();
 })();
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
