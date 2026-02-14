@@ -18,6 +18,12 @@
     .loading { color:#666; }
     .error { color:#b00020; }
     code { background: #fff; border: 1px solid #e6e6e6; padding: 2px 6px; border-radius: 6px; }
+    body.learn-mode header { display: none; }
+    body.learn-mode main { max-width: none; padding: 0; }
+    body.learn-mode .card { border: 0; border-radius: 0; padding: 0; background: transparent; }
+    body.learn-mode #page-title,
+    body.learn-mode #page-subtitle { display: none; }
+    body.learn-mode #app { margin-top: 0 !important; }
   </style>
 </head>
 <body>
@@ -27,7 +33,7 @@
       <nav>
         <a href="/about" data-link>關於協會</a>
         <a href="/tournaments" data-link>比賽資訊</a>
-        <a href="/learn" data-link>學習資源</a>
+        <a href="/learning" data-link>學習資源</a>
         <a href="/rank" data-link>段位查詢</a>
         <a href="/fun" data-link>休閒娛樂</a>
       </nav>
@@ -72,7 +78,7 @@
         subtitle: "賽事行事曆、報名方式、賽程與成績。",
         file: "/pages/tournaments.html"
       },
-      "/learn": {
+      "/learning": {
         title: "學習資源",
         subtitle: "規則、教材、戰術與練習。",
         file: "/pages/learning.html"
@@ -98,7 +104,9 @@
         a.classList.toggle("active", a.getAttribute("href") === pathname);
       });
     }
-
+    function setLearnMode(isOn) {
+      document.body.classList.toggle("learn-mode", isOn);
+    }
     // 快取已載入的片段（避免重複 fetch）
     const pageCache = new Map();
 
@@ -116,7 +124,7 @@
     async function render(pathname) {
       const key = matchRoute(pathname);
       const r = routes[key];
-    
+      setLearnMode(key === "/learn");
       document.getElementById("page-title").textContent = r.title;
       document.getElementById("page-subtitle").textContent = r.subtitle;
       setActiveNav(key);
