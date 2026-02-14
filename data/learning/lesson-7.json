@@ -1,0 +1,132 @@
+{
+  "type": "lesson",
+  "id": "lesson-7",
+  "title": "中盤基礎：蓋牆與破牆(暫)",
+  "positions": [
+    {
+      "title": "對角線：穩定子",
+      "meta": "白棋只剩下四個X位可以下，之前在偶數理論的章節看過類似的情形\n但在這個局面，白棋只靠偶數理論會輸",
+      "startTurn": "W",
+      "startBoard": "..WWWWW./W.WBBW.W/WWBWWBWW/WBWWWWBW/WBWWWWBW/WWWWWBWW/W.BBBW.W/.WWWWWW.",
+      "record": "b2a1b1h1g2h8g7b7a8",
+      "comments": {
+        "1": "如果白棋一樣找奇數空下",
+        "2": "黑棋當然採取拿角爬邊的策略",
+        "8": "此時黑棋藉由控制對角線，不但確保了整條對角線都是穩定子，還得到了連下的機會"
+      }
+    },
+    {
+      "title": "對角線：控制",
+      "meta": "白棋",
+      "startTurn": "W",
+      "startBoard": "..WWWWW./W.WBBW.W/WWBWWBWW/WBWWWWBW/WBWWWWBW/WWWWWBWW/W.BBBW.W/.WWWWWW.",
+      "record": "g2b2b7g7h8",
+      "comments": {
+        "1": "注意到白棋如果下 G2，則正對角線會變成白棋純色",
+        "2": "這樣黑棋無法直接拿角，只能嘗試往左上角的奇數空下",
+        "3": "由於白棋控制了對角線，所可以安全地下X位，此時黑棋已經棋步耗盡",
+        "4": "黑棋只能右下X位送角，這就是控制對角線的威力。"
+      }
+    },
+    {
+      "title": "對角線：爭奪例一",
+      "meta": "控制對角線，有時同時是雙方的權利，需要爭奪",
+      "startTurn": "W",
+      "startBoard": ".BBBBBB./..BWBW.W/BBBWWBWW/BWBWWWBW/BWWWBBBW/BBWBBWWW/B.BWWB.W/.BBBBBB.",
+      "record": "g2g7h8",
+      "comments": {
+        "1": "白棋首先出手控制對角線",
+        "2": "則黑棋無法再下在白棋控制的對角線上",
+        "3": "白棋由於控制了對角線，大幅縮減黑棋尾盤的選擇權"
+      }
+    },
+    {
+      "title": "對角線：爭奪例二",
+      "meta": "對角線經常是雙方需要立即爭奪之處",
+      "startTurn": "W",
+      "startBoard": ".BBBBBB./..BWBW.W/BBBWWBWW/BWBWWWBW/BWWWBBBW/BBWBBWWW/B.BWWB.W/.BBBBBB.",
+      "record": "b2b7g7h8",
+      "comments": {
+        "1": "白棋受到左上奇數控的誘惑，先下在左上角",
+        "2": "不但被黑棋控制對角線，A8 也形成白棋下不進的一格空，實質上形成逆偶",
+        "3": "白棋現在只剩下送角的下法，因為未立即爭奪對角線而陷入大敗的局面"
+      }
+    },
+    {
+      "title": "切斷對角線：藉由邊",
+      "meta": "在控制對角線之前，要先檢查對角線會不會被切斷\n如果是會被切斷的對角線，則X位就不再安全，馬上就會失去一角。",
+      "startTurn": "W",
+      "startBoard": "..W..WW./W.WWWW.W/WWBWWBWW/WBWWWWBW/WBWWWWBW/WWWWWBWW/W.BBBW.W/.WWWWWW.",
+      "record": "g2e1d1h1",
+      "comments": {
+        "1": "此時白棋下在G2控制對角線\n\n注意白棋上方的棋型，雙A位中間的兩個B位空著\n這種棋型雖然對方撲進來可以馬上吃掉，但是到了中後盤就會變成對方用來切斷對角線的工具",
+        "2": "當黑棋撲進 E1，翻轉到了 E4 這一顆棋，切斷了白棋的對角線",
+        "3": "即使白棋吃回 D1",
+        "4": "黑棋也因為切斷了對角線而成功下到角落"
+      }
+    },
+    {
+      "title": "切斷對角線：聲東擊西",
+      "meta": "有時切斷對角線的方式比較隱蔽，甚至是平常不會想下的位置",
+      "startTurn": "W",
+      "startBoard": "..WWWWW./B.WBBW.W/BBBWWBWW/BBWWWWBW/BBWWWWBW/BBWWWBWW/B.BBBW../.WWWWW..",
+      "record": "g2g8h8h1",
+      "comments": {
+        "1": "白棋下在G2控制對角線",
+        "2": "黑棋可以打在 G8 直接送白棋一個角，同時也切斷對角線",
+        "4": "黑棋藉由一個角的代價，得到價值較高的右上角"
+      }
+    },
+    {
+      "title": "切斷對角線：藉由角",
+      "meta": "角落除了注意偶數理論，也可以用於切斷對角線",
+      "startTurn": "B",
+      "startBoard": "BBBBBB../WWWBBB.B/WWWBBWBB/BWBBBBWB/BWBBBBWB/WBBBBWBB/..BWWB.B/.BBBBBB.",
+      "record": "g2b7a8a7g7h1g1h8",
+      "comments": {
+        "1": "黑棋下在 G2 控制對角線",
+        "2": "白棋只要搶占左下角奇數空",
+        "4": "根據偶數理論，白棋可以下到左下角的最後一手，並切斷對角線"
+      }
+    },
+    {
+      "title": "切斷對角線：失敗例一",
+      "meta": "藉由角落切斷對角線有兩種失敗的可能性，下不進與切不斷",
+      "startTurn": "B",
+      "startBoard": "BBBBBB../BWWBBB.B/BWWBBWBB/BWBBBBWB/BWBBBBWB/WBBBBWBB/..BWWB.B/.BBBBBB.",
+      "record": "g2b7a7g7h8g1h1",
+      "comments": {
+        "1": "黑棋下在 G2 控制對角線",
+        "2": "白棋希望藉由左下角奇數空切斷對角線",
+        "3": "但是黑棋這一手之後，同時控制了對角線與兩條邊，左下角雖然剩下奇數空但是白棋下不進"
+      }
+    },
+    {
+      "title": "切斷對角線：失敗例二",
+      "meta": "與攻擊取角時相同，如果黑棋有一個純色的中邊，也可能讓切斷對角線的手段失效",
+      "startTurn": "B",
+      "startBoard": "BBBBBB../WWWBBB.B/WWWBBWBB/BWBBBBWB/BWBBBBWB/WBBBBWBB/..BBBB.B/.BBBBBB.",
+      "record": "g2b7a8g7h8g1h1a7",
+      "comments": {
+        "1": "黑棋下在 G2 控制對角線",
+        "2": "白棋希望藉由左下角奇數空切斷對角線",
+        "3": "但是黑棋爬 B8 之後，白棋缺乏中邊的棋種，下不進 A7"
+      }
+    },
+    {
+      "title": "切斷對角線：藉由中邊",
+      "meta": "如果有辦法控制中邊，即使是一個偶數空的角，也可以用來切斷對角線",
+      "startTurn": "B",
+      "startBoard": "BWBBBB../WWWBBB.B/WWWBBWBB/BWBBBBWB/BWBBBBWB/BBBBBWBB/..BWWB.B/..BBBB..",
+      "record": "g2b7a8a7b8h1g1h8g7g8",
+      "comments": {
+        "1": "黑棋下在 G2 控制對角線",
+        "2": "白棋下在偶數空的X位",
+        "3": "這一手雖然黑棋可以選擇滑到 B8，但是為了阻止白棋切斷對角線下在 A8",
+        "4": "白棋再次切斷對角線，注意此時B列的中邊是白棋純色",
+        "5": "黑棋雖然下到左下區域的最後一手，但未能翻轉 B7",
+        "6": "如此一來，白棋成功藉由控制中邊，以偶數區域切斷對角線"
+      }
+    }
+  ]
+}
