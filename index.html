@@ -23,7 +23,7 @@
 <body>
   <header>
     <div class="wrap">
-      <a class="brand" href="/" data-link>台灣黑白棋協會v1.2</a>
+      <a class="brand" href="/" data-link>台灣黑白棋協會v1.3</a>
       <nav>
         <a href="/about" data-link>關於協會</a>
         <a href="/tournaments" data-link>比賽資訊</a>
@@ -116,24 +116,63 @@
     async function render(pathname) {
       const key = matchRoute(pathname);
       const r = routes[key];
-
+    
       document.getElementById("page-title").textContent = r.title;
       document.getElementById("page-subtitle").textContent = r.subtitle;
       setActiveNav(key);
       document.title = `台灣黑白棋協會｜${r.title}`;
-
+    
       const app = document.getElementById("app");
       app.innerHTML = `<p class="loading">載入中…</p>`;
-
+    
       try {
         const html = await loadFragment(r.file);
-        app.innerHTML = html;
+    
+        // ✅ 這行取代 app.innerHTML = html;
+        await injectHtmlAndRunScripts(app, html);
+    
       } catch (err) {
         app.innerHTML = `
           <p class="error">內容載入失敗。</p>
           <p class="hint">${String(err.message || err)}</p>
           <p class="hint">請確認檔案存在：<code>${r.file}</code></p>
         `;
+      }
+    }
+
+    async function injectHtmlAndRunScripts(container, htmlText) {
+      const tpl = document.createElement("template");
+      tpl.innerHTML = htmlText;
+    
+      // 先把 scripts 抓出來，避免直接 innerHTML 時不執行
+      const scripts = Array.from(tpl.content.querySelectorAll("script"));
+      scripts.forEach(s => s.remove());
+    
+      // 先塞入純 HTML
+      container.innerHTML = "";
+      container.appendChild(tpl.content);
+    
+      // 再重新建立 script，讓它真的執行
+      for (const old of scripts) {
+        const s = document.createElement("script");
+    
+        // 複製所有 attributes（src/type/defer/async 等）
+        for (const attr of Array.from(old.attributes)) {
+          s.setAttribute(attr.name, attr.value);
+        }
+    
+        // inline script
+        if (!old.src) s.textContent = old.textContent;
+    
+        document.body.appendChild(s);
+    
+        // 若是外部 script，等它載入完成（避免依賴順序出錯）
+        if (old.src) {
+          await new Promise((res, rej) => {
+            s.onload = res;
+            s.onerror = () => rej(new Error(`Script 載入失敗：${old.src}`));
+          });
+        }
       }
     }
 
