@@ -126,6 +126,14 @@
       border: 2px solid rgba(250,204,21,0.95);
       box-shadow: 0 0 0 3px rgba(250,204,21,0.18);
     }
+    .legalMove::before{
+      content:"";
+      position:absolute;
+      width: calc(var(--cell) * 0.28);
+      height: calc(var(--cell) * 0.28);
+      border-radius:50%;
+      background: rgba(250,204,21,0.6);
+    }
     .right {
       display:flex;
       flex-direction:column;
@@ -202,7 +210,7 @@
 <body>
   <div class="app">
     <div class="panel">
-      <h1>黑白棋教學網v2.16A</h1>
+      <h1>黑白棋教學網v2.16B</h1>
       <div class="row">
         <div class="rowLeft">
           <select id="modeSelect" aria-label="Select mode">
@@ -528,6 +536,18 @@
     const startTurn  = (game && (game.startTurn===BLACK || game.startTurn===WHITE)) ? game.startTurn : BLACK;
     return computePositionFrom(startBoard, startTurn, game, step);
   }
+  function getLegalMoves(board, turn){
+    const moves = [];
+    for (let r=0;r<N;r++){
+      for (let c=0;c<N;c++){
+        if (board[r][c] !== EMPTY) continue;
+        if (getFlips(board, r, c, turn).length){
+          moves.push({r,c});
+        }
+      }
+    }
+    return moves;
+  }
   function buildPlayersForMoves(startBoard, startTurn, game){
     const players = [];
     let board = startBoard.map(row => row.slice());
@@ -564,12 +584,14 @@
     }
     return players;
   }
-  function renderBoard(board, last){
+  function renderBoard(board, last, legalMoves = []){
     boardEl.innerHTML = "";
     for (let r=0;r<N;r++){
       for (let c=0;c<N;c++){
         const cell = document.createElement("div");
         cell.className = "cell";
+        const isLegal = legalMoves.some(m => m.r===r && m.c===c);
+        if (isLegal) cell.classList.add("legalMove");
         if (last && last.r===r && last.c===c) cell.classList.add("lastMove");
         const v = board[r][c];
         if (v !== EMPTY){
@@ -792,7 +814,8 @@
         return;
       }
       const pos = computePosition(posObj, step);
-      renderBoard(pos.board, pos.last);
+      const legalMoves = getLegalMoves(pos.board, pos.turn);
+      renderBoard(pos.board, pos.last, legalMoves);
       renderPositionList(currentLesson);
       renderDetail(posObj, pos);
       renderHeaderCounts(pos);
@@ -1103,3 +1126,4 @@
 </script>
 </body>
 </html>
+
