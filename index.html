@@ -42,22 +42,15 @@
   <script>
     // ====== (A) 還原 404.html 帶回來的路徑 ======
     (function restorePathFrom404() {
-      var url = new URL(window.location.href);
-      var p = url.searchParams.get("p");
-      var q = url.searchParams.get("q");
-      var h = url.searchParams.get("h");
+    var url = new URL(window.location.href);
+    var p = url.searchParams.get("p");
+    var q = url.searchParams.get("q");
+    var h = url.searchParams.get("h");
+    if (!p) return;
 
-      if (!p) return; // 不是從 404 回來的，就不用還原
-
-      // 組回原本的完整網址（path + ?query + #hash）
-      var newPath = p;
-      var newQuery = q ? ("?" + q) : "";
-      var newHash = h ? ("#" + h) : "";
-
-      // 清掉 p/q/h，換成原本的路徑（不刷新頁面）
-      window.history.replaceState(null, "", newPath + newQuery + newHash);
-    })();
-
+    var newUrl = p + (q ? ("?" + q) : "") + (h ? ("#" + h) : "");
+    window.history.replaceState(null, "", newUrl);
+  })();
     // ====== (B) 一個超小的 SPA 路由器（原生 History API）======
     const routes = {
       "/": {
