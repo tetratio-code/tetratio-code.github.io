@@ -299,7 +299,6 @@
           setStatus("第一張表單目前沒有資料。");
           return;
         }
-        elMeta.innerHTML = `<span class="pill">主表：${SHEET_MAIN}</span> <span class="pill">明細表：${SHEET_DETAIL}</span> <span class="pill">關聯欄：${KEY_COL}</span>`;
         elStatus.style.display = "none";
         elTbl.style.display = "table";
         renderMainTable();
