@@ -883,14 +883,14 @@
     renderAll();
   }
   async function loadIndexGames(){
-    const idx = await fetchJson("./data/games/index.json?v=" + Date.now());
+    const idx = await fetchJson("/data/games/index.json?v=" + Date.now());
     if (!Array.isArray(idx)) throw new Error("data/games/index.json 格式錯誤：必須是 JSON 陣列");
     const normalized = idx.map(normalizeIndexEntry).filter(Boolean);
     if (!normalized.length) throw new Error("data/games/index.json 沒有任何有效項目（需要 id + file）");
     gameIndex = normalized;
   }
   async function loadIndexLearning(){
-    const idx = await fetchJson("./data/learning/index.json?v=" + Date.now());
+    const idx = await fetchJson("/data/learning/index.json?v=" + Date.now());
     if (!Array.isArray(idx)) throw new Error("data/learning/index.json 格式錯誤：必須是 JSON 陣列");
     const normalized = idx.map(normalizeIndexEntry).filter(Boolean);
     if (!normalized.length) throw new Error("data/learning/index.json 沒有任何有效項目（需要 id + file）");
@@ -950,7 +950,7 @@
     renderAll();
     const entry = gameIndex[i];
     if (!entry) throw new Error("找不到對局索引項目（games）");
-    const raw = await fetchJson("./data/games/" + entry.file + "?v=" + Date.now());
+    const raw = await fetchJson("/data/games/" + entry.file + "?v=" + Date.now());
     const game = normalizeGame(raw);
     if (!game.title) game.title = entry.title;
     if (!game.id) game.id = entry.id;
@@ -967,7 +967,7 @@
     renderAll();
     const entry = lessonIndex[i];
     if (!entry) throw new Error("找不到教學索引項目（learning）");
-    const raw = await fetchJson("./data/learning/" + entry.file + "?v=" + Date.now());
+    const raw = await fetchJson("/data/learning/" + entry.file + "?v=" + Date.now());
     const lesson = normalizeLesson(raw);
     if (!lesson.title) lesson.title = entry.title;
     if (!lesson.id) lesson.id = entry.id;
@@ -1125,6 +1125,7 @@
 </script>
 </body>
 </html>
+
 
 
 
