@@ -29,7 +29,7 @@
 <body>
   <header>
     <div class="wrap">
-      <a class="brand" href="/" data-link>台灣黑白棋協會v1.4</a>
+      <a class="brand" href="/" data-link>台灣黑白棋協會v1.4A</a>
       <nav>
         <a href="/about" data-link>關於協會</a>
         <a href="/tournaments" data-link>比賽資訊</a>
@@ -124,7 +124,7 @@
     async function render(pathname) {
       const key = matchRoute(pathname);
       const r = routes[key];
-      setLearnMode(key === "/learn");
+      setLearnMode(key === "/learning");
       document.getElementById("page-title").textContent = r.title;
       document.getElementById("page-subtitle").textContent = r.subtitle;
       setActiveNav(key);
