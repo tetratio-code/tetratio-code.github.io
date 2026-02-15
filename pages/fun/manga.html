@@ -1,41 +1,65 @@
 <section class="manga">
-  <h3 class="manga-title">《游泳的金魚》</h3>
+  <div class="manga-top">
+    <div class="manga-tabs">
+      <a class="manga-tab active" href="/fun/manga" data-link>漫畫</a>
+      <a class="manga-tab" href="/fun/links" data-link>友情連結</a>
+      <a class="manga-tab" href="/fun/life" data-link>生活中的黑白棋</a>
+    </div>
 
-  <div class="controls">
-    <label>
-      偏移距離：
-      <input id="offsetRange" type="range" min="0" max="0.2" step="0.002" />
-      <span id="offsetValue"></span>
-    </label>
-    <button id="toggleOffset">關閉偏移</button>
+    <div class="manga-controls">
+      <label class="manga-control">
+        偏移距離：
+        <input id="offsetRange" type="range" min="0" max="0.2" step="0.002" />
+        <span id="offsetValue"></span>
+      </label>
+      <button id="toggleOffset" class="manga-btn">關閉偏移</button>
+    </div>
   </div>
 
+  <h3 class="manga-title">《游泳的金魚》</h3>
   <div id="manga-list" class="manga-list"></div>
 </section>
 
 <style>
   .manga { padding: 8px 0; }
 
-  .controls {
+  /* ====== tabs（比照 rank 寫法）====== */
+  .manga-top { margin-bottom: 14px; }
+  .manga-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+  .manga-tab {
+    padding: 8px 12px;
+    border: 1px solid #eee;
+    border-radius: 999px;
+    text-decoration: none;
+    color: #111;
+    display: inline-block;
+  }
+  .manga-tab.active { background: #111; color: #fff; border-color: #111; }
+
+  /* ====== controls ====== */
+  .manga-controls {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
     align-items: center;
-    margin-bottom: 16px;
   }
+  .manga-control { display: inline-flex; gap: 8px; align-items: center; }
 
-  .controls input[type="range"] {
+  .manga-controls input[type="range"] {
     width: 220px;
     vertical-align: middle;
   }
 
-  .controls button {
+  .manga-btn {
     padding: 6px 12px;
     border-radius: 999px;
     border: 1px solid #ddd;
     background: #fff;
     cursor: pointer;
   }
+
+  /* ====== list ====== */
+  .manga-title { margin: 0 0 14px; }
 
   .manga-list {
     display: grid;
@@ -59,7 +83,6 @@
 
 <script>
 (function () {
-
   const TOTAL = 30;
   const BASE = "/data/manga/";
 
@@ -72,7 +95,8 @@
   let offsetRatio = 1 / 23;
   let offsetEnabled = true;
 
-  range.value = offsetRatio;
+  // range 會受 step 影響，這裡讓實際值與顯示一致
+  range.value = String(offsetRatio);
 
   // 建立圖片
   for (let i = 1; i <= TOTAL; i++) {
@@ -82,7 +106,7 @@
     const img = document.createElement("img");
     img.src = `${BASE}${i}.png`;
     img.loading = "lazy";
-    img.dataset.index = i;
+    img.dataset.index = String(i);
 
     img.onload = () => applyOffset(img);
     window.addEventListener("resize", () => applyOffset(img));
@@ -91,7 +115,6 @@
     list.appendChild(item);
   }
 
-  // ====== 套用偏移 ======
   function applyOffset(img) {
     if (!offsetEnabled) {
       img.style.transform = "translateX(0px)";
@@ -102,13 +125,9 @@
     const offset = width * offsetRatio;
     const index = parseInt(img.dataset.index, 10);
 
-    if (index % 2 === 1) {
-      // 奇數 → 右
-      img.style.transform = `translateX(${offset}px)`;
-    } else {
-      // 偶數 → 左
-      img.style.transform = `translateX(${-offset}px)`;
-    }
+    img.style.transform = (index % 2 === 1)
+      ? `translateX(${offset}px)`   // 奇數 → 右
+      : `translateX(${-offset}px)`; // 偶數 → 左
   }
 
   function updateAllOffsets() {
@@ -116,23 +135,22 @@
       .forEach(img => applyOffset(img));
   }
 
-  // ====== 拉條事件 ======
+  // 拉條事件
   range.addEventListener("input", () => {
     offsetRatio = parseFloat(range.value);
     valueText.textContent = `(${offsetRatio.toFixed(3)} × 寬度)`;
     updateAllOffsets();
   });
 
-  // ====== 切換開關 ======
+  // 切換開關
   toggleBtn.addEventListener("click", () => {
     offsetEnabled = !offsetEnabled;
-
     toggleBtn.textContent = offsetEnabled ? "關閉偏移" : "開啟偏移";
     updateAllOffsets();
   });
 
-  // 初始顯示數值
+  // 初始顯示數值（用 range 的值，確保與 step 對齊後一致）
+  offsetRatio = parseFloat(range.value);
   valueText.textContent = `(${offsetRatio.toFixed(3)} × 寬度)`;
-
 })();
 </script>
