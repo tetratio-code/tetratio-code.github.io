@@ -9,27 +9,31 @@
 <body>
   <script>
     (function () {
-      // ===== 重要：請依你的 Pages 型態設定 =====
-      // 0 = https://username.github.io/    或自訂網域 https://example.com/
-      // 1 = https://username.github.io/repo/
-      var segmentCount = 0; // <-- 如果你是 Project Pages 改成 1
-
       var l = window.location;
+      
+      // ===== 安全檢查：防止干涉其他 Repo =====
+      // 如果路徑層級大於 1 (例如 /other-repo/abc)，代表可能是在訪問其他專案
+      // 這種情況下我們不進行 User Page 的強制跳轉
+      var pathSegments = l.pathname.split('/').filter(Boolean);
+      if (pathSegments.length > 0) {
+        // 這裡可以列出你「不想要」被導航的路徑，或者乾脆只要有路徑就停止
+        // 下面這行代表：只要不是在 User Page 根目錄觸發的 404，就不管它
+        console.warn("偵測到子路徑訪問，為避免影響其他 Repo，停止自動重導向。");
+        return; 
+      }
 
-      // 防呆：如果已經帶了 p=...，代表剛剛導過一次了，避免再次包一層造成無限增長
+      // ===== 原有重定向邏輯 =====
+      var segmentCount = 0; 
+
       if (l.search.indexOf("p=") !== -1) {
-        // 直接回首頁，避免迴圈
         l.replace(l.origin + l.pathname.replace(/\/404\.html$/, "/"));
         return;
       }
 
       var path = l.pathname;
-      // 取出 base，例如 /repo
       var base = path.split("/").slice(0, 1 + segmentCount).join("/");
-
-      // 把剩下的路徑還原成 /about 這種
       var rest = "/" + path.split("/").slice(1 + segmentCount).join("/");
-      rest = rest.replace(/\/404\.html$/, "/"); // 如果 404.html 在子路徑被抓到，保底修一下
+      rest = rest.replace(/\/404\.html$/, "/");
       if (rest === "//" || rest === "") rest = "/";
 
       var newUrl =
