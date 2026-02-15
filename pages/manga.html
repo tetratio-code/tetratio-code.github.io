@@ -1,347 +1,109 @@
-<section id="manga-viewer" class="manga-viewer" aria-label="manga viewer">
-  <style>
-    #manga-viewer{
-      --page-bg:#0b0d10;
-      --panel-bg:rgba(20,24,30,.75);
-      --text:#e9eef6;
-      --muted:#9aa7b5;
+<section class="manga">
+  <h3 class="manga-title">棋界漫畫（1–30）</h3>
+  <p class="manga-subtitle">往下滾動瀏覽。圖片來源：<code>data/manga/</code></p>
 
-      --img-width: 920px;   /* ✅ 用純 px，JS 會改 */
-      --stagger: 40px;      /* ✅ 錯動量（作用在 frame，不作用在 img） */
-      --gap: 16px;
+  <div id="manga-list" class="manga-list" aria-live="polite"></div>
 
-      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans TC", Arial, sans-serif;
-      color: var(--text);
-      margin: 0;
-    }
-
-    #manga-viewer *{ box-sizing:border-box; }
-
-    #manga-viewer{
-      border-radius: 14px;
-      overflow: hidden;
-      background: radial-gradient(1200px 800px at 30% 0%, #121722 0%, var(--page-bg) 60%, #07080a 100%);
-      border: 1px solid rgba(255,255,255,.08);
-    }
-
-    #manga-viewer .toolbar{
-      position: relative;
-      width: 100%;
-      backdrop-filter: blur(10px);
-      background: linear-gradient(
-        to bottom,
-        rgba(10,12,16,.9),
-        rgba(10,12,16,.55)
-      );
-      border-bottom: 1px solid rgba(255,255,255,.08);
-    }
-    #manga-viewer .toolbar-inner{
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 10px 14px;
-      display:flex;
-      gap: 12px;
-      align-items:center;
-      flex-wrap: wrap;
-    }
-    #manga-viewer .title{
-      font-weight: 700;
-      letter-spacing:.2px;
-      margin-right: 8px;
-    }
-    #manga-viewer .hint{
-      color: var(--muted);
-      font-size: 12px;
-      margin-left:auto;
-      white-space: nowrap;
-    }
-
-    #manga-viewer .control{
-      display:flex;
-      align-items:center;
-      gap: 8px;
-      padding: 8px 10px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: var(--panel-bg);
-      border-radius: 12px;
-    }
-    #manga-viewer .control label{
-      font-size: 12px;
-      color: var(--muted);
-      white-space: nowrap;
-    }
-    #manga-viewer input[type="range"]{ width: 180px; }
-    #manga-viewer input[type="number"]{
-      width: 86px;
-      padding: 6px 8px;
-      border-radius: 10px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.25);
-      color: var(--text);
-      outline: none;
-    }
-    #manga-viewer button{
-      padding: 8px 10px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
-      color: var(--text);
-      cursor: pointer;
-    }
-    #manga-viewer button:hover{ background: rgba(255,255,255,.10); }
-
-    /* ✅ 不要用 max-width:1100 當內容區基準（這會讓你覺得中心漂移） */
-    #manga-viewer .wrap{
-      max-width: none;
-      margin: 0;
-      padding: 16px 12px 40px;
-    }
-
-    #manga-viewer .stack{
-      display:flex;
-      flex-direction: column;
-      gap: var(--gap);
-      width: 100%;
-      align-items: stretch;          /* ✅ 子項永遠滿寬 */
-    }
-
-    /* ✅ figure 永遠滿寬，不會 shrink-to-fit */
-    #manga-viewer figure{
-      width: 100%;
-      min-width: 100%;
-      flex: 0 0 100%;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;       /* ✅ 中心基準固定 */
-      position: relative;
-    }
-
-    #manga-viewer .badge{
-      position:absolute;
-      top: 10px;
-      left: 10px;
-      font-size: 12px;
-      color: rgba(255,255,255,.85);
-      background: rgba(0,0,0,.45);
-      border: 1px solid rgba(255,255,255,.14);
-      padding: 4px 8px;
-      border-radius: 999px;
-      backdrop-filter: blur(6px);
-      z-index: 2;
-    }
-
-    /* ✅ frame 固定置中 + 可左右錯動（錯動作用在 frame） */
-    #manga-viewer .frame{
-      width: var(--img-width);
-      max-width: 92vw;
-
-      overflow: hidden;             /* ✅ 只用來保持圓角；不再裁切錯動圖片（因為 img 不動） */
-      border-radius: 14px;
-      box-shadow: 0 10px 35px rgba(0,0,0,.35);
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-
-      transform: translateX(0);
-      transition: transform 120ms ease;
-      will-change: transform;
-    }
-
-    /* ✅ 圖片永遠吃滿 frame，不做位移 => 不會被裁切 */
-    #manga-viewer img.page{
-      width: 100%;
-      height: auto;
-      display:block;
-      margin: 0;
-      transform: none !important;
-    }
-
-    /* ✅ 錯動移到 frame，不會裁切圖片內容 */
-    #manga-viewer figure[data-index="odd"]  .frame{ transform: translateX(var(--stagger)); }
-    #manga-viewer figure[data-index="even"] .frame{ transform: translateX(calc(var(--stagger) * -1)); }
-
-    #manga-viewer .footer{
-      text-align:center;
-      color: var(--muted);
-      font-size: 12px;
-      margin-top: 18px;
-    }
-    #manga-viewer code{
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.10);
-      padding: 2px 6px;
-      border-radius: 8px;
-      color: var(--text);
-    }
-
-    @media (max-width: 520px){
-      #manga-viewer input[type="range"]{ width: 140px; }
-      #manga-viewer .hint{ width: 100%; margin-left: 0; }
-    }
-  </style>
-
-  <div class="toolbar">
-    <div class="toolbar-inner">
-      <div class="title">📚 Manga Viewer</div>
-
-      <div class="control">
-        <label for="manga-widthRange">等寬</label>
-        <input id="manga-widthRange" type="range" min="320" max="1200" step="10" value="920">
-        <input id="manga-widthNum" type="number" min="320" max="1200" step="10" value="920"> px
-      </div>
-
-      <div class="control">
-        <label for="manga-staggerRange">錯動</label>
-        <input id="manga-staggerRange" type="range" min="-400" max="400" step="1" value="40">
-        <input id="manga-staggerNum" type="number" min="-400" max="400" step="1" value="40"> px
-      </div>
-
-      <button id="manga-toggleStagger" type="button" aria-pressed="true">關閉錯動</button>
-
-      <div class="hint">滑鼠滾輪向下瀏覽（一般頁面捲動即可2）</div>
-    </div>
-  </div>
-
-  <main class="wrap">
-    <div id="manga-stack" class="stack" aria-label="manga pages"></div>
-    <div class="footer">Images: <code>/data/manga/1.png</code> ~ <code>30.png</code></div>
-  </main>
-
-  <script>
-    (function(){
-      const BASE_PATH = "/data/manga/";
-      const FIRST = 1;
-      const LAST = 30;
-
-      const root = document.getElementById("manga-viewer");
-      const stack = document.getElementById("manga-stack");
-      if (!root || !stack) return;
-
-      function clamp(n, min, max) { return Math.max(min, Math.min(max, n)); }
-
-      function buildPages() {
-        stack.innerHTML = "";
-        const frag = document.createDocumentFragment();
-
-        for (let i = FIRST; i <= LAST; i++) {
-          const fig = document.createElement("figure");
-          fig.dataset.index = (i % 2 === 1) ? "odd" : "even";
-
-          const badge = document.createElement("div");
-          badge.className = "badge";
-          badge.textContent = `${i}/${LAST}`;
-
-          const frame = document.createElement("div");
-          frame.className = "frame";
-
-          const img = document.createElement("img");
-          img.className = "page";
-          img.loading = "lazy";
-          img.decoding = "async";
-          img.alt = `page ${i}`;
-          img.src = `${BASE_PATH}${i}.png`;
-
-          img.addEventListener("error", () => {
-            img.style.opacity = "0.35";
-            img.alt = `missing: ${BASE_PATH}${i}.png`;
-            badge.textContent = `missing ${i}`;
-          });
-
-          frame.appendChild(img);
-          fig.appendChild(badge);
-          fig.appendChild(frame);
-          frag.appendChild(fig);
-        }
-
-        stack.appendChild(frag);
-      }
-
-      const widthRange = document.getElementById("manga-widthRange");
-      const widthNum = document.getElementById("manga-widthNum");
-
-      const staggerRange = document.getElementById("manga-staggerRange");
-      const staggerNum = document.getElementById("manga-staggerNum");
-      const toggleBtn = document.getElementById("manga-toggleStagger");
-
-      let staggerEnabled = true;
-
-      function setWidth(px) {
-        const v = clamp(px, Number(widthRange.min), Number(widthRange.max));
-        root.style.setProperty("--img-width", `${v}px`);
-        widthRange.value = v;
-        widthNum.value = v;
-
-        if (staggerEnabled) syncDefaultStaggerFromWidth();
-        savePrefs();
-      }
-
-      function syncDefaultStaggerFromWidth() {
-        const w = Number(widthRange.value) || 920;
-        const target = Math.round(w / 23);
-        setStagger(target);
-      }
-
-      function setStagger(px) {
-        const v = clamp(px, Number(staggerRange.min), Number(staggerRange.max));
-        root.style.setProperty("--stagger", `${staggerEnabled ? v : 0}px`);
-        staggerRange.value = v;
-        staggerNum.value = v;
-        savePrefs();
-      }
-
-      function setStaggerEnabled(on) {
-        staggerEnabled = !!on;
-        root.style.setProperty("--stagger", `${staggerEnabled ? staggerRange.value : 0}px`);
-        toggleBtn.textContent = staggerEnabled ? "關閉錯動" : "開啟錯動";
-        toggleBtn.setAttribute("aria-pressed", String(staggerEnabled));
-        savePrefs();
-      }
-
-      const KEY = "manga_viewer_prefs_v3";
-      function savePrefs() {
-        try {
-          localStorage.setItem(KEY, JSON.stringify({
-            width: Number(widthRange.value),
-            stagger: Number(staggerRange.value),
-            enabled: staggerEnabled
-          }));
-        } catch {}
-      }
-      function loadPrefs() {
-        try {
-          const raw = localStorage.getItem(KEY);
-          if (!raw) return;
-          const p = JSON.parse(raw);
-          if (typeof p.width === "number") setWidth(p.width);
-          if (typeof p.stagger === "number") setStagger(p.stagger);
-          if (typeof p.enabled === "boolean") setStaggerEnabled(p.enabled);
-        } catch {}
-      }
-
-      widthRange.oninput = null;
-      widthNum.onchange = null;
-      staggerRange.oninput = null;
-      staggerNum.onchange = null;
-      toggleBtn.onclick = null;
-
-      widthRange.addEventListener("input", (e) => setWidth(Number(e.target.value)));
-      widthNum.addEventListener("change", (e) => setWidth(Number(e.target.value)));
-
-      staggerRange.addEventListener("input", (e) => {
-        setStagger(Number(e.target.value));
-        if (!staggerEnabled) setStaggerEnabled(true);
-      });
-      staggerNum.addEventListener("change", (e) => {
-        setStagger(Number(e.target.value));
-        if (!staggerEnabled) setStaggerEnabled(true);
-      });
-
-      toggleBtn.addEventListener("click", () => setStaggerEnabled(!staggerEnabled));
-
-      buildPages();
-      setWidth(Number(widthRange.value));  // 會順便把預設錯動設成寬度/23
-      setStaggerEnabled(true);
-      loadPrefs();
-    })();
-  </script>
+  <div id="manga-status" class="manga-status"></div>
 </section>
+
+<style>
+  .manga {
+    padding: 8px 0;
+  }
+  .manga-title {
+    margin: 0 0 6px;
+    font-size: 20px;
+  }
+  .manga-subtitle {
+    margin: 0 0 14px;
+    color: #666;
+    line-height: 1.5;
+  }
+
+  /* 圖片等寬、置中、可向下捲動（頁面本身就可捲） */
+  .manga-list {
+    display: grid;
+    gap: 14px;
+  }
+
+  .manga-item {
+    display: flex;
+    justify-content: center;
+  }
+
+  .manga-item img {
+    width: min(860px, 100%);
+    height: auto;
+    display: block;
+    border-radius: 12px;
+    border: 1px solid #eee;
+    background: #fff;
+  }
+
+  .manga-status {
+    margin-top: 14px;
+    color: #666;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .manga-status .warn {
+    color: #b00020;
+  }
+</style>
+
+<script>
+  (function () {
+    const TOTAL = 30;
+    // 你需求寫「從 User page -> data/manga/ 抓取圖片」
+    // 這裡用相對路徑，假設你網站根目錄有 /data/manga/1.png ... 30.png
+    const BASE = "/data/manga/";
+
+    const list = document.getElementById("manga-list");
+    const status = document.getElementById("manga-status");
+
+    // 逐張加入到 DOM，瀏覽就是往下捲動
+    let okCount = 0;
+    let failCount = 0;
+
+    for (let i = 1; i <= TOTAL; i++) {
+      const item = document.createElement("div");
+      item.className = "manga-item";
+
+      const img = document.createElement("img");
+      img.loading = "lazy";
+      img.decoding = "async";
+      img.alt = `manga ${i}`;
+      img.src = `${BASE}${i}.png`;
+
+      img.onload = () => {
+        okCount++;
+        renderStatus();
+      };
+      img.onerror = () => {
+        failCount++;
+        // 失敗就把該張隱藏，避免破圖影響閱讀
+        item.remove();
+        renderStatus(true);
+      };
+
+      item.appendChild(img);
+      list.appendChild(item);
+    }
+
+    function renderStatus(hasError) {
+      if (!status) return;
+      const parts = [
+        `已載入：${okCount} / ${TOTAL}`,
+      ];
+      if (failCount > 0) parts.push(`載入失敗：${failCount}`);
+
+      status.innerHTML = hasError
+        ? `<span class="warn">部分圖片載入失敗。</span><br>${parts.join("　")}`
+        : parts.join("　");
+    }
+
+    renderStatus();
+  })();
+</script>
