@@ -16,7 +16,7 @@
   
     // Project Pages: https://username.github.io/repo/  => segmentCount = 1
     // User Pages:    https://username.github.io/       => segmentCount = 0
-    var segmentCount = 1; // ← 你現在這個例子是 /pages/，所以要 1
+    var segmentCount = 0;
   
     var path = l.pathname;
     var base = path.split("/").slice(0, 1 + segmentCount).join("/");
