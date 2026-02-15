@@ -29,7 +29,7 @@
 <body>
   <header>
     <div class="wrap">
-      <a class="brand" href="/" data-link>台灣黑白棋協會v1.4B</a>
+      <a class="brand" href="/" data-link>台灣黑白棋協會v1.4C</a>
       <nav>
         <a href="/about" data-link>關於協會</a>
         <a href="/tournaments" data-link>比賽資訊</a>
@@ -86,7 +86,7 @@
       "/rank": {
         title: "段位查詢",
         subtitle: "查詢選手段位、歷史成績與排名。",
-        file: "pages/rank.html"
+        file: "/pages/rank.html"
       },
       "/fun": {
         title: "休閒娛樂",
@@ -101,7 +101,8 @@
 
     function setActiveNav(pathname) {
       document.querySelectorAll("nav a[data-link]").forEach(a => {
-        a.classList.toggle("active", a.getAttribute("href") === pathname);
+        const url = new URL(a.getAttribute("href"), window.location.origin);
+        a.classList.toggle("active", url.pathname === pathname);
       });
     }
     function setLearnMode(isOn) {
