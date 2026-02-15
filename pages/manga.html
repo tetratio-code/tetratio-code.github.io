@@ -184,6 +184,24 @@
     #manga-viewer figure{ outline: 2px solid rgba(0,255,0,.5); } /* 綠框：figure */
     #manga-viewer img.page{ outline: 2px solid rgba(0,140,255,.5); } /* 藍框：img */
 
+    /* ✅ 強制讓每一頁的容器吃滿、再把圖片置中（測試用/也可長期用） */
+    #manga-viewer .stack { align-items: stretch !important; }
+    
+    #manga-viewer figure{
+      width: 100% !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      display: flex !important;
+      justify-content: center !important;
+      position: relative !important;
+    }
+    
+    #manga-viewer img.page{
+      display: block !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+
   </style>
 
   <div class="toolbar">
@@ -204,7 +222,7 @@
 
       <button id="manga-toggleStagger" type="button" aria-pressed="true">關閉錯動</button>
 
-      <div class="hint">滑鼠滾輪向下瀏覽（一般頁面捲動即可5）</div>
+      <div class="hint">滑鼠滾輪向下瀏覽（一般頁面捲動即可5X）</div>
     </div>
   </div>
 
