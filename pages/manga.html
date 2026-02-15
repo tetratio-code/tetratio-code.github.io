@@ -1,14 +1,13 @@
 <section id="manga-viewer" class="manga-viewer" aria-label="manga viewer">
   <style>
-    /* ====== Scope: only inside #manga-viewer ====== */
     #manga-viewer{
       --page-bg:#0b0d10;
       --panel-bg:rgba(20,24,30,.75);
       --text:#e9eef6;
       --muted:#9aa7b5;
 
-      --img-width: min(920px, 92vw); /* 等寬（可由 UI 改） */
-      --stagger: 40px;              /* 錯動（可由 UI 改） */
+      --img-width: min(920px, 92vw);
+      --stagger: 40px;
       --gap: 16px;
 
       font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans TC", Arial, sans-serif;
@@ -26,7 +25,6 @@
       border: 1px solid rgba(255,255,255,.08);
     }
 
-    /* 控制列（不要 sticky/fixed，讓它跟著頁面在 card 內） */
     #manga-viewer .toolbar{
       position: relative;
       width: 100%;
@@ -40,13 +38,7 @@
     }
     #manga-viewer .toolbar-inner{
       max-width: 1100px;
-      #manga-viewer figure{
-        margin: 0;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        position: relative;
-      }
+      margin: 0 auto;
       padding: 10px 14px;
       display:flex;
       gap: 12px;
@@ -99,7 +91,6 @@
     }
     #manga-viewer button:hover{ background: rgba(255,255,255,.10); }
 
-    /* 主內容 */
     #manga-viewer .wrap{
       max-width: 1100px;
       margin: 0 auto;
@@ -113,33 +104,36 @@
     }
 
     #manga-viewer figure{
-      margin:0;
-      width: var(--img-width);
+      margin: 0;
+      width: 100%;
+      display: flex;
+      justify-content: center; 
       position: relative;
+    
+      padding-left: 0;
+      padding-right: 0;
     }
+    
     #manga-viewer img.page{
       width: var(--img-width);
       max-width: 92vw;
       height: auto;
-      display:block;
+      display: block;
       border-radius: 14px;
       box-shadow: 0 10px 35px rgba(0,0,0,.35);
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
-      transform: translateX(0);
-      transform-origin: 50% 0%;
-      transition: transform 120ms ease;
+    }
+    
+    #manga-viewer figure[data-index="odd"]{
+      padding-left: var(--stagger);
+      padding-right: 0;
+    }
+    #manga-viewer figure[data-index="even"]{
+      padding-left: 0;
+      padding-right: var(--stagger);
     }
 
-    /* 錯動：奇數向右、偶數向左 */
-    #manga-viewer figure[data-index="odd"] img.page{
-      transform: translateX(var(--stagger));
-    }
-    #manga-viewer figure[data-index="even"] img.page{
-      transform: translateX(calc(var(--stagger) * -1));
-    }
-
-    /* 頁碼浮標 */
     #manga-viewer .badge{
       position:absolute;
       top: 10px;
@@ -202,8 +196,7 @@
 
   <script>
     (function(){
-      // ====== 設定 ======
-      const BASE_PATH = "/data/manga/";  // ✅ 建議用絕對路徑，避免 SPA 路由影響相對路徑
+      const BASE_PATH = "/data/manga/";
       const FIRST = 1;
       const LAST = 30;
 
@@ -211,10 +204,7 @@
       const stack = document.getElementById("manga-stack");
       if (!root || !stack) return;
 
-      // ====== 小工具 ======
       function clamp(n, min, max) { return Math.max(min, Math.min(max, n)); }
-
-      // ====== 產生圖片列表（支援 lazy loading） ======
       function buildPages() {
         stack.innerHTML = "";
         const frag = document.createDocumentFragment();
@@ -248,7 +238,6 @@
         stack.appendChild(frag);
       }
 
-      // ====== UI：等寬（寬度） ======
       const widthRange = document.getElementById("manga-widthRange");
       const widthNum = document.getElementById("manga-widthNum");
 
@@ -261,11 +250,8 @@
         savePrefs();
       }
       function syncDefaultStaggerFromWidth() {
-        // 以目前「等寬 px」計算：寬度 / 23
         const w = Number(widthRange.value) || 920;
         const target = Math.round(w / 23);
-      
-        // 若 min/max 不夠大，就自動擴張，避免被 clamp 掉
         const maxAbs = Math.max(Math.abs(Number(staggerRange.min)), Math.abs(Number(staggerRange.max)), target);
         staggerRange.min = String(-maxAbs);
         staggerRange.max = String(maxAbs);
@@ -274,7 +260,6 @@
       
         setStagger(target);
       }
-      // ====== UI：錯動 ======
       const staggerRange = document.getElementById("manga-staggerRange");
       const staggerNum = document.getElementById("manga-staggerNum");
       const toggleBtn = document.getElementById("manga-toggleStagger");
@@ -297,7 +282,6 @@
         savePrefs();
       }
 
-      // ====== 偏好保存（localStorage） ======
       const KEY = "manga_viewer_prefs_v1";
       function savePrefs() {
         try {
@@ -319,7 +303,6 @@
         } catch {}
       }
 
-      // ====== 事件綁定（先解除，避免 SPA 重複注入時疊加） ======
       widthRange.oninput = null;
       widthNum.onchange = null;
       staggerRange.oninput = null;
@@ -340,7 +323,6 @@
 
       toggleBtn.addEventListener("click", () => setStaggerEnabled(!staggerEnabled));
 
-      // ====== 啟動 ======
       buildPages();
       setWidth(Number(widthRange.value));
       syncDefaultStaggerFromWidth();
