@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>幾何方陣棋 - Square Capture</title>
+    <style>
+        :root {
+            --bg-color: #f0f0f0;
+            --board-color: #deb887;
+            --player-color: #222;
+            --cpu-color: #fff;
+        }
+        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; background: var(--bg-color); }
+        .info { margin: 20px; text-align: center; }
+        .status { font-weight: bold; font-size: 1.2rem; color: #333; margin-bottom: 10px; }
+        
+        #board {
+            display: grid;
+            grid-template-columns: repeat(9, 40px);
+            grid-template-rows: repeat(9, 40px);
+            gap: 2px;
+            background: #8b4513;
+            padding: 5px;
+            border: 4px solid #5d2e0a;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .cell {
+            width: 40px;
+            height: 40px;
+            background: var(--board-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+        }
+        .piece {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            transition: all 0.2s;
+        }
+        .black { background: var(--player-color); box-shadow: 2px 2px 4px rgba(0,0,0,0.4); }
+        .white { background: var(--cpu-color); border: 1px solid #ccc; box-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
+        
+        .controls { margin-top: 20px; }
+        button { padding: 10px 20px; font-size: 1rem; cursor: pointer; background: #4CAF50; color: white; border: none; border-radius: 5px; }
+        button:disabled { background: #ccc; cursor: not-allowed; }
+        .score-board { display: flex; gap: 30px; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="info">
+    <h2>幾何方陣棋 (9x9)</h2>
+    <div class="status" id="turnStatus">輪到你了 (黑棋)</div>
+    <div class="score-board">
+        <div>玩家 (黑): <span id="blackScore">0</span></div>
+        <div>電腦 (白): <span id="whiteScore">0</span></div>
+    </div>
+</div>
+
+<div id="board"></div>
+
+<div class="controls">
+    <button id="endTurnBtn" disabled>結束回合</button>
+    <button onclick="location.reload()">重新開始</button>
+</div>
+
+<script>
+    const SIZE = 9;
+    const WIN_SCORE = 81;
+    let board = Array(SIZE).fill().map(() => Array(SIZE).fill(null));
+    let currentPlayer = 'black';
+    let scores = { black: 0, white: 0 };
+    let hasPlaced = false;
+
+    const boardEl = document.getElementById('board');
+    const turnStatus = document.getElementById('turnStatus');
+    const blackScoreEl = document.getElementById('blackScore');
+    const whiteScoreEl = document.getElementById('whiteScore');
+    const endTurnBtn = document.getElementById('endTurnBtn');
+
+    // 初始化棋盤
+    function initBoard() {
+        boardEl.innerHTML = '';
+        for (let r = 0; r < SIZE; r++) {
+            for (let c = 0; c < SIZE; c++) {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.dataset.r = r;
+                cell.dataset.c = c;
+                cell.onclick = () => handleMove(r, c);
+                boardEl.appendChild(cell);
+            }
+        }
+    }
+
+    function handleMove(r, c) {
+        if (currentPlayer !== 'black' || hasPlaced || board[r][c]) return;
+        placePiece(r, c, 'black');
+        checkSquares(r, c, 'black');
+        hasPlaced = true;
+        endTurnBtn.disabled = false;
+    }
+
+    function placePiece(r, c, type) {
+        board[r][c] = type;
+        const cell = boardEl.children[r * SIZE + c];
+        const piece = document.createElement('div');
+        piece.className = `piece ${type}`;
+        cell.appendChild(piece);
+    }
+
+    // 核心邏輯：偵測正方形並提子
+    function checkSquares(r, c, color) {
+        let pieces = [];
+        for(let i=0; i<SIZE; i++) {
+            for(let j=0; j<SIZE; j++) {
+                if(board[i][j] === color) pieces.push({r: i, c: j});
+            }
+        }
+
+        if (pieces.length < 4) return;
+
+        let totalPoints = 0;
+        let piecesToRemove = new Set();
+
+        // 窮舉任意三點，判斷第四點是否構成正方形
+        for (let i = 0; i < pieces.length; i++) {
+            for (let j = i + 1; j < pieces.length; j++) {
+                let p1 = pieces[i];
+                let p2 = pieces[j];
+
+                // 計算兩點向量
+                let dr = p2.r - p1.r;
+                let dc = p2.c - p1.c;
+
+                // 根據向量尋找另外兩個點 (正方形特性)
+                // 順時針方向：(r+dc, c-dr) 與 (r+dr+dc, c-dr+dc)
+                checkAndScore(p1, p2, dr, dc, color, piecesToRemove);
+            }
+        }
+        
+        if (piecesToRemove.size > 0) {
+            piecesToRemove.forEach(pos => {
+                const [pr, pc] = pos.split(',').map(Number);
+                if (board[pr][pc]) {
+                    board[pr][pc] = null;
+                    const cell = boardEl.children[pr * SIZE + pc];
+                    cell.innerHTML = '';
+                }
+            });
+        }
+    }
+
+    function checkAndScore(p1, p2, dr, dc, color, set) {
+        // 嘗試向兩側構建正方形
+        const configs = [
+            [{r: p1.r - dc, c: p1.c + dr}, {r: p2.r - dc, c: p2.c + dr}],
+            [{r: p1.r + dc, c: p1.c - dr}, {r: p2.r + dc, c: p2.c - dr}]
+        ];
+
+        configs.forEach(pair => {
+            if (pair.every(p => p.r >= 0 && p.r < SIZE && p.c >= 0 && p.c < SIZE && board[p.r][p.c] === color)) {
+                let area = dr * dr + dc * dc; // 面積 = 邊長的平方
+                scores[color] += area;
+                set.add(`${p1.r},${p1.c}`);
+                set.add(`${p2.r},${p2.c}`);
+                set.add(`${pair[0].r},${pair[0].c}`);
+                set.add(`${pair[1].r},${pair[1].c}`);
+            }
+        });
+        updateScoreDisplay();
+    }
+
+    function updateScoreDisplay() {
+        blackScoreEl.innerText = scores.black;
+        whiteScoreEl.innerText = scores.white;
+        if (scores.black >= WIN_SCORE) alert("玩家獲勝！");
+        if (scores.white >= WIN_SCORE) alert("電腦獲勝！");
+    }
+
+    endTurnBtn.onclick = () => {
+        if (!hasPlaced) return;
+        currentPlayer = 'white';
+        turnStatus.innerText = "電腦思考中...";
+        endTurnBtn.disabled = true;
+        setTimeout(cpuMove, 600);
+    };
+
+    function cpuMove() {
+        let emptyCells = [];
+        for(let r=0; r<SIZE; r++) {
+            for(let c=0; c<SIZE; c++) {
+                if(!board[r][c]) emptyCells.push({r, c});
+            }
+        }
+
+        if(emptyCells.length > 0) {
+            let move = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+            placePiece(move.r, move.c, 'white');
+            checkSquares(move.r, move.c, 'white');
+        }
+
+        currentPlayer = 'black';
+        hasPlaced = false;
+        turnStatus.innerText = "輪到你了 (黑棋)";
+    }
+
+    initBoard();
+</script>
+
+</body>
+</html>
