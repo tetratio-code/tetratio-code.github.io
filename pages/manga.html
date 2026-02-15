@@ -168,6 +168,22 @@
       #manga-viewer input[type="range"]{ width: 140px; }
       #manga-viewer .hint{ width: 100%; margin-left: 0; }
     }
+    /* ====== DEBUG：看清楚到底是框沒置中，還是圖檔內容偏 ====== */
+    #manga-viewer .wrap { position: relative; }
+    #manga-viewer .wrap::before{
+      content:"";
+      position:absolute;
+      top:0; bottom:0;
+      left:50%;
+      width:2px;
+      background: rgba(255,0,0,.6);   /* 紅色中線 */
+      transform: translateX(-1px);
+      pointer-events:none;
+      z-index: 5;
+    }
+    #manga-viewer figure{ outline: 2px solid rgba(0,255,0,.5); } /* 綠框：figure */
+    #manga-viewer img.page{ outline: 2px solid rgba(0,140,255,.5); } /* 藍框：img */
+
   </style>
 
   <div class="toolbar">
@@ -188,7 +204,7 @@
 
       <button id="manga-toggleStagger" type="button" aria-pressed="true">關閉錯動</button>
 
-      <div class="hint">滑鼠滾輪向下瀏覽（一般頁面捲動即可4）</div>
+      <div class="hint">滑鼠滾輪向下瀏覽（一般頁面捲動即可5）</div>
     </div>
   </div>
 
