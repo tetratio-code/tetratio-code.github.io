@@ -1,14 +1,26 @@
-<!doctype html>
-<html lang="zh-Hant">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>段級位查詢</title>
+<section id="rank-list" class="rank-list">
   <style>
-    body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans TC", Arial, sans-serif; margin: 16px; }
-    .meta { color:#666; font-size: 14px; }
-    .pill { display:inline-block; padding:2px 8px; border-radius:999px; background:#f2f2f2; font-size:12px; color:#333; }
-    .box {
+    /* 只作用在本片段，避免影響全站 */
+    #rank-list { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans TC", Arial, sans-serif; }
+    #rank-list .meta { color:#666; font-size: 14px; }
+    #rank-list .pill { display:inline-block; padding:2px 8px; border-radius:999px; background:#f2f2f2; font-size:12px; color:#333; }
+
+    #rank-list .rank-top { display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between; margin: 0 0 10px 0; }
+    #rank-list .rank-tabs { display:flex; gap:8px; flex-wrap:wrap; }
+    #rank-list .rank-tab {
+      display:inline-block; padding:8px 12px; border:1px solid #e8e8e8; border-radius:999px;
+      text-decoration:none; color:#111; background:#fff;
+    }
+    #rank-list .rank-tab.active { background:#111; color:#fff; border-color:#111; }
+
+    #rank-list .controls { display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin: 10px 0 8px 0; }
+    #rank-list .controls input {
+      padding:10px 12px; border:1px solid #ccc; border-radius:10px;
+      width:min(520px, 100%); font: inherit;
+      background:#fff;
+    }
+
+    #rank-list .box {
       border:1px solid #ddd;
       border-radius: 12px;
       overflow: auto;
@@ -16,91 +28,104 @@
       box-shadow: 0 2px 12px rgba(0,0,0,.06);
       background: #fff;
     }
-    table { border-collapse: collapse; width: 100%; min-width: 900px; }
-    th, td { border-bottom: 1px solid #eee; padding: 10px 12px; vertical-align: top; }
-    th {
+
+    #rank-list table { border-collapse: collapse; width: 100%; min-width: 900px; }
+    #rank-list th, #rank-list td { border-bottom: 1px solid #eee; padding: 10px 12px; vertical-align: top; }
+    #rank-list th {
       position: sticky; top: 0; z-index: 2;
       background: #fafafa;
       text-align: left;
       font-weight: 600;
       white-space: nowrap;
     }
-    td { white-space: pre-wrap; word-break: break-word; }
-    tr.master-row { cursor: pointer; }
-    tr.master-row:hover td { background: #fcfcff; }
-    tr.detail-row td {
+    #rank-list td { white-space: pre-wrap; word-break: break-word; }
+
+    #rank-list tr.master-row { cursor: pointer; }
+    #rank-list tr.master-row:hover td { background: #fcfcff; }
+    #rank-list tr.detail-row td {
       background: #fbfbfb;
       border-bottom: 1px solid #eaeaea;
       padding: 12px;
     }
-    .detail-wrap {
+
+    #rank-list .detail-wrap {
       border: 1px solid #e6e6e6;
       border-radius: 12px;
       background: #fff;
       padding: 10px;
     }
-    .detail-title {
+    #rank-list .detail-title {
       display:flex; align-items:center; justify-content:space-between;
       gap: 12px; margin-bottom: 8px;
       font-weight: 600;
     }
-    .detail-table {
+    #rank-list .detail-table {
       border: 1px solid #eee;
       border-radius: 10px;
       overflow: auto;
       max-height: 320px;
     }
-    .detail-table table { min-width: 700px; }
-    .small { font-size: 13px; color:#666; }
+    #rank-list .detail-table table { min-width: 700px; }
+    #rank-list .small { font-size: 13px; color:#666; }
 
-    .loading, .error { padding: 14px; }
+    #rank-list .loading, #rank-list .error { padding: 14px; }
   </style>
-</head>
-<body>
-  <h2 style="margin:0 0 10px 0;">段級位查詢</h2>
-  <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin: 10px 0 8px 0;">
-    <input id="q" type="search" placeholder="搜尋（選手編號／姓名／年份積分…）" 
-           style="padding:10px 12px; border:1px solid #ccc; border-radius:10px; width:min(520px, 100%);" />
-    <span id="count" class="pill">顯示 0 / 0</span>
+
+  <!-- ✅ rank 子分頁（你說按鈕不顯示，這裡直接內建） -->
+  <div class="rank-top">
+    <div class="rank-tabs">
+      <a class="rank-tab active" href="/rank/list" data-link>選手名單</a>
+      <a class="rank-tab" href="/rank/rules" data-link>段級位規則</a>
+    </div>
   </div>
-  <div id="meta" class="meta"></div>
+
+  <h3 style="margin:0 0 10px 0;">段級位查詢</h3>
+
+  <div class="controls">
+    <input id="rank-q" type="search" placeholder="搜尋（選手編號／姓名／年份積分…）" />
+    <span id="rank-count" class="pill">顯示 0 / 0</span>
+  </div>
+
+  <div id="rank-meta" class="meta"></div>
 
   <div class="box">
-    <div id="status" class="loading">載入中…</div>
-    <table id="tbl" style="display:none;">
-      <thead><tr id="thead"></tr></thead>
-      <tbody id="tbody"></tbody>
+    <div id="rank-status" class="loading">載入中…</div>
+    <table id="rank-tbl" style="display:none;">
+      <thead><tr id="rank-thead"></tr></thead>
+      <tbody id="rank-tbody"></tbody>
     </table>
   </div>
 
   <script>
+    // ===== 重要：改成片段內專用的 ID，避免跟其他頁撞到 =====
     const WEBAPP_BASE   = "https://script.google.com/macros/s/AKfycbwB-hJXPWx9aztU5scq7Hf_XkZhVUPWNAq4Z5SUteXDOlClOUXpiNW1VSUjvo87Hldr7Q/exec";
-    const SHEET_MAIN    = "歷年積分與段級位";         // 第一張表單工作表名稱
-    const SHEET_DETAIL  = "戰績表";         // 第二張表單工作表名稱
+    const SHEET_MAIN    = "歷年積分與段級位";  // 第一張表單工作表名稱
+    const SHEET_DETAIL  = "戰績表";            // 第二張表單工作表名稱
     const KEY_COL       = "選手編號";
-    const elStatus = document.getElementById("status");
-    const elTbl = document.getElementById("tbl");
-    const elThead = document.getElementById("thead");
-    const elTbody = document.getElementById("tbody");
-    const elMeta = document.getElementById("meta");
-    const elQ = document.getElementById("q");    //原本放let_filteredData之後
-    const elCount = document.getElementById("count");    //原本放let_filteredData之後
-    
+
+    const elStatus = document.getElementById("rank-status");
+    const elTbl = document.getElementById("rank-tbl");
+    const elThead = document.getElementById("rank-thead");
+    const elTbody = document.getElementById("rank-tbody");
+    const elMeta = document.getElementById("rank-meta");
+    const elQ = document.getElementById("rank-q");
+    const elCount = document.getElementById("rank-count");
+
     let mainData = [];
     let mainHeaders = [];
     let detailData = null;
     let detailHeaders = [];
     let expandedIndex = null;
     let filteredData = [];
-    
+
     function updateCount() {
       elCount.textContent = `顯示 ${filteredData.length} / ${mainData.length}`;
     }
-    
+
     function matchRow(row, q) {
       if (!q) return true;
       const s = q.toLowerCase();
-    
+
       for (const h of mainHeaders) {
         const v = row[h];
         if (v !== null && v !== undefined) {
@@ -109,7 +134,7 @@
       }
       return false;
     }
-    
+
     function applySearch() {
       const q = (elQ?.value || "").trim();
       closeExpanded();
@@ -117,7 +142,7 @@
       renderMainTable();
       updateCount();
     }
-    
+
     function apiUrl(sheetName) {
       const u = new URL(WEBAPP_BASE);
       if (sheetName) u.searchParams.set("sheet", sheetName);
@@ -133,7 +158,7 @@
     }
 
     async function fetchSheetWithHeaders(sheetName) {
-      const res = await fetch(apiUrl(sheetName));
+      const res = await fetch(apiUrl(sheetName), { cache: "no-store" });
       const json = await res.json();
       if (!json || json.ok === false) throw new Error(json?.error || `API error: ${sheetName}`);
       return json;
@@ -169,10 +194,10 @@
 
     async function ensureDetailLoaded() {
       if (detailData !== null) return;
-    
+
       const jsonDetail = await fetchSheetWithHeaders(SHEET_DETAIL);
       detailData = jsonDetail.data || [];
-    
+
       if (!Array.isArray(jsonDetail.headers) || jsonDetail.headers.length === 0) {
         throw new Error(`明細表（${SHEET_DETAIL}）API 沒有回傳 headers，請確認 Apps Script 已重新部署最新版本。`);
       }
@@ -196,6 +221,7 @@
         <div class="pill">共 ${matches.length} 筆</div>
       `;
       wrap.appendChild(title);
+
       if (matches.length === 0) {
         const empty = document.createElement("div");
         empty.className = "small";
@@ -204,15 +230,18 @@
       } else {
         const box = document.createElement("div");
         box.className = "detail-table";
+
         const t = document.createElement("table");
         const thead = document.createElement("thead");
         const thr = document.createElement("tr");
+
         for (const h of detailHeaders) {
           const th = document.createElement("th");
           th.textContent = h;
           thr.appendChild(th);
         }
         thead.appendChild(thr);
+
         const tbody = document.createElement("tbody");
         for (const row of matches) {
           const tr = document.createElement("tr");
@@ -221,45 +250,54 @@
           }
           tbody.appendChild(tr);
         }
+
         t.appendChild(thead);
         t.appendChild(tbody);
         box.appendChild(t);
         wrap.appendChild(box);
       }
+
       td.appendChild(wrap);
       detailTr.appendChild(td);
       afterTr.insertAdjacentElement("afterend", detailTr);
     }
-    
+
     function escapeHtml(s) {
       return String(s).replace(/[&<>"']/g, m => ({
         "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
       }[m]));
-    
     }
+
     function renderMainTable() {
       renderMainHeader();
       clearBody();
+
       filteredData.forEach((row, idx) => {
         const tr = document.createElement("tr");
         tr.className = "master-row";
         tr.dataset.idx = String(idx);
+
         for (const h of mainHeaders) {
           tr.appendChild(makeTd(row[h]));
         }
+
         tr.addEventListener("click", async () => {
           const playerId = row[KEY_COL];
+
           if (playerId === undefined || playerId === null || String(playerId).trim() === "") {
             closeExpanded();
             alert(`這筆資料沒有「${KEY_COL}」，無法對應第二張表單。`);
             return;
           }
+
           if (expandedIndex === idx) {
             closeExpanded();
             return;
           }
+
           closeExpanded();
           expandedIndex = idx;
+
           const loadingTr = document.createElement("tr");
           loadingTr.className = "detail-row";
           const td = document.createElement("td");
@@ -267,6 +305,7 @@
           td.innerHTML = `<div class="detail-wrap">載入第二張表單資料中…</div>`;
           loadingTr.appendChild(td);
           tr.insertAdjacentElement("afterend", loadingTr);
+
           try {
             await ensureDetailLoaded();
             const pid = String(playerId).trim();
@@ -275,40 +314,47 @@
             if (expandedIndex !== idx) return;
             renderDetailRow(tr, pid, matches);
           } catch (e) {
-            loadingTr.querySelector(".detail-wrap").textContent = "載入失敗：" + e.message;
+            const w = loadingTr.querySelector(".detail-wrap");
+            if (w) w.textContent = "載入失敗：" + (e?.message || String(e));
           }
         });
+
         elTbody.appendChild(tr);
       });
     }
+
     async function init() {
       try {
         setStatus("載入第一張表單資料中…");
         const jsonMain = await fetchSheetWithHeaders(SHEET_MAIN);
         mainData = jsonMain.data || [];
-        console.log("API headers:", jsonMain.headers); //可刪
-        
+
         if (!Array.isArray(jsonMain.headers) || jsonMain.headers.length === 0) {
           throw new Error("API 沒有回傳 headers，請更新 Apps Script 讓它回傳試算表第一列的 headers。");
         }
+
         mainHeaders = jsonMain.headers;
         filteredData = [...mainData];
-        updateCount();
+
+        // ✅ 防止 SPA 多次注入時重複綁定：先移除再綁
+        elQ.oninput = null;
         elQ.addEventListener("input", applySearch);
+
         if (!mainHeaders.length) {
           setStatus("第一張表單目前沒有資料。");
           return;
         }
+
         elStatus.style.display = "none";
         elTbl.style.display = "table";
         renderMainTable();
         updateCount();
       } catch (err) {
         console.error(err);
-        setStatus("載入失敗：" + err.message, true);
+        setStatus("載入失敗：" + (err?.message || String(err)), true);
       }
     }
+
     init();
   </script>
-</body>
-</html>
+</section>
