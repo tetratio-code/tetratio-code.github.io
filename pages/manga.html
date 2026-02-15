@@ -40,7 +40,11 @@
     }
     #manga-viewer .toolbar-inner{
       max-width: 1100px;
-      margin: 0 auto;
+      #manga-viewer figure{
+        margin: 0 auto;
+        width: var(--img-width);
+        position: relative;
+      }
       padding: 10px 14px;
       display:flex;
       gap: 12px;
@@ -177,8 +181,8 @@
 
       <div class="control">
         <label for="manga-staggerRange">錯動</label>
-        <input id="manga-staggerRange" type="range" min="-200" max="200" step="1" value="40">
-        <input id="manga-staggerNum" type="number" min="-200" max="200" step="1" value="40"> px
+        <input id="manga-staggerRange" type="range" min="-200" max="200" step="1" value="0">
+        <input id="manga-staggerNum" type="number" min="-200" max="200" step="1" value="0"> px
       </div>
 
       <button id="manga-toggleStagger" type="button" aria-pressed="true">關閉錯動</button>
@@ -249,9 +253,23 @@
         root.style.setProperty("--img-width", `min(${v}px, 92vw)`);
         widthRange.value = v;
         widthNum.value = v;
+        if (staggerEnabled) syncDefaultStaggerFromWidth();
         savePrefs();
       }
-
+      function syncDefaultStaggerFromWidth() {
+        // 以目前「等寬 px」計算：寬度 / 23
+        const w = Number(widthRange.value) || 920;
+        const target = Math.round(w / 23);
+      
+        // 若 min/max 不夠大，就自動擴張，避免被 clamp 掉
+        const maxAbs = Math.max(Math.abs(Number(staggerRange.min)), Math.abs(Number(staggerRange.max)), target);
+        staggerRange.min = String(-maxAbs);
+        staggerRange.max = String(maxAbs);
+        staggerNum.min = String(-maxAbs);
+        staggerNum.max = String(maxAbs);
+      
+        setStagger(target);
+      }
       // ====== UI：錯動 ======
       const staggerRange = document.getElementById("manga-staggerRange");
       const staggerNum = document.getElementById("manga-staggerNum");
@@ -321,7 +339,7 @@
       // ====== 啟動 ======
       buildPages();
       setWidth(Number(widthRange.value));
-      setStagger(Number(staggerRange.value));
+      syncDefaultStaggerFromWidth();
       setStaggerEnabled(true);
       loadPrefs();
     })();
