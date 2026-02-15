@@ -34,12 +34,24 @@
     }
     #rank-rules td { white-space: pre-wrap; word-break: break-word; }
 
-    #rank-rules .rowhead {
-      position: sticky; left: 0; z-index: 1;
-      background: #fafafa;
-      font-weight: 700;
-      border-right: 1px solid #eee;
-      white-space: nowrap;
+    #rank-rules th {
+      position: sticky;
+      top: 0;
+      z-index: 2;          /* 表頭層級 */
+      background: #fafafa; /* 一定要有背景，避免透出 */
+    }
+    
+    #rank-rules td.rowhead,
+    #rank-rules th.rowhead {
+      position: sticky;
+      left: 0;
+      z-index: 3;          /* 左側欄層級，要比一般 td 高 */
+      background: #fafafa; /* 一定要有背景 */
+    }
+    
+    #rank-rules thead th.rowhead {
+      z-index: 4;          /* 必須比 rowhead(3) 還高 */
+      background: #fafafa; /* 背景實心 */
     }
 
     #rank-rules ul { margin: 8px 0 0; padding-left: 18px; }
