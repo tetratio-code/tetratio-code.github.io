@@ -106,8 +106,9 @@
       margin: 0;
       width: 100%;
       display: flex;
-      justify-content: center;
+      justify-content: center; /* 確保內容永遠居中 */
       position: relative;
+      padding: 0; /* 重要：確保容器本身沒有內距 */
     }
     
     #manga-viewer img.page{
@@ -123,13 +124,15 @@
       transition: transform 120ms ease;
     }
     
-    #manga-viewer figure[data-index="odd"]{
-      padding-left: var(--stagger);
-      padding-right: 0;
+    /* 新增：使用 transform 來達成錯動，不影響佈局中心點 */
+    #manga-viewer figure[data-index="odd"] img.page {
+      /* 奇數頁向右偏移 */
+      transform: translateX(var(--stagger));
     }
-    #manga-viewer figure[data-index="even"]{
-      padding-left: 0;
-      padding-right: var(--stagger);
+
+    #manga-viewer figure[data-index="even"] img.page {
+      /* 偶數頁向左偏移 (將變數乘以 -1) */
+      transform: translateX(calc(var(--stagger) * -1));
     }
 
     #manga-viewer .badge{
@@ -183,7 +186,7 @@
 
       <button id="manga-toggleStagger" type="button" aria-pressed="true">關閉錯動</button>
 
-      <div class="hint">滑鼠滾輪向下瀏覽（一般頁面捲動即可1）</div>
+      <div class="hint">滑鼠滾輪向下瀏覽（一般頁面捲動即可2）</div>
     </div>
   </div>
 
