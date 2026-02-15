@@ -1,15 +1,13 @@
 <section id="manga-viewer" class="manga-viewer" aria-label="manga viewer">
   <style>
-    /* ========= Root ========= */
     #manga-viewer{
       --page-bg:#0b0d10;
       --panel-bg:rgba(20,24,30,.75);
       --text:#e9eef6;
       --muted:#9aa7b5;
 
-      --img-width: 920px;   /* ✅ 用純 px，JS 會改它；縮小交給 frame 的 max-width */
-      --stagger: 40px;      /* 錯動量 */
-      --img-shift: 0px;     /* 視覺置中微調（可選） */
+      --img-width: 920px;   /* ✅ 用純 px，JS 會改 */
+      --stagger: 40px;      /* ✅ 錯動量（作用在 frame，不作用在 img） */
       --gap: 16px;
 
       font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans TC", Arial, sans-serif;
@@ -26,12 +24,15 @@
       border: 1px solid rgba(255,255,255,.08);
     }
 
-    /* ========= Toolbar ========= */
     #manga-viewer .toolbar{
       position: relative;
       width: 100%;
       backdrop-filter: blur(10px);
-      background: linear-gradient(to bottom, rgba(10,12,16,.9), rgba(10,12,16,.55));
+      background: linear-gradient(
+        to bottom,
+        rgba(10,12,16,.9),
+        rgba(10,12,16,.55)
+      );
       border-bottom: 1px solid rgba(255,255,255,.08);
     }
     #manga-viewer .toolbar-inner{
@@ -89,8 +90,7 @@
     }
     #manga-viewer button:hover{ background: rgba(255,255,255,.10); }
 
-    /* ========= Content ========= */
-    /* ✅ 不要再用 max-width 1100 當中線基準，避免縮放時「看起來偏」 */
+    /* ✅ 不要用 max-width:1100 當內容區基準（這會讓你覺得中心漂移） */
     #manga-viewer .wrap{
       max-width: none;
       margin: 0;
@@ -102,10 +102,10 @@
       flex-direction: column;
       gap: var(--gap);
       width: 100%;
-      align-items: stretch; /* ✅ 子元素吃滿寬，避免 shrink-to-fit */
+      align-items: stretch;          /* ✅ 子項永遠滿寬 */
     }
 
-    /* ✅ figure 永遠滿寬、不會因圖片大小改變而縮 */
+    /* ✅ figure 永遠滿寬，不會 shrink-to-fit */
     #manga-viewer figure{
       width: 100%;
       min-width: 100%;
@@ -113,7 +113,7 @@
       margin: 0;
       padding: 0;
       display: flex;
-      justify-content: center;
+      justify-content: center;       /* ✅ 中心基準固定 */
       position: relative;
     }
 
@@ -131,36 +131,34 @@
       z-index: 2;
     }
 
-    /* ✅ frame 是固定置中的「視窗」，永遠用 --img-width 但也不超過 92vw */
+    /* ✅ frame 固定置中 + 可左右錯動（錯動作用在 frame） */
     #manga-viewer .frame{
       width: var(--img-width);
       max-width: 92vw;
-      overflow: hidden;
 
+      overflow: hidden;             /* ✅ 只用來保持圓角；不再裁切錯動圖片（因為 img 不動） */
       border-radius: 14px;
       box-shadow: 0 10px 35px rgba(0,0,0,.35);
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
+
+      transform: translateX(0);
+      transition: transform 120ms ease;
+      will-change: transform;
     }
 
-    /* ✅ 圖片吃滿 frame，所有位移都在這裡做，不影響布局寬度 */
+    /* ✅ 圖片永遠吃滿 frame，不做位移 => 不會被裁切 */
     #manga-viewer img.page{
       width: 100%;
       height: auto;
       display:block;
       margin: 0;
-      transform: translateX(0);
-      transform-origin: 50% 50%;
-      transition: transform 120ms ease;
+      transform: none !important;
     }
 
-    /* ✅ 錯動 + 視覺置中微調：兩者相加 */
-    #manga-viewer figure[data-index="odd"]  img.page{
-      transform: translateX(calc(var(--img-shift) + var(--stagger)));
-    }
-    #manga-viewer figure[data-index="even"] img.page{
-      transform: translateX(calc(var(--img-shift) - var(--stagger)));
-    }
+    /* ✅ 錯動移到 frame，不會裁切圖片內容 */
+    #manga-viewer figure[data-index="odd"]  .frame{ transform: translateX(var(--stagger)); }
+    #manga-viewer figure[data-index="even"] .frame{ transform: translateX(calc(var(--stagger) * -1)); }
 
     #manga-viewer .footer{
       text-align:center;
@@ -194,13 +192,13 @@
 
       <div class="control">
         <label for="manga-staggerRange">錯動</label>
-        <input id="manga-staggerRange" type="range" min="-200" max="200" step="1" value="40">
-        <input id="manga-staggerNum" type="number" min="-200" max="200" step="1" value="40"> px
+        <input id="manga-staggerRange" type="range" min="-400" max="400" step="1" value="40">
+        <input id="manga-staggerNum" type="number" min="-400" max="400" step="1" value="40"> px
       </div>
 
       <button id="manga-toggleStagger" type="button" aria-pressed="true">關閉錯動</button>
 
-      <div class="hint">滑鼠滾輪向下瀏覽（一般頁面捲動即可1）</div>
+      <div class="hint">滑鼠滾輪向下瀏覽（一般頁面捲動即可2）</div>
     </div>
   </div>
 
@@ -258,11 +256,9 @@
         stack.appendChild(frag);
       }
 
-      // ====== UI：等寬 ======
       const widthRange = document.getElementById("manga-widthRange");
       const widthNum = document.getElementById("manga-widthNum");
 
-      // ====== UI：錯動 ======
       const staggerRange = document.getElementById("manga-staggerRange");
       const staggerNum = document.getElementById("manga-staggerNum");
       const toggleBtn = document.getElementById("manga-toggleStagger");
@@ -275,33 +271,19 @@
         widthRange.value = v;
         widthNum.value = v;
 
-        // 預設錯動 = 寬度 / 23（你要的規則）
         if (staggerEnabled) syncDefaultStaggerFromWidth();
-
         savePrefs();
       }
 
       function syncDefaultStaggerFromWidth() {
         const w = Number(widthRange.value) || 920;
         const target = Math.round(w / 23);
-
-        // 自動擴張 min/max 以免被 clamp
-        const maxAbs = Math.max(
-          Math.abs(Number(staggerRange.min)),
-          Math.abs(Number(staggerRange.max)),
-          target
-        );
-        staggerRange.min = String(-maxAbs);
-        staggerRange.max = String(maxAbs);
-        staggerNum.min = String(-maxAbs);
-        staggerNum.max = String(maxAbs);
-
         setStagger(target);
       }
 
       function setStagger(px) {
         const v = clamp(px, Number(staggerRange.min), Number(staggerRange.max));
-        root.style.setProperty("--stagger", `${v}px`);
+        root.style.setProperty("--stagger", `${staggerEnabled ? v : 0}px`);
         staggerRange.value = v;
         staggerNum.value = v;
         savePrefs();
@@ -315,13 +297,7 @@
         savePrefs();
       }
 
-      // ✅ 可選：如果你要修圖檔主體偏（視覺置中），調這個即可（不會跟縮放打架）
-      function setImgShift(px) {
-        root.style.setProperty("--img-shift", `${px}px`);
-      }
-
-      // ====== 偏好保存 ======
-      const KEY = "manga_viewer_prefs_v2";
+      const KEY = "manga_viewer_prefs_v3";
       function savePrefs() {
         try {
           localStorage.setItem(KEY, JSON.stringify({
@@ -342,7 +318,6 @@
         } catch {}
       }
 
-      // ====== 避免 SPA 重複注入疊加事件 ======
       widthRange.oninput = null;
       widthNum.onchange = null;
       staggerRange.oninput = null;
@@ -363,10 +338,8 @@
 
       toggleBtn.addEventListener("click", () => setStaggerEnabled(!staggerEnabled));
 
-      // ====== 啟動 ======
       buildPages();
-      setImgShift(0);                 // ✅ 不想視覺偏移就保持 0
-      setWidth(Number(widthRange.value));
+      setWidth(Number(widthRange.value));  // 會順便把預設錯動設成寬度/23
       setStaggerEnabled(true);
       loadPrefs();
     })();
