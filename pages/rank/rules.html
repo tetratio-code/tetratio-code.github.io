@@ -1,0 +1,223 @@
+<section id="rank-rules" class="rank-rules">
+  <style>
+    /* 只作用在本片段，避免影響全站 */
+    #rank-rules { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans TC", Arial, sans-serif; }
+    #rank-rules .rank-top { display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between; margin: 0 0 12px 0; }
+    #rank-rules .rank-tabs { display:flex; gap:8px; flex-wrap:wrap; }
+    #rank-rules .rank-tab {
+      display:inline-block; padding:8px 12px; border:1px solid #e8e8e8; border-radius:999px;
+      text-decoration:none; color:#111; background:#fff;
+    }
+    #rank-rules .rank-tab.active { background:#111; color:#fff; border-color:#111; }
+
+    #rank-rules h3 { margin: 14px 0 8px; }
+    #rank-rules h3:first-of-type { margin-top: 0; }
+    #rank-rules .hint { color:#666; font-size: 14px; margin: 0 0 10px; }
+
+    #rank-rules .card {
+      background:#fff; border:1px solid #eee; border-radius:14px; padding:14px;
+      box-shadow: 0 2px 12px rgba(0,0,0,.04);
+      margin: 12px 0;
+    }
+
+    #rank-rules .table-wrap {
+      border:1px solid #ddd; border-radius: 12px; overflow:auto; background:#fff;
+      box-shadow: 0 2px 12px rgba(0,0,0,.04);
+    }
+    #rank-rules table { border-collapse: collapse; width: 100%; min-width: 880px; }
+    #rank-rules th, #rank-rules td { border-bottom: 1px solid #eee; padding: 10px 12px; vertical-align: top; }
+    #rank-rules th {
+      position: sticky; top: 0; z-index: 2;
+      background: #fafafa;
+      text-align: left;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    #rank-rules td { white-space: pre-wrap; word-break: break-word; }
+
+    #rank-rules .rowhead {
+      position: sticky; left: 0; z-index: 3;
+      background: #fafafa;
+      font-weight: 700;
+      border-right: 1px solid #eee;
+      white-space: nowrap;
+    }
+
+    #rank-rules ul { margin: 8px 0 0; padding-left: 18px; }
+    #rank-rules li { margin: 6px 0; }
+    #rank-rules code { background: #f6f6f6; border:1px solid #e9e9e9; padding:2px 6px; border-radius:6px; }
+    #rank-rules .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
+    #rank-rules .note {
+      color:#666; font-size: 13px; margin-top: 10px;
+      border-left: 4px solid #eee; padding-left: 10px;
+    }
+  </style>
+
+  <!-- 子分頁 -->
+  <div class="rank-top">
+    <div class="rank-tabs">
+      <a class="rank-tab" href="/rank/list" data-link>選手名單</a>
+      <a class="rank-tab active" href="/rank/rules" data-link>段級位規則</a>
+    </div>
+  </div>
+
+  <h3 style="margin:0 0 6px 0;">段級位規則</h3>
+  <p class="hint">本頁內容由協會規範整理；表格內容請自行填入。</p>
+
+  <!-- 第一張表格 -->
+  <div class="card">
+    <h3>第一張表格：段級位與所需積分／賽事對照</h3>
+    <div class="table-wrap" aria-label="段級位與積分對照表">
+      <table>
+        <thead>
+          <tr>
+            <th class="rowhead">段級位</th>
+            <th>所需積分</th>
+            <th>世界賽</th>
+            <th>日本名人戰(200人)</th>
+            <th>全國賽</th>
+            <th>對應等級分</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="rowhead">九段</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td class="rowhead">八段</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td class="rowhead">七段</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td class="rowhead">六段</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td class="rowhead">五段</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td class="rowhead">四段</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td class="rowhead">三段</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td class="rowhead">二段</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td class="rowhead">初段</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td class="rowhead">１級</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td class="rowhead">２級</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td class="rowhead">３級</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td class="rowhead">４級</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td class="rowhead">５級</td><td></td><td></td><td></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">※ 表格內容留空，請自行填入各段級位對應之「所需積分／賽事／等級分」。</div>
+  </div>
+
+  <!-- 第二張表格 -->
+  <div class="card">
+    <h3>第二張表格：賽事等級與冠軍積分</h3>
+    <div class="table-wrap" aria-label="賽事等級與冠軍積分對照表">
+      <table>
+        <thead>
+          <tr>
+            <th class="rowhead">賽事等級</th>
+            <th>冠軍積分</th>
+            <th>對應賽事</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="rowhead">九段</td><td></td><td></td></tr>
+          <tr><td class="rowhead">八段</td><td></td><td></td></tr>
+          <tr><td class="rowhead">七段半</td><td></td><td></td></tr>
+          <tr><td class="rowhead">七段</td><td></td><td></td></tr>
+          <tr><td class="rowhead">六段</td><td></td><td></td></tr>
+          <tr><td class="rowhead">五段半</td><td></td><td></td></tr>
+          <tr><td class="rowhead">五段</td><td></td><td></td></tr>
+          <tr><td class="rowhead">四段半</td><td></td><td></td></tr>
+          <tr><td class="rowhead">四段</td><td></td><td></td></tr>
+          <tr><td class="rowhead">三段半</td><td></td><td></td></tr>
+          <tr><td class="rowhead">三段</td><td></td><td></td></tr>
+          <tr><td class="rowhead">二段</td><td></td><td></td></tr>
+          <tr><td class="rowhead">初段</td><td></td><td></td></tr>
+          <tr><td class="rowhead">１級</td><td></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">※ 表格內容留空，請自行填入各賽事等級之「冠軍積分／對應賽事」。</div>
+  </div>
+
+  <!-- 段位對應 -->
+  <div class="card">
+    <h3>段位對應</h3>
+    <ul>
+      <li><b>十段</b>：具備統治力，唯一獲得方式是三年內拿兩次世界冠軍（井上博、為則英司、村上健、Ben Seely、高梨悠介、栗田誠矢）</li>
+      <li><b>九段</b>：具備世界冠軍實力</li>
+      <li><b>八段</b>：具備進世界賽冠亞軍戰的實力</li>
+      <li><b>七段</b>：具備進世界賽決賽圈的實力、在日本三大賽奪一冠</li>
+      <li><b>六段</b>：具備進世界賽八強的實力、在日本三大賽進冠亞軍戰</li>
+      <li><b>五段</b>：在全國賽具統治力、在日本三大賽進決賽圈</li>
+      <li><b>四段</b>：具備全國冠軍實力、在日本三大賽入賞</li>
+      <li><b>三段</b>：具備進全國冠亞軍戰的實力、在區域賽具統治力</li>
+      <li><b>二段</b>：具備進全國賽決賽圈的實力</li>
+      <li><b>初段</b>：具備進全國賽八強的實力、在區域賽奪冠</li>
+      <li><b>１級</b>：進區域賽冠亞軍戰</li>
+      <li><b>２級</b>：進區域賽四強、具備地區小型賽事奪冠的實力</li>
+      <li><b>３級</b>：進區域賽八強、具備進地區小型賽事冠亞軍戰的實力</li>
+      <li><b>４級</b>：具備進地區小型賽事四強的實力</li>
+      <li><b>５級</b>：初嘗戰果</li>
+      <li><b>６級</b>：努力不懈的挑戰者</li>
+      <li><b>７級</b>：跨出第三步</li>
+      <li><b>８級</b>：跨出第二步</li>
+      <li><b>９級</b>：初出茅廬，跨出第一步</li>
+    </ul>
+  </div>
+
+  <!-- 積分規則 -->
+  <div class="card">
+    <h3>積分規則</h3>
+    <ul>
+      <li>積分總和達到對應級段位後，即取得升至該級段位之資格。</li>
+      <li>採計近三年內最高 4 場比賽積分之總和，其中年份以完整西元年計。</li>
+      <li>世界賽以外的賽事，勝場數相同時並列名次，並以最高名次計算積分。</li>
+      <li>
+        段位對應之積分：
+        5級對應 1 分、4級對應 2 分、3級對應 4 分、2級對應 8 分、1級對應 16 分、
+        初段對應 32 分，之後每高一段對應積分為前一段之兩倍，最高為九段對應 8192 分。
+      </li>
+    </ul>
+  </div>
+
+  <!-- 計算方式 -->
+  <div class="card">
+    <h3>計算方式</h3>
+    <ul>
+      <li>在正式比賽中取得冠軍，則取得「冠軍積分」。</li>
+      <li>
+        <b>82 人以下</b>之正式比賽（依名次計算）：
+        <span class="mono">段差 = 10 * (名次 - 1) / (名次 + 8)</span>
+      </li>
+      <li>
+        <b>83 人以上</b>之正式比賽（依名次計算）：
+        <span class="mono">段差 = 90 * (名次 - 1) / (名次*9 + 參賽人數 - 10)</span>
+      </li>
+      <li>
+        根據前述名次計算出之段差，該場比賽所得積分為：
+        <span class="mono">冠軍積分 / 2^段差</span>（小數點下無條件捨去）
+      </li>
+    </ul>
+
+    <h3>日本比賽採計以下積分算法</h3>
+    <ul>
+      <li>
+        <b>65 人以下</b>之日本正式比賽（依名次計算）：
+        <span class="mono">段差 = 9 * (名次 - 1) / (名次 + 7)</span>
+      </li>
+      <li>
+        <b>66 人以上</b>之日本正式比賽（依名次計算）：
+        <span class="mono">段差 = 72 * (名次 - 1) / (名次*8 + 參賽人數 - 9)</span>
+      </li>
+      <li>
+        根據前述名次計算出之段差，該場比賽所得積分為：
+        <span class="mono">冠軍積分 / 2^段差</span>（小數點下無條件捨去）
+      </li>
+    </ul>
+
+    <h3>近三年內未取得比賽積分者之採計</h3>
+    <ul>
+      <li>依其中最多 4 場之勝局數依下列方式升級：</li>
+      <li>參與一場賽事得 0.1 積分，其中每一勝再得 0.1 積分。</li>
+      <li>9級對應 0.1 分、8級對應 0.3 分、7級對應 0.5 分、6級對應 0.7 分。</li>
+    </ul>
+
+    <div class="note">
+      ※ 本段規則含公式與門檻，建議日後若要對外公告，將「名次／參賽人數」等名詞定義與範例計算另列成附錄，避免解讀差異。
+    </div>
+  </div>
+</section>
