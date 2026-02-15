@@ -29,12 +29,12 @@
 <body>
   <header>
     <div class="wrap">
-      <a class="brand" href="/" data-link>台灣黑白棋協會v1.4C</a>
+      <a class="brand" href="/" data-link>台灣黑白棋協會v1.5</a>
       <nav>
         <a href="/about" data-link>關於協會</a>
         <a href="/tournaments" data-link>比賽資訊</a>
         <a href="/learning" data-link>學習資源</a>
-        <a href="/rank" data-link>段位查詢</a>
+        <a href="/rank/list" data-link>段位查詢</a>
         <a href="/fun" data-link>休閒娛樂</a>
       </nav>
     </div>
@@ -83,11 +83,26 @@
         subtitle: "規則、教材、戰術與練習。",
         file: "/pages/learning.html"
       },
-      "/rank": {
-        title: "段位查詢",
+
+      // ✅ 新增：段位查詢拆兩頁
+      "/rank/list": {
+        title: "段位查詢｜選手名單",
         subtitle: "查詢選手段位、歷史成績與排名。",
-        file: "/pages/rank.html"
+        file: "/pages/rank/list.html"
       },
+      "/rank/rules": {
+        title: "段位查詢｜段級位規則",
+        subtitle: "段級位取得、升段規範與認定方式。",
+        file: "/pages/rank/rules.html"
+      },
+
+      // ✅ 保留舊路由：/rank 直接導到 /rank/list
+      "/rank": {
+        title: "段位查詢｜選手名單",
+        subtitle: "查詢選手段位、歷史成績與排名。",
+        file: "/pages/rank/list.html"
+      },
+
       "/fun": {
         title: "休閒娛樂",
         subtitle: "小遊戲、棋譜分享、趣味內容。",
@@ -96,7 +111,12 @@
     };
 
     function matchRoute(pathname) {
-      return routes[pathname] ? pathname : "/";
+      if (routes[pathname]) return pathname;
+      if (pathname.length > 1 && pathname.endsWith("/")) {
+        const p2 = pathname.slice(0, -1);
+        if (routes[p2]) return p2;
+      }
+      return "/";
     }
 
     function setActiveNav(pathname) {
@@ -108,6 +128,7 @@
     function setLearnMode(isOn) {
       document.body.classList.toggle("learn-mode", isOn);
     }
+
     // 快取已載入的片段（避免重複 fetch）
     const pageCache = new Map();
 
@@ -130,16 +151,13 @@
       document.getElementById("page-subtitle").textContent = r.subtitle;
       setActiveNav(key);
       document.title = `台灣黑白棋協會｜${r.title}`;
-    
+
       const app = document.getElementById("app");
       app.innerHTML = `<p class="loading">載入中…</p>`;
-    
+
       try {
         const html = await loadFragment(r.file);
-    
-        // ✅ 這行取代 app.innerHTML = html;
         await injectHtmlAndRunScripts(app, html);
-    
       } catch (err) {
         app.innerHTML = `
           <p class="error">內容載入失敗。</p>
@@ -152,30 +170,25 @@
     async function injectHtmlAndRunScripts(container, htmlText) {
       const tpl = document.createElement("template");
       tpl.innerHTML = htmlText;
-    
+
       // 先把 scripts 抓出來，避免直接 innerHTML 時不執行
       const scripts = Array.from(tpl.content.querySelectorAll("script"));
       scripts.forEach(s => s.remove());
-    
+
       // 先塞入純 HTML
       container.innerHTML = "";
       container.appendChild(tpl.content);
-    
+
       // 再重新建立 script，讓它真的執行
       for (const old of scripts) {
         const s = document.createElement("script");
-    
-        // 複製所有 attributes（src/type/defer/async 等）
         for (const attr of Array.from(old.attributes)) {
           s.setAttribute(attr.name, attr.value);
         }
-    
-        // inline script
         if (!old.src) s.textContent = old.textContent;
-    
+
         document.body.appendChild(s);
-    
-        // 若是外部 script，等它載入完成（避免依賴順序出錯）
+
         if (old.src) {
           await new Promise((res, rej) => {
             s.onload = res;
@@ -189,8 +202,6 @@
     document.addEventListener("click", (e) => {
       const a = e.target.closest("a[data-link]");
       if (!a) return;
-
-      // 只攔截同源左鍵點擊（避免影響新分頁、下載等）
       if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
 
       e.preventDefault();
