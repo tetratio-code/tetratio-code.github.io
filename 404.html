@@ -7,41 +7,33 @@
   <meta name="robots" content="noindex" />
 </head>
 <body>
-  <script>
-(function () {
-  var l = window.location;
-
-  if (l.search.indexOf("p=") !== -1) return;
-
-  var path = l.pathname;
-  var parts = path.split("/").filter(Boolean); // ["repo", "xxx", ...]
-  var first = parts[0] || "";
-
-  // ✅ 把你的 project pages repo 名稱列在這裡
-  var projectRepos = new Set([
-    "Dan",
-    "Squares"
-  ]);
-
-  // User page 的 SPA：segmentCount=0
-  // 但如果路徑第一段是某個 repo，就把它當成 project page（segmentCount=1）
-  var segmentCount = projectRepos.has(first) ? 1 : 0;
-
-  var base = path.split("/").slice(0, 1 + segmentCount).join("/");
-  var rest = "/" + path.split("/").slice(1 + segmentCount).join("/");
-  rest = rest.replace(/\/404\.html$/, "/");
-  if (rest === "//" || rest === "") rest = "/";
-
-  var newUrl =
-    l.origin +
-    base +
-    "/?p=" + encodeURIComponent(rest) +
-    "&q=" + encodeURIComponent(l.search.slice(1)) +
-    "&h=" + encodeURIComponent(l.hash.slice(1));
-
-  l.replace(newUrl);
-})();
-</script>
-
+    <script>
+  (function () {
+    var l = window.location;
+  
+    // ✅ 已經有 p= 就不要再做任何 redirect，避免迴圈
+    if (l.search.indexOf("p=") !== -1) return;
+  
+    // Project Pages: https://username.github.io/repo/  => segmentCount = 1
+    // User Pages:    https://username.github.io/       => segmentCount = 0
+    var segmentCount = 0;
+  
+    var path = l.pathname;
+    var base = path.split("/").slice(0, 1 + segmentCount).join("/");
+  
+    var rest = "/" + path.split("/").slice(1 + segmentCount).join("/");
+    rest = rest.replace(/\/404\.html$/, "/");
+    if (rest === "//" || rest === "") rest = "/";
+  
+    var newUrl =
+      l.origin +
+      base +
+      "/?p=" + encodeURIComponent(rest) +
+      "&q=" + encodeURIComponent(l.search.slice(1)) +
+      "&h=" + encodeURIComponent(l.hash.slice(1));
+  
+    l.replace(newUrl);
+  })();
+  </script>
 </body>
 </html>
