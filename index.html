@@ -49,7 +49,6 @@
   </main>
 
   <script>
-    // ====== (A) 還原 404.html 帶回來的路徑 ======
     (function restorePathFrom404() {
       var url = new URL(window.location.href);
       var p = url.searchParams.get("p");
@@ -70,32 +69,26 @@
       },
       "/about": {
         title: "關於協會",
-        subtitle: "協會宗旨、沿革、章程與聯絡方式。",
         file: "/pages/about.html"
       },
       "/tournaments": {
         title: "比賽資訊",
-        subtitle: "賽事行事曆、報名方式、賽程與成績。",
         file: "/pages/tournaments.html"
       },
       "/learning": {
         title: "學習資源",
-        subtitle: "規則、教材、戰術與練習。",
         file: "/pages/learning.html"
       },
       "/rank/list": {
         title: "段位查詢｜選手名單",
-        subtitle: "查詢選手段位、歷史成績與排名。",
         file: "/pages/rank/list.html"
       },
       "/rank/rules": {
         title: "段位查詢｜段級位規則",
-        subtitle: "段級位取得、升段規範與認定方式。",
         file: "/pages/rank/rules.html"
       },
       "/fun": {
         title: "休閒娛樂",
-        subtitle: "小遊戲、棋譜分享、趣味內容。",
         file: "/pages/manga.html"
       }
     };
@@ -119,9 +112,7 @@
       document.body.classList.toggle("learn-mode", isOn);
     }
 
-    // 快取已載入的片段（避免重複 fetch）
     const pageCache = new Map();
-
     async function loadFragment(file) {
       if (pageCache.has(file)) return pageCache.get(file);
 
@@ -161,15 +152,11 @@
       const tpl = document.createElement("template");
       tpl.innerHTML = htmlText;
 
-      // 先把 scripts 抓出來，避免直接 innerHTML 時不執行
       const scripts = Array.from(tpl.content.querySelectorAll("script"));
       scripts.forEach(s => s.remove());
-
-      // 先塞入純 HTML
       container.innerHTML = "";
       container.appendChild(tpl.content);
 
-      // 再重新建立 script，讓它真的執行
       for (const old of scripts) {
         const s = document.createElement("script");
         for (const attr of Array.from(old.attributes)) {
@@ -188,22 +175,16 @@
       }
     }
 
-    // 攔截站內連結，改用 pushState
     document.addEventListener("click", (e) => {
       const a = e.target.closest("a[data-link]");
       if (!a) return;
       if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-
       e.preventDefault();
       const href = a.getAttribute("href");
       window.history.pushState(null, "", href);
       render(window.location.pathname);
     });
-
-    // 瀏覽器上一頁/下一頁
     window.addEventListener("popstate", () => render(window.location.pathname));
-
-    // 首次渲染
     render(window.location.pathname);
   </script>
 </body>
