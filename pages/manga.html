@@ -129,7 +129,25 @@
       /* 確保 transform 不會影響原始中心點位置 */
       transform-origin: center center; 
     }
-
+    /* 外框：固定置中 */
+    #manga-viewer .frame{
+      width: var(--img-width);
+      max-width: 92vw;
+      overflow: hidden;
+      border-radius: 14px;
+      box-shadow: 0 10px 35px rgba(0,0,0,.35);
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+    }
+    
+    /* 圖片吃滿 frame，並可做水平微移來視覺置中 */
+    #manga-viewer .frame img.page{
+      width: 100%;
+      max-width: none;
+      margin: 0;
+      display:block;
+      transform: translateX(var(--img-shift, 0px));
+    }
     /* 4. 錯動效果：只作用於位移，不影響佈局 */
     #manga-viewer figure[data-index="odd"] img.page {
       transform: translateX(var(--stagger));
@@ -279,8 +297,12 @@
             badge.textContent = `missing ${i}`;
           });
 
+          const frame = document.createElement("div");
+          frame.className = "frame";
+          frame.appendChild(img);
+          
           fig.appendChild(badge);
-          fig.appendChild(img);
+          fig.appendChild(frame);
           frag.appendChild(fig);
         }
 
@@ -292,7 +314,7 @@
 
       function setWidth(px) {
         const v = clamp(px, Number(widthRange.min), Number(widthRange.max));
-        root.style.setProperty("--img-width", `${v}px`);
+        root.style.setProperty("--img-shift", "-12px");
         widthRange.value = v;
         widthNum.value = v;
         if (staggerEnabled) syncDefaultStaggerFromWidth();
