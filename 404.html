@@ -8,32 +8,37 @@
 </head>
 <body>
     <script>
-  (function () {
-    var l = window.location;
-  
-    // ✅ 已經有 p= 就不要再做任何 redirect，避免迴圈
-    if (l.search.indexOf("p=") !== -1) return;
-  
-    // Project Pages: https://username.github.io/repo/  => segmentCount = 1
-    // User Pages:    https://username.github.io/       => segmentCount = 0
-    var segmentCount = 0;
-  
-    var path = l.pathname;
-    var base = path.split("/").slice(0, 1 + segmentCount).join("/");
-  
-    var rest = "/" + path.split("/").slice(1 + segmentCount).join("/");
-    rest = rest.replace(/\/404\.html$/, "/");
-    if (rest === "//" || rest === "") rest = "/";
-  
-    var newUrl =
-      l.origin +
-      base +
-      "/?p=" + encodeURIComponent(rest) +
-      "&q=" + encodeURIComponent(l.search.slice(1)) +
-      "&h=" + encodeURIComponent(l.hash.slice(1));
-  
-    l.replace(newUrl);
-  })();
+      (function () {
+        var l = window.location;
+        if (l.search.indexOf("p=") !== -1) return;
+      
+        var path = l.pathname;
+      
+        // 這裡列出你有哪些 repo pages
+        var repos = new Set(["repoA", "repoB", "repoC"]);
+      
+        var first = path.split("/").filter(Boolean)[0] || "";
+        if (repos.has(first)) {
+          // 不要導回 user index，直接停在 404（讓你知道其實是 repo pages 沒成功）
+          return;
+        }
+      
+        // 原本 user pages 的 redirect
+        var segmentCount = 0;
+        var base = path.split("/").slice(0, 1 + segmentCount).join("/");
+        var rest = "/" + path.split("/").slice(1 + segmentCount).join("/");
+        rest = rest.replace(/\/404\.html$/, "/");
+        if (rest === "//" || rest === "") rest = "/";
+      
+        var newUrl =
+          l.origin +
+          base +
+          "/?p=" + encodeURIComponent(rest) +
+          "&q=" + encodeURIComponent(l.search.slice(1)) +
+          "&h=" + encodeURIComponent(l.hash.slice(1));
+      
+        l.replace(newUrl);
+      })();
   </script>
 </body>
 </html>
