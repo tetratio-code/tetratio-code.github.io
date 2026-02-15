@@ -41,8 +41,10 @@
     #manga-viewer .toolbar-inner{
       max-width: 1100px;
       #manga-viewer figure{
-        margin: 0 auto;
-        width: var(--img-width);
+        margin: 0;
+        width: 100%;
+        display: flex;
+        justify-content: center;
         position: relative;
       }
       padding: 10px 14px;
@@ -116,7 +118,8 @@
       position: relative;
     }
     #manga-viewer img.page{
-      width: 100%;
+      width: var(--img-width);
+      max-width: 92vw;
       height: auto;
       display:block;
       border-radius: 14px;
@@ -124,6 +127,7 @@
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
       transform: translateX(0);
+      transform-origin: 50% 0%;
       transition: transform 120ms ease;
     }
 
@@ -250,7 +254,7 @@
 
       function setWidth(px) {
         const v = clamp(px, Number(widthRange.min), Number(widthRange.max));
-        root.style.setProperty("--img-width", `min(${v}px, 92vw)`);
+        root.style.setProperty("--img-width", `${v}px`);
         widthRange.value = v;
         widthNum.value = v;
         if (staggerEnabled) syncDefaultStaggerFromWidth();
