@@ -95,42 +95,42 @@
       margin: 0 auto;
       padding: 16px 12px 40px;
     }
-    /* 1. 確保外層堆疊容器佔滿寬度 */
+    /* 1. 修正頁面堆疊容器 */
     #manga-viewer .stack {
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: center; /* 確保所有 figure 在 stack 內水平置中 */
       gap: var(--gap);
-      width: 100%; /* 新增：確保寬度足夠 */
+      width: 100%;
     }
 
-    /* 2. 修正 figure 容器 */
+    /* 2. 修正 figure：改用 Grid 強制置中 */
     #manga-viewer figure {
       margin: 0;
-      padding: 0;   /* 移除所有內距，避免干擾 */
-      width: 100%;  /* 佔滿父容器寬度 */
-      display: block; /* 改為 block 方便內部圖片用 margin 置中 */
+      padding: 0 !important; /* 強制移除所有可能干擾的內距 */
+      width: 100%;
+      display: grid;         /* 改用 Grid */
+      place-items: center;   /* 這是 CSS 最強的置中指令 */
       position: relative;
-      text-align: center; /* 保險：讓行內元素也置中 */
     }
 
-    /* 3. 修正圖片定位 */
+    /* 3. 修正圖片：確保它是 Block 元素且寬度正確 */
     #manga-viewer img.page {
       width: var(--img-width);
       max-width: 92vw;
       height: auto;
-      display: block;    /* 必須是 block 才能使用 margin: auto */
-      margin: 0 auto;    /* 核心：這行確保圖片在 figure 內絕對置中 */
+      display: block;
+      margin: 0 auto;        /* 傳統保險：左右自動邊距 */
       border-radius: 14px;
       box-shadow: 0 10px 35px rgba(0,0,0,.35);
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
       transition: transform 120ms ease;
-      transform-origin: center top; /* 確保縮放或移動以中心為準 */
+      /* 確保 transform 不會影響原始中心點位置 */
+      transform-origin: center center; 
     }
 
-    /* 4. 僅透過 transform 處理錯動（不影響佈局） */
-    /* 移除舊有的 figure[data-index="odd"] padding 設定，改用以下： */
+    /* 4. 錯動效果：只作用於位移，不影響佈局 */
     #manga-viewer figure[data-index="odd"] img.page {
       transform: translateX(var(--stagger));
     }
@@ -188,7 +188,7 @@
 
       <button id="manga-toggleStagger" type="button" aria-pressed="true">關閉錯動</button>
 
-      <div class="hint">滑鼠滾輪向下瀏覽（一般頁面捲動即可3）</div>
+      <div class="hint">滑鼠滾輪向下瀏覽（一般頁面捲動即可4）</div>
     </div>
   </div>
 
