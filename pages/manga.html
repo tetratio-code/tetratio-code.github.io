@@ -17,7 +17,6 @@
 
     #manga-viewer *{ box-sizing:border-box; }
 
-    /* 片段容器背景（不要改 body） */
     #manga-viewer{
       border-radius: 14px;
       overflow: hidden;
@@ -107,22 +106,21 @@
       margin: 0;
       width: 100%;
       display: flex;
-      justify-content: center; 
+      justify-content: center;
       position: relative;
-    
-      padding-left: 0;
-      padding-right: 0;
     }
     
     #manga-viewer img.page{
       width: var(--img-width);
       max-width: 92vw;
       height: auto;
-      display: block;
+      display:block;
       border-radius: 14px;
       box-shadow: 0 10px 35px rgba(0,0,0,.35);
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
+      transform-origin: 50% 0%;
+      transition: transform 120ms ease;
     }
     
     #manga-viewer figure[data-index="odd"]{
@@ -185,7 +183,7 @@
 
       <button id="manga-toggleStagger" type="button" aria-pressed="true">關閉錯動</button>
 
-      <div class="hint">滑鼠滾輪向下瀏覽（一般頁面捲動即可）</div>
+      <div class="hint">滑鼠滾輪向下瀏覽（一般頁面捲動即可1）</div>
     </div>
   </div>
 
