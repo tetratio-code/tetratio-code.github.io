@@ -8,39 +8,32 @@
 </head>
 <body>
   <script>
-    (function () {
-      var l = window.location;
-    
-      // 防止無限包 p=
-      if (l.search.indexOf("p=") !== -1) {
-        l.replace(l.origin + l.pathname.replace(/\/404\.html$/, "/"));
-        return;
-      }
-    
-      var parts = l.pathname.split("/").filter(Boolean);
-    
-      // base: User Pages => ""；Project Pages => "/repo"
-      var base = "";
-      if (l.hostname.endsWith("github.io") && parts.length > 0) {
-        // 若不是 username.github.io 這個 repo，本質上就是 project pages
-        // 但這裡用通用規則：取第一段當 base
-        base = "/" + parts[0];
-      }
-    
-      var rest = l.pathname;
-      if (base && rest.startsWith(base)) rest = rest.slice(base.length);
-      rest = rest.replace(/\/404\.html$/, "/");
-      if (!rest || rest === "/") rest = "/";
-    
-      var newUrl =
-        l.origin +
-        base +
-        "/?p=" + encodeURIComponent(rest) +
-        "&q=" + encodeURIComponent(l.search.slice(1)) +
-        "&h=" + encodeURIComponent(l.hash.slice(1));
-    
-      l.replace(newUrl);
-    })();
+  (function () {
+    var l = window.location;
+  
+    // ✅ 已經有 p= 就不要再做任何 redirect，避免迴圈
+    if (l.search.indexOf("p=") !== -1) return;
+  
+    // Project Pages: https://username.github.io/repo/  => segmentCount = 1
+    // User Pages:    https://username.github.io/       => segmentCount = 0
+    var segmentCount = 1; // ← 你現在這個例子是 /pages/，所以要 1
+  
+    var path = l.pathname;
+    var base = path.split("/").slice(0, 1 + segmentCount).join("/");
+  
+    var rest = "/" + path.split("/").slice(1 + segmentCount).join("/");
+    rest = rest.replace(/\/404\.html$/, "/");
+    if (rest === "//" || rest === "") rest = "/";
+  
+    var newUrl =
+      l.origin +
+      base +
+      "/?p=" + encodeURIComponent(rest) +
+      "&q=" + encodeURIComponent(l.search.slice(1)) +
+      "&h=" + encodeURIComponent(l.hash.slice(1));
+  
+    l.replace(newUrl);
+  })();
   </script>
 </body>
 </html>
