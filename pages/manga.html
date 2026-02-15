@@ -1,30 +1,45 @@
 <section class="manga">
-  <h3 class="manga-title">《游泳的金魚》</h3>
-  <p class="manga-subtitle">往下滾動瀏覽。圖片來源：<code>data/manga/</code></p>
+  <h3 class="manga-title">棋界漫畫（1–30）</h3>
 
-  <div id="manga-list" class="manga-list" aria-live="polite"></div>
+  <div class="controls">
+    <label>
+      偏移距離：
+      <input id="offsetRange" type="range" min="0" max="0.2" step="0.002" />
+      <span id="offsetValue"></span>
+    </label>
+    <button id="toggleOffset">關閉偏移</button>
+  </div>
 
-  <div id="manga-status" class="manga-status"></div>
+  <div id="manga-list" class="manga-list"></div>
 </section>
 
 <style>
-  .manga {
-    padding: 8px 0;
-  }
-  .manga-title {
-    margin: 0 0 6px;
-    font-size: 20px;
-  }
-  .manga-subtitle {
-    margin: 0 0 14px;
-    color: #666;
-    line-height: 1.5;
+  .manga { padding: 8px 0; }
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 16px;
   }
 
-  /* 圖片等寬、置中、可向下捲動（頁面本身就可捲） */
+  .controls input[type="range"] {
+    width: 220px;
+    vertical-align: middle;
+  }
+
+  .controls button {
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid #ddd;
+    background: #fff;
+    cursor: pointer;
+  }
+
   .manga-list {
     display: grid;
-    gap: 14px;
+    gap: 18px;
   }
 
   .manga-item {
@@ -38,72 +53,86 @@
     display: block;
     border-radius: 12px;
     border: 1px solid #eee;
-    background: #fff;
-  }
-
-  .manga-status {
-    margin-top: 14px;
-    color: #666;
-    font-size: 14px;
-    line-height: 1.6;
-  }
-
-  .manga-status .warn {
-    color: #b00020;
+    transition: transform 0.2s ease;
   }
 </style>
 
 <script>
-  (function () {
-    const TOTAL = 30;
-    // 你需求寫「從 User page -> data/manga/ 抓取圖片」
-    // 這裡用相對路徑，假設你網站根目錄有 /data/manga/1.png ... 30.png
-    const BASE = "/data/manga/";
+(function () {
 
-    const list = document.getElementById("manga-list");
-    const status = document.getElementById("manga-status");
+  const TOTAL = 30;
+  const BASE = "/data/manga/";
 
-    // 逐張加入到 DOM，瀏覽就是往下捲動
-    let okCount = 0;
-    let failCount = 0;
+  const list = document.getElementById("manga-list");
+  const range = document.getElementById("offsetRange");
+  const valueText = document.getElementById("offsetValue");
+  const toggleBtn = document.getElementById("toggleOffset");
 
-    for (let i = 1; i <= TOTAL; i++) {
-      const item = document.createElement("div");
-      item.className = "manga-item";
+  // ====== 預設偏移比例 1/23 ======
+  let offsetRatio = 1 / 23;
+  let offsetEnabled = true;
 
-      const img = document.createElement("img");
-      img.loading = "lazy";
-      img.decoding = "async";
-      img.alt = `manga ${i}`;
-      img.src = `${BASE}${i}.png`;
+  range.value = offsetRatio;
 
-      img.onload = () => {
-        okCount++;
-        renderStatus();
-      };
-      img.onerror = () => {
-        failCount++;
-        // 失敗就把該張隱藏，避免破圖影響閱讀
-        item.remove();
-        renderStatus(true);
-      };
+  // 建立圖片
+  for (let i = 1; i <= TOTAL; i++) {
+    const item = document.createElement("div");
+    item.className = "manga-item";
 
-      item.appendChild(img);
-      list.appendChild(item);
+    const img = document.createElement("img");
+    img.src = `${BASE}${i}.png`;
+    img.loading = "lazy";
+    img.dataset.index = i;
+
+    img.onload = () => applyOffset(img);
+    window.addEventListener("resize", () => applyOffset(img));
+
+    item.appendChild(img);
+    list.appendChild(item);
+  }
+
+  // ====== 套用偏移 ======
+  function applyOffset(img) {
+    if (!offsetEnabled) {
+      img.style.transform = "translateX(0px)";
+      return;
     }
 
-    function renderStatus(hasError) {
-      if (!status) return;
-      const parts = [
-        `已載入：${okCount} / ${TOTAL}`,
-      ];
-      if (failCount > 0) parts.push(`載入失敗：${failCount}`);
+    const width = img.clientWidth;
+    const offset = width * offsetRatio;
+    const index = parseInt(img.dataset.index, 10);
 
-      status.innerHTML = hasError
-        ? `<span class="warn">部分圖片載入失敗。</span><br>${parts.join("　")}`
-        : parts.join("　");
+    if (index % 2 === 1) {
+      // 奇數 → 右
+      img.style.transform = `translateX(${offset}px)`;
+    } else {
+      // 偶數 → 左
+      img.style.transform = `translateX(${-offset}px)`;
     }
+  }
 
-    renderStatus();
-  })();
+  function updateAllOffsets() {
+    document.querySelectorAll(".manga-item img")
+      .forEach(img => applyOffset(img));
+  }
+
+  // ====== 拉條事件 ======
+  range.addEventListener("input", () => {
+    offsetRatio = parseFloat(range.value);
+    valueText.textContent = `(${offsetRatio.toFixed(3)} × 寬度)`;
+    updateAllOffsets();
+  });
+
+  // ====== 切換開關 ======
+  toggleBtn.addEventListener("click", () => {
+    offsetEnabled = !offsetEnabled;
+
+    toggleBtn.textContent = offsetEnabled ? "關閉偏移" : "開啟偏移";
+    updateAllOffsets();
+  });
+
+  // 初始顯示數值
+  valueText.textContent = `(${offsetRatio.toFixed(3)} × 寬度)`;
+
+})();
 </script>
