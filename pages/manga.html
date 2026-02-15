@@ -200,8 +200,20 @@
       display: block !important;
       margin-left: auto !important;
       margin-right: auto !important;
+    
     }
-
+    /* 在每張圖上畫出「圖片自身中心線」 */
+    #manga-viewer figure::after{
+      content:"";
+      position:absolute;
+      top:0; bottom:0;
+      left:50%;
+      width:2px;
+      background: rgba(255,255,0,.7); /* 黃線：圖片容器中心 */
+      transform: translateX(-1px);
+      pointer-events:none;
+      z-index: 6;
+    }
   </style>
 
   <div class="toolbar">
