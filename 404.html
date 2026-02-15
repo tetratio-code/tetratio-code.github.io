@@ -9,36 +9,36 @@
 <body>
   <script>
     (function () {
-      // ===== 重要：請依你的 Pages 型態設定 =====
-      // 0 = https://username.github.io/    或自訂網域 https://example.com/
-      // 1 = https://username.github.io/repo/
-      var segmentCount = 0; // <-- 如果你是 Project Pages 改成 1
-
       var l = window.location;
-
-      // 防呆：如果已經帶了 p=...，代表剛剛導過一次了，避免再次包一層造成無限增長
+    
+      // 防止無限包 p=
       if (l.search.indexOf("p=") !== -1) {
-        // 直接回首頁，避免迴圈
         l.replace(l.origin + l.pathname.replace(/\/404\.html$/, "/"));
         return;
       }
-
-      var path = l.pathname;
-      // 取出 base，例如 /repo
-      var base = path.split("/").slice(0, 1 + segmentCount).join("/");
-
-      // 把剩下的路徑還原成 /about 這種
-      var rest = "/" + path.split("/").slice(1 + segmentCount).join("/");
-      rest = rest.replace(/\/404\.html$/, "/"); // 如果 404.html 在子路徑被抓到，保底修一下
-      if (rest === "//" || rest === "") rest = "/";
-
+    
+      var parts = l.pathname.split("/").filter(Boolean);
+    
+      // base: User Pages => ""；Project Pages => "/repo"
+      var base = "";
+      if (l.hostname.endsWith("github.io") && parts.length > 0) {
+        // 若不是 username.github.io 這個 repo，本質上就是 project pages
+        // 但這裡用通用規則：取第一段當 base
+        base = "/" + parts[0];
+      }
+    
+      var rest = l.pathname;
+      if (base && rest.startsWith(base)) rest = rest.slice(base.length);
+      rest = rest.replace(/\/404\.html$/, "/");
+      if (!rest || rest === "/") rest = "/";
+    
       var newUrl =
         l.origin +
         base +
         "/?p=" + encodeURIComponent(rest) +
         "&q=" + encodeURIComponent(l.search.slice(1)) +
         "&h=" + encodeURIComponent(l.hash.slice(1));
-
+    
       l.replace(newUrl);
     })();
   </script>
