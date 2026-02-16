@@ -10,6 +10,7 @@
     .wrap { max-width: 1100px; margin: 0 auto; padding: 14px 18px; display: flex; justify-content: space-between; gap: 18px; align-items: center; }
     .brand { font-size: 20px; font-weight: 700; text-decoration: none; color: #111; }
     :root { --nav-depth: 5px; }
+    nav { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: calc(var(--nav-depth) + 12px); }
     nav a {
       padding: 10px 16px; border: 1.5px solid #111; border-radius: 999px; text-decoration: none; color: #111; background: #fff; 
       box-shadow: var(--nav-depth) var(--nav-depth) 0 #111;
@@ -39,7 +40,7 @@
 <body>
   <header>
     <div class="wrap">
-      <a class="brand" href="/" data-link>台灣黑白棋協會v1.7</a>
+      <a class="brand" href="/" data-link>台灣黑白棋協會v1.8</a>
       <nav>
         <a href="/about" data-link>關於協會</a>
         <a href="/tournaments" data-link>比賽資訊</a>
@@ -70,7 +71,6 @@
       window.history.replaceState(null, "", newUrl);
     })();
 
-    // ====== (B) 路由設定：每頁對應一個 /pages/*.html 片段 ======
     const routes = {
       "/": {
         title: "首頁",
