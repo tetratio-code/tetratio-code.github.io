@@ -1,0 +1,17 @@
+{
+  "type": "lesson",
+  "id": "lesson-8",
+  "title": "中盤基礎：邊上的棋型",
+  "positions": [
+    {
+      "title": "山型",
+      "meta": "testseetsetset",
+      "startTurn": "W",
+      "startBoard": "......../......../...BB.../...BBBB./..BWBW../..WWWW../...W..../........",
+      "record": "",
+      "comments": {
+        "1": "1dfvdfvdfvdfvdf"
+      }
+    }
+  ]
+}
