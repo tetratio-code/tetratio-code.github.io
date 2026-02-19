@@ -72,6 +72,16 @@
       "comments": {
         "1": "1dfvdfvdfvdfvdf"
       }
+    },
+    {
+      "title": "雙方佔C型",
+      "meta": "testseetsetset",
+      "startTurn": "B",
+      "startBoard": ".WWW.B../W.WWWW.W/WWWWWWWW/WBWBBWWW/.BWBBWW./BBBWWWBB/..WBWB../.WWW.B..",
+      "record": "e8",
+      "comments": {
+        "1": "1dfvdfvdfvdfvdf"
+      }
     }
   ]
 }
