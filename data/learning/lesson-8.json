@@ -25,7 +25,7 @@
     },
     {
       "title": "不完整翼型",
-      "meta": "testseetsetset",
+      "meta": "邊上包含一個C位但不是連續五顆的棋型，甚至比翼型還要容易遭受利用與攻擊\n\n受到的攻擊方式除了「攻擊取角」章節介紹過的手段，甚至也有進階才會介紹到的斯通那陷阱。",
       "startTurn": "W",
       "startBoard": "......../......../..WWWWB./.BWBBWBB/BBWBBBBB/BBWWWWBB/B.BBBB.B/.BBBB...",
       "record": "g8f2a3d2g2e2h3h2h1",
