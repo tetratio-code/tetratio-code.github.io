@@ -35,7 +35,7 @@
     },
     {
       "title": "塊型",
-      "meta": "testseetsetset",
+      "meta": "塊型是邊上連續四顆棋子，其中不包含C位的棋型\n\n一般來說塊型沒有特別好或壞，通常需要看鄰邊的配合，與角上的形勢才能判斷",
       "startTurn": "W",
       "startBoard": "..WWWW../..WWWW../BBWWWWBB/BWWBBWBB/BWWBBWBB/BBWWWBBB/..BBBB../..BBBB..",
       "record": "G7",
@@ -45,7 +45,7 @@
     },
     {
       "title": "雙A型",
-      "meta": "testseetsetset",
+      "meta": "占了兩個A位，而中間的兩個B位空著，這樣的棋型根據外觀，可以是塊型、翼型、或山型\n\n但是因為中間的兩個B位自己下不進去，對方撲入的時候又必須盡快吃掉，因此容易遭受利用，棋型也比原本沒有空兩格的版本差",
       "startTurn": "B",
       "startBoard": ".....B../...WBB.B/BBWWWWBB/.BWBBWB./.BWBBWB./BBBWWWBB/..BBBB../.BB..BB.",
       "record": "c1a4c2a5g7h4h5h8",
@@ -55,27 +55,27 @@
     },
     {
       "title": "炸彈型",
-      "meta": "testseetsetset",
+      "meta": "如果占了兩個A位，而中間的兩個B位有對方的棋子，則稱為炸彈型；因為只要有一方下了C位，對方就可以保證拿到角，如同引爆炸彈一般。",
       "startTurn": "w",
       "startBoard": "..BBBB../..BBWW.W/BBBBBBWW/WBBWBBWW/WBBBWBWW/BBBBBBWW/..BWWB../.BBBBBB.",
       "record": "b7a8a7g1a2a1b1b2h1",
       "comments": {
-        "1": "1dfvdfvdfvdfvdf"
+        "1": "其中又以在內側的一方較具優勢，除了引爆之後邊上的棋型較好，在角落上複雜的攻防中，也能起到幫助。"
       }
     },
     {
       "title": "雙方佔C型",
-      "meta": "testseetsetset",
+      "meta": "有時邊上雙方都有棋子，中間以一格空分離。這一格空通常是雙方危險之處或是雙方必爭之處。除了在「攻擊取角」介紹過的雙方佔C型、還有3:1型、分離型。\n\n當邊上雙方各佔一側，都壓到C位，且中間有一格空分隔，稱為雙方佔C型，邊上可以是 3:2、4:1。",
       "startTurn": "W",
       "startBoard": "......../W......W/WWWWWWWW/WWWBBWWW/.WWBBWWW/BBWWWWB./B......B/........",
       "record": "",
       "comments": {
-        "1": "1dfvdfvdfvdfvdf"
+        "1": "如果中央的一格空有一方無法下，則無法下的一方邊上棋型較差"
       }
     },
     {
       "title": "3:1型",
-      "meta": "testseetsetset",
+      "meta": "***左側白吃A2***\n如果是3:1型， 當中一顆子的一方並未占到C位，因此壓力較小\n\n同樣如果中央的一格空有一方無法下，則無法下的一方邊上棋型稍差",
       "startTurn": "B",
       "startBoard": ".WWW.B../B.WBBB.W/BBWWWWWW/BWWBBWWW/.WWBBWW./WWWWWWBB/..WWWB../.WWW.B..",
       "record": "e8g8",
