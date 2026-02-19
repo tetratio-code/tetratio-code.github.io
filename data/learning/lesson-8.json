@@ -7,8 +7,28 @@
       "title": "山型",
       "meta": "testseetsetset",
       "startTurn": "W",
-      "startBoard": "......../......../...BB.../...BBBB./..BWBW../..WWWW../...W..../........",
+      "startBoard": "..BBBBB./B.BWBB.B/BBWWWWBB/BWWBBWBB/BWWBBWBB/BBWWWWBB/B.BWWB.B/.BBBBB..",
       "record": "",
+      "comments": {
+        "1": "1dfvdfvdfvdfvdf"
+      }
+    },
+    {
+      "title": "翼型",
+      "meta": "testseetsetset",
+      "startTurn": "W",
+      "startBoard": "..WBBW../..WWWW../..WWWBBB/..WBBWBB/..WBBWBB/..WWWWBB/..BWWB.B/.BBBBB..",
+      "record": "",
+      "comments": {
+        "1": "1dfvdfvdfvdfvdf"
+      }
+    },
+    {
+      "title": "不完整翼型",
+      "meta": "testseetsetset",
+      "startTurn": "W",
+      "startBoard": "......../......../..WWWWB./.BWBBWBB/BBWBBBBB/BBWWWWBB/B.BBBB.B/.BBBB...",
+      "record": "g8f2a3d2g2e2h3h2h1",
       "comments": {
         "1": "1dfvdfvdfvdfvdf"
       }
