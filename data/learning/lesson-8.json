@@ -98,7 +98,7 @@
       "meta": "雙方各占一個A位，其中一方亦占緊鄰對方的B位\n\n由於只要下進僅剩的B位就可以逼迫對方吃掉做成翼型，因此分離型通常是爭奪中央一格空的棋型",
       "startTurn": "B",
       "startBoard": "......../......../W.WWWWWW/.WWBBWW./WWWBBWBW/BBWWWWBB/..WWBB../..W.WB..",
-      "record": "h4",
+      "record": "h4h7d8g8a4b8a2",
       "comments": {
         "1": "如果像右邊雙方都可下入中央一格空，則通常會盡早下掉\n\n而若是像左邊白棋下不進一格空，則邊上棋型黑棋占優"
       }
