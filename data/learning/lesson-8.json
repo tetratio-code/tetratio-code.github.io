@@ -8,7 +8,7 @@
       "meta": "testseetsetset",
       "startTurn": "W",
       "startBoard": "..BBBBB./B.BWBB.B/BBWWWWBB/BWWBBWBB/BWWBBWBB/BBWWWWBB/B.BWWB.B/.BBBBB..",
-      "record": "",
+      "record": "b2a1g7h8b1g8",
       "comments": {
         "1": "1dfvdfvdfvdfvdf"
       }
@@ -48,7 +48,7 @@
       "meta": "testseetsetset",
       "startTurn": "B",
       "startBoard": ".....B../...WBB.B/BBWWWWBB/.BWBBWB./.BWBBWB./BBBWWWBB/..BBBB../.BB..BB.",
-      "record": "C1",
+      "record": "c1a4c2a5g7h4h5h8",
       "comments": {
         "1": "1dfvdfvdfvdfvdf"
       }
@@ -77,8 +77,8 @@
       "title": "3:1型",
       "meta": "testseetsetset",
       "startTurn": "B",
-      "startBoard": ".WWW.B../W.WWWW.W/WWWWWWWW/WBWBBWWW/.BWBBWW./BBBWWWBB/..WBWB../.WWW.B..",
-      "record": "e8",
+      "startBoard": ".WWW.B../B.WWWW.W/BBWWWWWW/BBWBBWWW/.BWBBWW./WBBWWWBB/..WBWB../.WWW.B..",
+      "record": "e8g8",
       "comments": {
         "1": "1dfvdfvdfvdfvdf"
       }
