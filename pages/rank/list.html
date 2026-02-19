@@ -84,13 +84,12 @@
     </table>
   </div>
 
-  <script>
-    // ===== 重要：改成片段內專用的 ID，避免跟其他頁撞到 =====
+  <script type="module">
     const WEBAPP_BASE   = "https://script.google.com/macros/s/AKfycbwB-hJXPWx9aztU5scq7Hf_XkZhVUPWNAq4Z5SUteXDOlClOUXpiNW1VSUjvo87Hldr7Q/exec";
-    const SHEET_MAIN    = "歷年積分與段級位";  // 第一張表單工作表名稱
-    const SHEET_DETAIL  = "戰績表";            // 第二張表單工作表名稱
+    const SHEET_MAIN    = "歷年積分與段級位";
+    const SHEET_DETAIL  = "戰績表";
     const KEY_COL       = "選手編號";
-
+  
     const elStatus = document.getElementById("rank-status");
     const elTbl = document.getElementById("rank-tbl");
     const elThead = document.getElementById("rank-thead");
@@ -98,7 +97,7 @@
     const elMeta = document.getElementById("rank-meta");
     const elQ = document.getElementById("rank-q");
     const elCount = document.getElementById("rank-count");
-
+  
     let mainData = [];
     let mainHeaders = [];
     let detailData = null;
