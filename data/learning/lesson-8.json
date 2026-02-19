@@ -42,7 +42,7 @@
       "startBoard": "..WWWW../..WWWW../BBWWWWBB/BWWBBWBB/BWWBBWBB/BBWWWBBB/..BBBB../..BBBB..",
       "record": "G7",
       "comments": {
-        "1": "1dfvdfvdfvdfvdf"
+        "1": "需要注意的是，兩側塊型圍起來的豆腐四格空，有偶數理論的例外，叫做 TOF 的強力手段，在尾盤進階章節會介紹"
       }
     },
     {
@@ -52,7 +52,10 @@
       "startBoard": ".....B../...WBB.B/BBWWWWBB/.BWBBWB./.BWBBWB./BBBWWWBB/..BBBB../.BB..BB.",
       "record": "c1a4c2a5g7h4h5h8",
       "comments": {
-        "1": "需要注意的是，兩側塊型圍起來的豆腐四格空，有偶數理論的例外，叫做 TOF 的強力手段，在尾盤進階章節會介紹"
+        "1": "如果已經佔了一個A位，拆二在另一個A位則可以形成相對穩定的雙A型，是賺取手數的好方法",
+        "2": "雙A型的特色就是中央的兩格空，對方撲進任何一邊時都可以吃掉",
+        "3": "如果放置左邊的撲不管，例如去上邊再賺一手棋",
+        "4": "則對方有機會形成等一下會介紹的炸彈型"        
       }
     },
     {
