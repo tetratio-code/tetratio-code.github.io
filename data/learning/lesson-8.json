@@ -82,6 +82,16 @@
       "comments": {
         "1": "1dfvdfvdfvdfvdf"
       }
+    },
+    {
+      "title": "分離型",
+      "meta": "testseetsetset",
+      "startTurn": "B",
+      "startBoard": "......../......../WWWWWWWW/.WWBBWW./WWWBBWBW/BBWWWWBB/...WBB../..W.WB..",
+      "record": "h4",
+      "comments": {
+        "1": "1dfvdfvdfvdfvdf"
+      }
     }
   ]
 }
