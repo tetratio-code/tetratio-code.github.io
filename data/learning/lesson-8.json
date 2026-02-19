@@ -42,6 +42,16 @@
       "comments": {
         "1": "1dfvdfvdfvdfvdf"
       }
+    },
+    {
+      "title": "雙A型",
+      "meta": "testseetsetset",
+      "startTurn": "B",
+      "startBoard": ".....B../...WBB.B/BBWWWWBB/.BWBBWB./.BWBBWB./BBBWWWBB/..BBBB../.BB..BB.",
+      "record": "C1",
+      "comments": {
+        "1": "1dfvdfvdfvdfvdf"
+      }
     }
   ]
 }
