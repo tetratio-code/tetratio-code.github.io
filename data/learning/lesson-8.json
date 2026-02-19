@@ -32,6 +32,16 @@
       "comments": {
         "1": "1dfvdfvdfvdfvdf"
       }
+    },
+    {
+      "title": "塊型",
+      "meta": "testseetsetset",
+      "startTurn": "W",
+      "startBoard": "..WWWW../..WWWW../BBWWWWBB/BWWBBWBB/BWWBBWBB/BBWWWBBB/..BBBB../..BBBB..",
+      "record": "G7",
+      "comments": {
+        "1": "1dfvdfvdfvdfvdf"
+      }
     }
   ]
 }
