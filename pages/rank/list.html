@@ -21,7 +21,7 @@
     }
 
     #rank-list table { border-collapse: collapse; width: 100%; min-width: 900px; table-layout: auto; }
-    #rank-list th, #rank-list td { border-bottom: 1px solid #eee; padding: 10px 12px; vertical-align: top; }
+    #rank-list th, #rank-list td { border-bottom: 1px solid #eee; padding: 10px 12px; vertical-align: top; white-space: nowrap; }
     #rank-list th {
       position: sticky; top: 0; z-index: 2;
       background: #fafafa;
@@ -29,8 +29,6 @@
       font-weight: 600;
       white-space: normal;
     }
-    #rank-list td { white-space: pre-wrap; word-break: break-word; }
-
     #rank-list tr.master-row { cursor: pointer; }
     #rank-list tr.master-row:hover td { background: #fcfcff; }
     #rank-list tr.detail-row td {
