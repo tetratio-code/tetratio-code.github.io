@@ -2,22 +2,6 @@
   <style>
     /* 只作用在本片段，避免影響全站 */
     #rank-list { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans TC", Arial, sans-serif; }
-
-    /* ✅ 讓 rank/list 自己決定寬度：從 1100px 容器「突破」到接近全螢幕 */
-    #rank-list {
-      width: min(1800px, calc(100vw - 48px)); /* 最多 1800px，且左右保留 24px */
-      max-width: none;
-      margin-left: calc(50% - 50vw + 24px);
-      margin-right: calc(50% - 50vw + 24px);
-    }
-    @media (max-width: 640px) {
-      #rank-list {
-        width: calc(100vw - 24px); /* 手機左右各 12px */
-        margin-left: calc(50% - 50vw + 12px);
-        margin-right: calc(50% - 50vw + 12px);
-      }
-    }
-
     #rank-list .meta { color:#666; font-size: 14px; }
     #rank-list .pill { display:inline-block; padding:2px 8px; border-radius:999px; background:#f2f2f2; font-size:12px; color:#333; }
     #rank-list .controls { display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin: 10px 0 8px 0; }
