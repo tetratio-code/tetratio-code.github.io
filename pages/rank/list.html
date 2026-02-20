@@ -68,7 +68,7 @@
   </div>
 
   <div class="controls">
-    <input id="rank-q" type="search" placeholder="搜尋（選手編號／姓名／年份積分…）" />
+    <input id="rank-q" type="search" placeholder="搜尋（選手ID／姓名／年份積分…）" />
     <span id="rank-count" class="pill">顯示 0 / 0</span>
   </div>
 
@@ -86,7 +86,7 @@
     const WEBAPP_BASE   = "https://script.google.com/macros/s/AKfycbwB-hJXPWx9aztU5scq7Hf_XkZhVUPWNAq4Z5SUteXDOlClOUXpiNW1VSUjvo87Hldr7Q/exec";
     const SHEET_MAIN    = "歷年積分與段級位";
     const SHEET_DETAIL  = "戰績表";
-    const KEY_COL       = "選手編號";
+    const KEY_COL       = "選手ID";
   
     const elStatus = document.getElementById("rank-status");
     const elTbl = document.getElementById("rank-tbl");
@@ -202,7 +202,7 @@
       const title = document.createElement("div");
       title.className = "detail-title";
       title.innerHTML = `
-        <div>選手編號：${escapeHtml(playerId)} 的第二張表單資料</div>
+        <div>選手ID：${escapeHtml(playerId)} 的第二張表單資料</div>
         <div class="pill">共 ${matches.length} 筆</div>
       `;
       wrap.appendChild(title);
@@ -210,7 +210,7 @@
       if (matches.length === 0) {
         const empty = document.createElement("div");
         empty.className = "small";
-        empty.textContent = "沒有找到相同選手編號的第二張表單資料。";
+        empty.textContent = "沒有找到相同選手ID的第二張表單資料。";
         wrap.appendChild(empty);
       } else {
         const box = document.createElement("div");
