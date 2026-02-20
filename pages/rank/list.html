@@ -20,14 +20,15 @@
       background: #fff;
     }
 
-    #rank-list table { border-collapse: collapse; width: 100%; min-width: 900px; }
+    #rank-list table { border-collapse: collapse; width: 100%; min-width: 900px; table-layout: auto; }
     #rank-list th, #rank-list td { border-bottom: 1px solid #eee; padding: 10px 12px; vertical-align: top; }
     #rank-list th {
       position: sticky; top: 0; z-index: 2;
       background: #fafafa;
       text-align: left;
       font-weight: 600;
-      white-space: nowrap;
+      white-space: normal;
+      overflow-wrap: anywhere;
     }
     #rank-list td { white-space: pre-wrap; word-break: break-word; }
 
