@@ -1,0 +1,167 @@
+{
+  "type": "lesson",
+  "id": "lesson-9",
+  "title": "中盤基礎：邊上的攻防",
+  "positions": [
+    {
+      "title": "局面名稱",
+      "meta": "第0手解說",
+      "startTurn": "W",
+      "startBoard": "..B...../..BBB.../.WWWBW../.WWBBWW./.WBWBW../W.BBBB../......../........",
+      "record": "e1f2f1",
+      "comments": {
+        "1": "第1手解說"
+      }
+    },
+    {
+      "title": "局面名稱",
+      "meta": "第0手解說",
+      "startTurn": "B",
+      "startBoard": "......../......../.WBBB.../.WWBWW../.WBWWB../.BBWW.../......../........",
+      "record": "a6a5a3",
+      "comments": {
+        "1": "第1手解說"
+      }
+    },
+    {
+      "title": "局面名稱",
+      "meta": "第0手解說",
+      "startTurn": "B",
+      "startBoard": "......../......../..WWWW../..BWBW../..BBBW../..WWWW../..BBW.../........",
+      "record": "",
+      "comments": {
+        "1": "第1手解說"
+      }
+    },
+    {
+      "title": "局面名稱",
+      "meta": "第0手解說",
+      "startTurn": "B",
+      "startBoard": "......../.......W/..BBBBWW/..BWBBW./..BBWBW./..WWWWWW/..WWWW../.....W..",
+      "record": "",
+      "comments": {
+        "1": "第1手解說"
+      }
+    },
+    {
+      "title": "局面名稱",
+      "meta": "第0手解說",
+      "startTurn": "B",
+      "startBoard": "......../.......W/..BBBBWW/..BWBBW./..BBWBW./..BWWWWW/..WWWW../.....W..",
+      "record": "",
+      "comments": {
+        "1": "第1手解說"
+      }
+    },
+    {
+      "title": "局面名稱",
+      "meta": "第0手解說",
+      "startTurn": "B",
+      "startBoard": "......../.......W/..BBBBWW/..BWBBW./..BBWBW./..BWWBWW/..WWWW../.....W..",
+      "record": "",
+      "comments": {
+        "1": "第1手解說"
+      }
+    },
+    {
+      "title": "局面名稱",
+      "meta": "第0手解說",
+      "startTurn": "B",
+      "startBoard": "......../.......W/..BBBBWW/..BWBBW./..BBWWW./..BWWWWW/..WWWW../.....W..",
+      "record": "",
+      "comments": {
+        "1": "第1手解說"
+      }
+    },
+    {
+      "title": "局面名稱",
+      "meta": "掛一，第0手解說",
+      "startTurn": "B",
+      "startBoard": "......../W......./WWBBBBBB/WWBWBBB./WWBBWBB./.WBWWWBB/..WWWW../.....W..",
+      "record": "",
+      "comments": {
+        "1": "第1手解說"
+      }
+    },
+    {
+      "title": "局面名稱",
+      "meta": "掛二，第0手解說",
+      "startTurn": "B",
+      "startBoard": "......../W......./WWWWWWBB/WWWWWWWWB/WWBBWWWB/.BBWWWBB/..WBWW.B/.....W..",
+      "record": "",
+      "comments": {
+        "1": "第1手解說"
+      }
+    },
+    {
+      "title": "局面名稱",
+      "meta": "手拔，第0手解說",
+      "startTurn": "B",
+      "startBoard": "......../W......./WWWWWWBB/WWWWWWWWB/WWBBWWWB/.BBWWWBB/..WWWW.B/.....W..",
+      "record": "",
+      "comments": {
+        "1": "第1手解說"
+      }
+    },
+    {
+      "title": "局面名稱",
+      "meta": "第0手解說",
+      "startTurn": "B",
+      "startBoard": "......../W......./WWBBBBBB/WBWWBBWB/WWBBBBWB/WWBWWWBB/..WWWW../.W......",
+      "record": "f8c2d8d2c8e8a8",
+      "comments": {
+        "1": "第1手解說"
+      }
+    },
+    {
+      "title": "局面名稱",
+      "meta": "第0手解說",
+      "startTurn": "B",
+      "startBoard": "..WW.B../..WWWB../WWWBBB../WBBWBB../WBBWBB../WWBBBB../W.BWW.../..BW.W..",
+      "record": "f7b8e1g8b1e8",
+      "comments": {
+        "1": "第1手解說"
+      }
+    },
+    {
+      "title": "局面名稱",
+      "meta": "第0手解說",
+      "startTurn": "B",
+      "startBoard": "......../......../......../.BBWWW../.BWWBW../BBBWBW../...WWW../...WWW..",
+      "record": "c7c8",
+      "comments": {
+        "1": "第1手解說"
+      }
+    },
+    {
+      "title": "局面名稱",
+      "meta": "第0手解說",
+      "startTurn": "B",
+      "startBoard": "......../......../......../.BBWWW../.BWWBW../BBBWBW../...WWW../...WWW..",
+      "record": "c8b8c7",
+      "comments": {
+        "1": "第1手解說"
+      }
+    },
+    {
+      "title": "局面名稱",
+      "meta": "第0手解說",
+      "startTurn": "B",
+      "startBoard": "......../......../..BBBBBB/..BWWWBB/WWWWWWBB/.WWWWBBB/..WWWW../..W..W..",
+      "record": "d8e8b4",
+      "comments": {
+        "1": "第1手解說"
+      }
+    },
+    {
+      "title": "局面名稱",
+      "meta": "第0手解說",
+      "startTurn": "B",
+      "startBoard": "......../......../..BBBBBB/..BWWWBB/WWWWWWBB/.WWWWBBB/..WWWW../..W..W..",
+      "record": "e8d8b4g8",
+      "comments": {
+        "1": "第1手解說"
+      }
+    }
+  ]
+}
