@@ -105,22 +105,23 @@
     },
     {
       "title": "處理手法：打與掛的取捨例四",
-      "meta": "掛二，第0手解說",
+      "meta": "在少數案例中，在打與掛一都不是好棋，掛二形成最佳手時，對方依然能下在中央兩格空",
       "startTurn": "B",
-      "startBoard": "......../W......./WWWWWWBB/WWWWWWWWB/WWBBWWWB/.BBWWWBB/..WBWW../.....W..",
+      "startBoard": "......../W......./WWWWWWBB/WWWWWWWB/WWBBWWWB/.BBWWWBB/..WBWW../.....W..",
       "record": "c8e8d8b8",
       "comments": {
-        "1": "第1手解說"
+        "1": "在這個例子中，白棋雖然可以下在 D8 或 E8，但都不是好手。例如下在 D8 會翻到斜向太多棋子",
+        "3": "而白棋如下 E8，黑棋打 D8 之後，白棋只剩將下邊吃成翼型的唯一選擇"
       }
     },
     {
       "title": "處理手法：打與掛的取捨例五",
-      "meta": "手拔，第0手解說",
+      "meta": "如果邊上都沒有成立的好手，那麼最好的方式就是不要下，即為「手拔」",
       "startTurn": "B",
-      "startBoard": "......../W......./WWWWWWBB/WWWWWWWWB/WWBBWWWB/.BBWWWBB/..WWWW../.....W..",
+      "startBoard": "......../W......./WWWWWWBB/WWWWWWWB/WWBBWWWB/.BBWWWBB/..WWWW../.....W..",
       "record": "e2",
       "comments": {
-        "1": "第1手解說"
+        "1": "由於黑棋下邊不管怎麼下都會翻到兩個方向，且白棋可以簡單應對，因此去下其他地方才是正確選擇"
       }
     },
     {
