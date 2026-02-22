@@ -7,5 +7,5 @@
   { "id": "lesson-6", "title": "尾盤基礎：對角線", "file": "lesson-6.json" },
   { "id": "lesson-7", "title": "中盤基礎：蓋牆與破牆", "file": "lesson-7.json" },
   { "id": "lesson-8", "title": "中盤基礎：邊上的棋型", "file": "lesson-8.json" },
-  { "id": "lesson-9", "title": "中盤基礎：邊上的攻防(更新中)", "file": "lesson-9.json" }
+  { "id": "lesson-9", "title": "中盤基礎：邊上的攻防", "file": "lesson-9.json" }
 ]
