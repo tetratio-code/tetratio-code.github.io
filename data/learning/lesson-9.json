@@ -4,7 +4,7 @@
   "title": "中盤基礎：邊上的攻防",
   "positions": [
     {
-      "title": "只斜翻的好手",
+      "title": "好手成立條件：只斜翻",
       "meta": "如果白棋要下在上邊，有 D1、E1、F1 三個位置可以選擇\n\nD1 會翻到三個方向的棋子、而 F1 在黑棋打 E1 之後不好下",
       "startTurn": "W",
       "startBoard": "..B...../..BBB.../.WWWBW../.WWBBWW./.WBWBW../W.BBBB../......../........",
@@ -15,7 +15,7 @@
       }
     },
     {
-      "title": "只直翻的好手",
+      "title": "好手成立條件：只直翻",
       "meta": "下在邊上只翻到直向的棋子，常常也是好棋。\n\n此時若黑棋想要下在左側邊上，A3、A4、A5 都會翻到兩個方向",
       "startTurn": "B",
       "startBoard": "......../......../.WBBB.../.WWBWW../.WBWWB../.BBWW.../......../........",
@@ -26,7 +26,7 @@
       }
     },
     {
-      "title": "A位的第一手",
+      "title": "好手成立條件：A位",
       "meta": "邊上的第一手要形成好棋，大多是像前述只翻一個方向的棋，其中又以A位最容易是好棋。",
       "startTurn": "B",
       "startBoard": "......../......../..WWWW../..BWBW../..BBBW../..WWWW../..BBW.../........",
@@ -37,7 +37,7 @@
       }
     },
     {
-      "title": "打",
+      "title": "處理手法：打",
       "meta": "邊上後手方的首選通常是打，因為這樣最不給對方手數，也最有機會讓對手的棋型變差",
       "startTurn": "B",
       "startBoard": "......../.......W/..BBBBWW/..BWBBW./..BBWBW./..WWWWWW/..WWWW../.....W..",
@@ -48,7 +48,7 @@
       }
     },
     {
-      "title": "掛一",
+      "title": "處理手法：掛一",
       "meta": "邊上後手方的次選通常是掛，在打是惡手或是掛明顯較好時成立",
       "startTurn": "B",
       "startBoard": "......../.......W/..BBBBWW/..BWBBW./..BBWBW./..BWWWWW/..WWWW../.....W..",
@@ -59,7 +59,7 @@
       }
     },
     {
-      "title": "打與掛的取捨",
+      "title": "處理手法：打與掛的取捨",
       "meta": "在打與掛都會翻到兩個方向時，由於掛還留下了中間一格空讓對手有棋可下，因此只要不是太差，兩者通常還是以打為優先",
       "startTurn": "B",
       "startBoard": "......../.......W/..BBBBWW/..BWBBW./..BBWBW./..BWWBWW/..WWWW../.....W..",
@@ -70,7 +70,7 @@
       }
     },
     {
-      "title": "局面名稱",
+      "title": "處理手法：局面名稱",
       "meta": "第0手解說",
       "startTurn": "B",
       "startBoard": "......../.......W/..BBBBWW/..BWBBW./..BBWWW./..BWWWWW/..WWWW../.....W..",
@@ -80,7 +80,7 @@
       }
     },
     {
-      "title": "局面名稱",
+      "title": "處理手法：局面名稱",
       "meta": "掛一，第0手解說",
       "startTurn": "B",
       "startBoard": "......../W......./WWBBBBBB/WWBWBBB./WWBBWBB./.WBWWWBB/..WWWW../.....W..",
@@ -90,7 +90,7 @@
       }
     },
     {
-      "title": "局面名稱",
+      "title": "處理手法：局面名稱",
       "meta": "掛二，第0手解說",
       "startTurn": "B",
       "startBoard": "......../W......./WWWWWWBB/WWWWWWWWB/WWBBWWWB/.BBWWWBB/..WBWW../.....W..",
@@ -100,7 +100,7 @@
       }
     },
     {
-      "title": "局面名稱",
+      "title": "處理手法：局面名稱",
       "meta": "手拔，第0手解說",
       "startTurn": "B",
       "startBoard": "......../W......./WWWWWWBB/WWWWWWWWB/WWBBWWWB/.BBWWWBB/..WWWW../.....W..",
@@ -110,7 +110,7 @@
       }
     },
     {
-      "title": "局面名稱",
+      "title": "危險的棋型：局面名稱",
       "meta": "第0手解說",
       "startTurn": "B",
       "startBoard": "......../W......./WWBBBBBB/WBWWBBBB/WWBBBBBB/WWBWWWBB/..WWWW../.W......",
@@ -120,7 +120,7 @@
       }
     },
     {
-      "title": "局面名稱",
+      "title": "危險的棋型：局面名稱",
       "meta": "第0手解說",
       "startTurn": "B",
       "startBoard": "..WW.B../..WWWB../WWWBBB../WBBWBB../WBBWBB../WWBBBB../W.BWW.../..BW.W..",
@@ -130,7 +130,7 @@
       }
     },
     {
-      "title": "局面名稱",
+      "title": "攻防應用：局面名稱",
       "meta": "第0手解說",
       "startTurn": "B",
       "startBoard": "......../......../......../.BBWWW../.BWWBW../BBBWBW../...WWW../...WWW..",
@@ -140,7 +140,7 @@
       }
     },
     {
-      "title": "局面名稱",
+      "title": "攻防應用：局面名稱",
       "meta": "第0手解說",
       "startTurn": "B",
       "startBoard": "......../......../......../.BBWWW../.BWWBW../BBBWBW../...WWW../...WWW..",
@@ -150,7 +150,7 @@
       }
     },
     {
-      "title": "局面名稱",
+      "title": "攻防應用：局面名稱",
       "meta": "第0手解說",
       "startTurn": "B",
       "startBoard": "......../......../..BBBBBB/..BWWWBB/WWWWWWBB/.WWWWBBB/..WWWW../..W..W..",
@@ -160,7 +160,7 @@
       }
     },
     {
-      "title": "局面名稱",
+      "title": "攻防應用：局面名稱",
       "meta": "第0手解說",
       "startTurn": "B",
       "startBoard": "......../......../..BBBBBB/..BWWWBB/WWWWWWBB/.WWWWBBB/..WWWW../..W..W..",
