@@ -78,7 +78,7 @@
       "meta": "掛一，第0手解說",
       "startTurn": "B",
       "startBoard": "......../W......./WWBBBBBB/WWBWBBB./WWBBWBB./.WBWWWBB/..WWWW../.....W..",
-      "record": "",
+      "record": "d8e8g8",
       "comments": {
         "1": "第1手解說"
       }
@@ -88,7 +88,7 @@
       "meta": "掛二，第0手解說",
       "startTurn": "B",
       "startBoard": "......../W......./WWWWWWBB/WWWWWWWWB/WWBBWWWB/.BBWWWBB/..WBWW../.....W..",
-      "record": "",
+      "record": "c8e8d8b8",
       "comments": {
         "1": "第1手解說"
       }
@@ -98,7 +98,7 @@
       "meta": "手拔，第0手解說",
       "startTurn": "B",
       "startBoard": "......../W......./WWWWWWBB/WWWWWWWWB/WWBBWWWB/.BBWWWBB/..WWWW../.....W..",
-      "record": "",
+      "record": "e2",
       "comments": {
         "1": "第1手解說"
       }
@@ -107,7 +107,7 @@
       "title": "局面名稱",
       "meta": "第0手解說",
       "startTurn": "B",
-      "startBoard": "......../W......./WWBBBBBB/WBWWBBWB/WWBBBBWB/WWBWWWBB/..WWWW../.W......",
+      "startBoard": "......../W......./WWBBBBBB/WBWWBBBB/WWBBBBBB/WWBWWWBB/..WWWW../.W......",
       "record": "f8c2d8d2c8e8a8",
       "comments": {
         "1": "第1手解說"
