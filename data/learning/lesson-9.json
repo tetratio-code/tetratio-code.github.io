@@ -169,7 +169,7 @@
       "startBoard": "......../......../..BBBBBB/..BWWWBB/WWWWWWBB/.WWWWBBB/..WWWW../..W..W..",
       "record": "d8e8b4",
       "comments": {
-        "1": "正解是撲 D8"
+        "1": "正解是撲 D8",
         "3": "白棋吃 E8 之後，黑棋拐到 B4\n這樣白棋下方形成純色塊型，左邊也沒有明顯的好手"
       }
     },
