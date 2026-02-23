@@ -85,9 +85,13 @@
         title: "比賽資訊",
         file: "/pages/tournaments.html"
       },
-      "/learning": {
-        title: "學習資源",
+      "/resources/ebooks": {
+        title: "學習資源｜網路資源",
         file: "/pages/resources/ebooks.html"
+      },
+      "/resources/learning": {
+        title: "學習資源｜教學網站",
+        file: "/pages/resources/learning.html"
       },
       "/rank/list": {
         title: "段位查詢｜選手名單",
@@ -145,7 +149,7 @@
     async function render(pathname) {
       const key = matchRoute(pathname);
       const r = routes[key];
-      setLearnMode(key === "/learning");
+      setLearnMode(key === "/resources/learning");
       document.getElementById("page-title").textContent = r.title;
       document.getElementById("page-subtitle").textContent = r.subtitle;
       setActiveNav(key);
