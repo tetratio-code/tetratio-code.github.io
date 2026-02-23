@@ -1,0 +1,67 @@
+{
+  "type": "lesson",
+  "id": "lesson-10",
+  "title": "中盤基礎：算兩手棋",
+  "positions": [
+    {
+      "title": "阻止的三招：先佔",
+      "meta": "局面解說",
+      "startTurn": "B",
+      "startBoard": "......../..WW.B../..BBWB../.WWBWB../..WWBB../...W..../......../........",
+      "record": "e2",
+      "comments": {
+        "1": "第一手"
+      }
+    },
+    {
+      "title": "阻止的三招：無效化",
+      "meta": "局面解說",
+      "startTurn": "B",
+      "startBoard": "......../..BW.B../.BBBWB../.WWBWB../..WWBB../...W..../......../........",
+      "record": "e6",
+      "comments": {
+        "1": "第一手"
+      }
+    },
+    {
+      "title": "阻止的三招：惡化",
+      "meta": "局面解說",
+      "startTurn": "B",
+      "startBoard": "......../......../WBBW..../WWBBW.../WBBBW.../WWBWW.../...WB.../........",
+      "record": "e2e3",
+      "comments": {
+        "1": "第一手"
+      }
+    },
+    {
+      "title": "從算兩手到算三手",
+      "meta": "局面解說",
+      "startTurn": "B",
+      "startBoard": "......../......../WBBW..../WWBBW.../WBBBW.../WWBWW.../...WB.../........",
+      "record": "d2e2",
+      "comments": {
+        "1": "第一手"
+      }
+    },
+    {
+      "title": "更多可能性：手拔",
+      "meta": "局面解說",
+      "startTurn": "W",
+      "startBoard": "......../...BBW../..WBB.../.WWWBB../WWWBBWBB/.WWBBWB./..WBBB../...BB...",
+      "record": "e1",
+      "comments": {
+        "1": "第一手"
+      }
+    },
+    {
+      "title": "更多可能性：等待好手",
+      "meta": "局面解說",
+      "startTurn": "W",
+      "startBoard": "......../...BBW../..WBB.../.WWWBB../WWWBBWBB/.WWBBWB./..WBBB../...BB...",
+      "record": "c8",
+      "comments": {
+        "1": "第一手"
+      }
+    }
+  ]
+}
