@@ -46,23 +46,23 @@
       }
     },
     {
+      "title": "更多可能性：等待好手",
+      "meta": "在此局面中，阻止對方的三種方法都是可以考慮的下法\n\n先佔：黑棋想團在 G4，白棋就先佔 G4\n無效化：打在 C8，讓黑棋不能下在 G4\n惡化：在 G3 尖一個，讓黑棋 G4 之後會多翻一顆，棋型也變得較差\n\n甚至如果算到三步以上，可以看到更多解法",
+      "startTurn": "W",
+      "startBoard": "......../...BBW../..WBB.../.WWWBB../WWWBBWBB/.WWBBWB./..WBBB../...BB...",
+      "record": "f8g4c8",
+      "comments": {
+        "1": "例如打在 F8，如果黑棋團 G4，會使白棋吃 C8 形成的不是純色塊型而是混色塊型"
+      }
+    },
+    {
       "title": "更多可能性：手拔",
-      "meta": "局面解說",
+      "meta": "另外一種可能性是不管對方，找自己的好手來下",
       "startTurn": "W",
       "startBoard": "......../...BBW../..WBB.../.WWWBB../WWWBBWBB/.WWBBWB./..WBBB../...BB...",
       "record": "e1",
       "comments": {
-        "1": "第一手"
-      }
-    },
-    {
-      "title": "更多可能性：等待好手",
-      "meta": "局面解說",
-      "startTurn": "W",
-      "startBoard": "......../...BBW../..WBB.../.WWWBB../WWWBBWBB/.WWBBWB./..WBBB../...BB...",
-      "record": "c8",
-      "comments": {
-        "1": "第一手"
+        "1": "例如去搶占墊在 E1 的棋\n\n而想要比較這幾種下法之間的優劣，就需要更深遠的計算，或是更細緻的棋感。"
       }
     }
   ]
