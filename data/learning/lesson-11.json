@@ -34,7 +34,17 @@
       }
     },
     {
-      "title": "避免製造障礙子",
+      "title": "避免製造障礙子：失敗例",
+      "meta": "123",
+      "startTurn": "B",
+      "startBoard": "......../..BBB.../.WWBBBWW/.WWWWBBB/.WWWWBBB/.WWWBBBB/......../........",
+      "record": "",
+      "comments": {
+        "1": "。"
+      }
+    },
+    {
+      "title": "避免製造障礙子：成功例",
       "meta": "123",
       "startTurn": "B",
       "startBoard": "......../..BBB.../.WWBBBWW/.WWWWBBB/.WWWWBBB/.WWWBBBB/......../........",
