@@ -1,0 +1,57 @@
+{
+  "type": "lesson",
+  "id": "lesson-11",
+  "title": "中盤基礎：棋種與障礙子",
+  "positions": [
+    {
+      "title": "製造棋種",
+      "meta": "123",
+      "startTurn": "W",
+      "startBoard": "......../...W.W../..WWWW../..WWWBB./..WWBBB./..WBBB../..BBBB../..B.....",
+      "record": "d8e8g3",
+      "comments": {
+        "1": "。"
+      }
+    },
+    {
+      "title": "消滅對方棋種",
+      "meta": "123",
+      "startTurn": "B",
+      "startBoard": "......../...W.W../..WWWW../..WWWBB./..WWBBB./..WWBB../..BWBB../..BBB…",
+      "record": "h3b6",
+      "comments": {
+        "1": "。"
+      }
+    },
+    {
+      "title": "保留對方障礙子",
+      "meta": "123",
+      "startTurn": "W",
+      "startBoard": "......../..BB.B../.WBBB.../.BBBBW../..WWBW../..WWWW../......../........",
+      "record": "b5a5a6",
+      "comments": {
+        "1": "。"
+      }
+    },
+    {
+      "title": "避免製造障礙子",
+      "meta": "123",
+      "startTurn": "B",
+      "startBoard": "......../..BBB.../.WWBBBWW/.WWWWBBB/.WWWWBBB/.WWWBBBB/......../........",
+      "record": "",
+      "comments": {
+        "1": "。"
+      }
+    },
+    {
+      "title": "消除障礙子",
+      "meta": "123",
+      "startTurn": "B",
+      "startBoard": "......../......../WWBBB.../WBWWWW../WBWBBW../WWWBBW../W.WBBB../.W.BBB..",
+      "record": "",
+      "comments": {
+        "1": "。"
+      }
+    }
+  ]
+}
