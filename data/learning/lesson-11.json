@@ -16,7 +16,7 @@
     {
       "title": "消滅對方棋種",
       "meta": "123",
-      "startTurn": "B",
+      "startTurn": "W",
       "startBoard": "......../...W.W../..WWWW../..WWWBB./..WWBBB./..WWBB../..BWBB../..BBB...",
       "record": "h3b6",
       "comments": {
