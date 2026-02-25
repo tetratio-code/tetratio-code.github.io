@@ -38,7 +38,7 @@
     {
       "title": "避免製造障礙子：成功例",
       "meta": "123",
-      "startTurn": "B",
+      "startTurn": "W",
       "startBoard": "......../..BBB.../.WWBBBWW/.WWWWBBB/.WWWWBBB/.WWWBBBB/......../........",
       "record": "",
       "comments": {
@@ -48,7 +48,7 @@
     {
       "title": "避免製造障礙子：失敗例",
       "meta": "123",
-      "startTurn": "B",
+      "startTurn": "W",
       "startBoard": "......../..BBB.../.WWBBBWW/.WWWWBBB/.WWWWBBB/.WWWBBBB/......../........",
       "record": "",
       "comments": {
