@@ -37,17 +37,17 @@
     },
     {
       "title": "避免製造障礙子：成功例",
-      "meta": "123",
+      "meta": "在有好幾個可能的好手可以下的時候，需要注意落子的順序。有時候會因為先下了某個地方，製造了障礙子，導致後續其他地方的好手消失。",
       "startTurn": "W",
       "startBoard": "......../..BBB.../.WWBBBWW/.WWWWBBB/.WWWWBBB/.WWWBBBB/......../........",
       "record": "c1h2d1",
       "comments": {
-        "1": "。"
+        "1": "現在白棋上方有 C1、D1、E1，照著順序下都是只翻到一個方向的好手。"
       }
     },
     {
       "title": "避免製造障礙子：失敗例",
-      "meta": "123",
+      "meta": "13",
       "startTurn": "W",
       "startBoard": "......../..BBB.../.WWBBBWW/.WWWWBBB/.WWWWBBB/.WWWBBBB/......../........",
       "record": "h7a3c1",
