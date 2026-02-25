@@ -40,7 +40,7 @@
       "meta": "123",
       "startTurn": "W",
       "startBoard": "......../..BBB.../.WWBBBWW/.WWWWBBB/.WWWWBBB/.WWWBBBB/......../........",
-      "record": "",
+      "record": "c1h2d1",
       "comments": {
         "1": "。"
       }
@@ -50,7 +50,7 @@
       "meta": "123",
       "startTurn": "W",
       "startBoard": "......../..BBB.../.WWBBBWW/.WWWWBBB/.WWWWBBB/.WWWBBBB/......../........",
-      "record": "",
+      "record": "h7a3c1",
       "comments": {
         "1": "。"
       }
@@ -60,7 +60,7 @@
       "meta": "123",
       "startTurn": "B",
       "startBoard": "......../......../WWBBB.../WBWWWW../WBWBBW../WWWBBW../W.WBBB../.W.BBB..",
-      "record": "",
+      "record": "c8g8f3",
       "comments": {
         "1": "。"
       }
