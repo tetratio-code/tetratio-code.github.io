@@ -1,0 +1,17 @@
+{
+  "type": "lesson",
+  "id": "lesson-13",
+  "title": "開局基礎：全滅進行",
+  "positions": [
+    {
+      "title": "兔全滅",
+      "meta": "123",
+      "startTurn": "B",
+      "startBoard": "......../......../......../...WB.../...BW.../......../......../........",
+      "record": "F5D6C5F4E7F6G5E6E3",
+      "comments": {
+        "1": ""
+      }
+    }
+  ]
+}
