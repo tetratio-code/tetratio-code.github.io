@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>台灣黑白棋協會</title>
+  <style>
+    body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif; }
+    header { position: sticky; top: 0; background: #fff; border-bottom: 1px solid #eee; z-index: 1000; padding-top: 12px; }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 14px 18px; display: flex; justify-content: space-between; gap: 18px; align-items: center; }
+    .brand { font-size: 20px; font-weight: 700; text-decoration: none; color: #111; }
+    :root { --nav-depth: 5px; }
+    nav { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: calc(var(--nav-depth) + 10px); }
+    nav a {
+      padding: 10px 16px; border: 1.5px solid #111; border-radius: 999px; text-decoration: none; color: #111; background: #fff; 
+      box-shadow: var(--nav-depth) var(--nav-depth) 0 #111;
+    }
+    nav a.active {
+      background: #111; color: #fff; border-color: #111;
+      box-shadow: var(--nav-depth) var(--nav-depth) 0 #fff, calc(var(--nav-depth) + 1.5px) calc(var(--nav-depth) + 1.5px) 0 #111;
+    }
+    main { max-width: 1100px; margin: 0 auto; padding: 22px 18px 60px; }
+    .card { border: 1px solid #eee; border-radius: 14px; padding: 18px; background: #fafafa; }
+    .hint { color: #666; }
+    .loading { color:#666; }
+    .error { color:#b00020; }
+    code { background: #fff; border: 1px solid #e6e6e6; padding: 2px 6px; border-radius: 6px; }
+    body.learn-mode header { display: none; }
+    body.learn-mode main { max-width: none; padding: 0; }
+    body.learn-mode .card { border: 0; border-radius: 0; padding: 0; background: transparent; }
+    body.learn-mode #page-title,
+    body.learn-mode #page-subtitle { display: none; }
+    body.learn-mode #app { margin-top: 0 !important; }
+    .menu-top { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; justify-content: space-between; margin: 0 0 12px 0; }
+    .menu-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+    .menu-tab { display: inline-block; padding: 8px 12px; border: 1px solid #e8e8e8; border-radius: 999px; text-decoration: none; color: #111; background: #fff; }
+    .menu-tab.active { background: #111; color: #fff; border-color: #111; }
+
+    .news-cta-wrap { margin: 0 0 18px; }
+    .news-dropdown { position: relative; display: inline-block; }
+    .news-dropdown-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 16px; border: 1.5px solid #111; border-radius: 999px;
+      background: #fff; color: #111; text-decoration: none; cursor: pointer;
+      box-shadow: var(--nav-depth) var(--nav-depth) 0 #111; font-size: 15px;
+    }
+    .news-dropdown-btn::after { content: "▾"; font-size: 12px; }
+    .news-dropdown-panel {
+      position: absolute; top: calc(100% + 10px); left: 0; min-width: 320px;
+      background: #fff; border: 1.5px solid #111; border-radius: 18px; padding: 10px;
+      box-shadow: 8px 8px 0 #111; display: none; z-index: 1200;
+    }
+    .news-dropdown.open .news-dropdown-panel { display: block; }
+    .news-dropdown-item {
+      display: flex; gap: 12px; align-items: center; text-decoration: none; color: #111;
+      padding: 10px; border-radius: 14px;
+    }
+    .news-dropdown-item:hover { background: #f6f6f6; }
+    .news-dropdown-item + .news-dropdown-item { margin-top: 6px; }
+    .news-dropdown-thumb { width: 72px; height: 72px; object-fit: cover; border-radius: 12px; border: 1px solid #eee; flex: 0 0 auto; }
+    .news-dropdown-meta { min-width: 0; }
+    .news-dropdown-title { font-weight: 700; line-height: 1.4; }
+    .news-dropdown-date { color: #666; font-size: 13px; margin-top: 4px; }
+    .news-hero {
+      display: grid; gap: 18px; margin-top: 18px;
+      grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.85fr);
+      align-items: stretch;
+    }
+    .news-slider {
+      background: #fff; border: 1px solid #ececec; border-radius: 24px; overflow: hidden;
+      box-shadow: 0 14px 40px rgba(0,0,0,.06); position: relative;
+    }
+    .news-slider-track { display: flex; transition: transform .45s ease; }
+    .news-slide { min-width: 100%; display: block; text-decoration: none; color: #111; }
+    .news-slide-media { aspect-ratio: 16 / 9; background: #f0f0f0; }
+    .news-slide-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .news-slide-body { padding: 18px 18px 22px; }
+    .news-kicker { color: #666; font-size: 13px; margin-bottom: 8px; }
+    .news-slide-title { font-size: 24px; font-weight: 800; line-height: 1.35; margin: 0 0 10px; }
+    .news-slide-excerpt { color: #555; line-height: 1.75; margin: 0; }
+    .news-slide-actions {
+      position: absolute; inset: auto 16px 16px auto; display: flex; gap: 8px; z-index: 2;
+    }
+    .news-slide-btn {
+      width: 42px; height: 42px; border-radius: 999px; border: 1.5px solid #111;
+      background: rgba(255,255,255,.95); cursor: pointer; box-shadow: 3px 3px 0 #111;
+      font-size: 18px;
+    }
+    .news-slide-dots { display: flex; gap: 8px; margin-top: 14px; }
+    .news-slide-dot {
+      width: 10px; height: 10px; border-radius: 999px; background: #d7d7d7; border: 0; cursor: pointer; padding: 0;
+    }
+    .news-slide-dot.active { background: #111; }
+    .news-side-panel {
+      display: grid; gap: 12px; align-content: start;
+      background: linear-gradient(180deg, #fff 0%, #f7f7f7 100%);
+      border: 1px solid #ececec; border-radius: 24px; padding: 20px;
+      box-shadow: 0 14px 40px rgba(0,0,0,.05);
+    }
+    .news-side-title { margin: 0; font-size: 20px; }
+    .news-side-card {
+      display: grid; grid-template-columns: 90px 1fr; gap: 12px; text-decoration: none; color: #111;
+      background: #fff; border: 1px solid #efefef; border-radius: 18px; padding: 10px;
+    }
+    .news-side-card img { width: 90px; height: 90px; object-fit: cover; border-radius: 12px; }
+    .news-side-card h4 { margin: 0 0 6px; font-size: 15px; line-height: 1.5; }
+    .news-side-card p { margin: 0; color: #666; font-size: 13px; line-height: 1.6; }
+    .news-section-list { display: grid; gap: 18px; }
+    .news-section-card {
+      display: grid; grid-template-columns: 220px 1fr; gap: 18px; align-items: center;
+      background: #fff; border: 1px solid #ececec; border-radius: 24px; padding: 14px;
+      text-decoration: none; color: #111; box-shadow: 0 10px 28px rgba(0,0,0,.04);
+    }
+    .news-section-card img { width: 100%; height: 150px; object-fit: cover; border-radius: 18px; }
+    .news-section-card h3 { margin: 0 0 8px; font-size: 22px; line-height: 1.4; }
+    .news-section-card p { margin: 0; color: #555; line-height: 1.8; }
+    .news-badge {
+      display: inline-block; margin-bottom: 8px; padding: 4px 10px; border-radius: 999px;
+      background: #111; color: #fff; font-size: 12px;
+    }
+    .news-article { display: grid; gap: 22px; }
+    .news-article-header { background: #fff; border: 1px solid #ececec; border-radius: 24px; padding: 24px; }
+    .news-article-header h1 { margin: 10px 0 0; line-height: 1.4; }
+    .news-article-meta { color: #666; }
+    .news-article-cover { width: 100%; border-radius: 22px; border: 1px solid #eee; display: block; }
+    .news-gallery { display: grid; gap: 16px; }
+    .news-paragraph { line-height: 1.95; color: #222; margin: 0; white-space: pre-line; }
+    .news-subtitle { font-size: 22px; margin: 10px 0 0; }
+    @media (max-width: 860px) {
+      .news-hero, .news-section-card { grid-template-columns: 1fr; }
+      .news-dropdown-panel { min-width: min(320px, calc(100vw - 54px)); }
+      .news-section-card img { height: 220px; }
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <a class="brand" href="/" data-link>台灣黑白棋協會v1.9</a>
+      <nav>
+        <a href="/about" data-link>關於協會</a>
+        <a href="/tournaments" data-link>比賽資訊</a>
+        <a href="/resources/ebooks" data-link>學習資源</a>
+        <a href="/rank/list" data-link>段位查詢</a>
+        <a href="/fun/manga" data-link>休閒娛樂</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="card">
+      <h2 id="page-title">首頁</h2>
+      <p id="page-subtitle" class="hint"></p>
+      <div id="app" style="margin-top:12px;"></div>
+    </div>
+  </main>
+
+  <script>
+    (function restorePathFrom404() {
+      var url = new URL(window.location.href);
+      var p = url.searchParams.get("p");
+      var q = url.searchParams.get("q");
+      var h = url.searchParams.get("h");
+      if (!p) return;
+
+      var newUrl = p + (q ? ("?" + q) : "") + (h ? ("#" + h) : "");
+      window.history.replaceState(null, "", newUrl);
+    })();
+
+    const routes = {
+      "/": {
+        title: "首頁",
+        subtitle: "歡迎來到台灣黑白棋協會（示範官網）。",
+        file: "/pages/home.html"
+      },
+      "/about": {
+        title: "關於協會",
+        file: "/pages/about.html"
+      },
+      "/tournaments": {
+        title: "比賽資訊",
+        file: "/pages/tournaments.html"
+      },
+      "/resources/ebooks": {
+        title: "學習資源｜網路資源",
+        file: "/pages/resources/ebooks.html"
+      },
+      "/resources/learning": {
+        title: "學習資源｜教學網站",
+        file: "/pages/resources/learning.html"
+      },
+      "/rank/list": {
+        title: "段位查詢｜選手名單",
+        file: "/pages/rank/list.html"
+      },
+      "/rank/rules": {
+        title: "段位查詢｜段級位規則",
+        file: "/pages/rank/rules.html"
+      },
+      "/fun/manga": {
+        title: "《游泳的金魚》",
+        file: "/pages/fun/manga.html"
+      },
+      "/fun/links": {
+        title: "友情連結",
+        file: "/pages/fun/links.html"
+      },
+      "/fun/life": {
+        title: "生活中的黑白棋",
+        file: "/pages/fun/life.html"
+      },
+      "/news": {
+        title: "最新消息",
+        file: "/pages/news/index.html"
+      },
+      "/news/1": {
+        title: "最新消息｜《台灣黑白棋》張竣逸：用一分鐘學會，用一生來精通。",
+        file: "/pages/news/1.html"
+      },
+      "/news/2": {
+        title: "最新消息｜桑名七盤勝負台湾支部設立",
+        file: "/pages/news/2.html"
+      }
+    };
+
+    const newsItems = [
+      {
+        id: 2,
+        title: "桑名七盤勝負台湾支部設立",
+        date: "2026-03-10",
+        cover: "/assets/news/news_2.jpg",
+        images: ["/assets/news/news_2.jpg"],
+        href: "/news/2",
+        excerpt: "日本桑名七盤勝負宣布成立台灣支部，並由世界大會參賽者沈之皓擔任支部長，盼與台灣展開更多合作企劃。",
+        content: [
+          "この度、桑名七盤勝負台湾支部を設立しました",
+          "支部長は世界大会に出場された\n沈之皓(シンシコウ)さんにお任せします",
+          "これを機に台湾の方々と協力していろいろ企画を立てられたら楽しそうです",
+          "7名が各競技を担当する団体戦や各競技大会など",
+          "今後とも桑名七盤勝負をどうぞよろしくお願いします"
+        ]
+      },
+      {
+        id: 1,
+        title: "《台灣黑白棋》張竣逸：用一分鐘學會，用一生來精通。",
+        date: "2026-03-09",
+        cover: "/assets/news/news_1-1.jpeg",
+        images: ["/assets/news/news_1-1.jpeg", "/assets/news/news_1-2.jpg"],
+        href: "/news/1",
+        excerpt: "張竣逸棋士從台南一路走向世界賽舞台，以長年累積的詰棋與比賽成績，成為推動台灣黑白棋的重要人物。",
+        intro: "張竣逸棋士，暱稱拔牙怪，為台灣黑白棋聯盟創辦人、PTT Othello 版版主，也是台灣黑白棋協會核心人物。",
+        sections: [
+          {
+            heading: "張竣逸是誰？",
+            paragraphs: [
+              "張竣逸，1985年出生於台灣台南的黑白棋棋士。他畢業於台南一中及高雄醫學大學牙醫學系，並具有日本黑白棋協會認定三段資格。",
+              "2016 年世界盃，他初次上場即獲第七名；2019 年世界盃更一舉創下台灣棋士最優紀錄，勇奪第五名。十年間，他每日不輟發表累積近 3800 道詰棋，為推動台灣黑白棋發展的先行者。",
+              "與他在棋界乖張又令人莞爾的暱稱『拔牙怪』不同，張竣逸本人顯得格外靦腆、溫和，談起黑白棋時則能感受到長年專注其中的熱情。"
+            ]
+          },
+          {
+            heading: "自學黑白棋，摸索前行",
+            paragraphs: [
+              "他從九歲時在任天堂紅白機上接觸黑白棋，後來又透過翻譯機、Deep Green 與 WZebra 等程式持續磨練，慢慢把棋力帶了起來。",
+              "他提到，若一開始就直接遇到最強程式，可能反而會被打擊；正因為有循序漸進的對手與自我挑戰，才讓他一路堅持到現在。",
+              "『我可能是因為下棋才變得冷靜吧。這麼長時間我都沒有中斷過，我連當兵也在下棋。』"
+            ]
+          },
+          {
+            heading: "走向世界賽，點燃台灣黑白棋火苗",
+            paragraphs: [
+              "為了參加 2016 年世界賽，他主動寫信給世界黑白棋聯盟，依照對方建議成立團體、建立網站並舉辦比賽，最終成功讓台灣取得參賽資格。",
+              "2019 年台灣更與陳柏允、楊展匡、Laura Chiang 等棋士組隊，在世界舞台拿下團體季軍；2024 年隊伍編制也更加完整。",
+              "他說：『我想要讓黑白棋在台灣慢慢地盛行起來。我自己先出去比賽，拿個成績出來。可能這樣，大家才會比較有動力來下棋。』"
+            ]
+          },
+          {
+            heading: "為自我挑戰而下棋",
+            paragraphs: [
+              "談到世界賽表現，他回憶自己曾在 2019 年開局五連勝，甚至擊敗世界冠軍級對手。雖然後續賽程起伏不小，但那次經驗仍是重要里程碑。",
+              "對於『黑白棋只是背譜』的說法，他直言真正的高手不是單純記憶，而是能在變化中持續做出精準判斷。",
+              "他的備賽方式相當扎實：使用實體棋盤與平板中的 WZebra 對練，從四步深度開始，一黑一白持續累積勝率，再逐步提高難度。"
+            ]
+          },
+          {
+            heading: "十年不斷的每日詰棋",
+            paragraphs: [
+              "除了比賽成績外，他也長年經營 PTT Othello 版，將黑白棋謎題獨立整理出來，持續發表每日詰棋。",
+              "他笑說，編號原本從 0001 開始，目標做到 9999；若真的破萬，還不知道該怎麼辦。",
+              "『對我來講，黑白棋你要學它很快，但是要去精通它的話，要花你一整個人生去鑽研。』"
+            ]
+          }
+        ]
+      },
+      {
+        id: 3,
+        title: "台灣黑白棋協會官網改版預告",
+        date: "2026-03-01",
+        cover: "/assets/news/news_2.jpg",
+        href: "/news",
+        excerpt: "新版首頁將整合最新消息輪播、列表導覽與專題頁面，方便會員快速掌握協會動態。",
+        placeholder: true
+      },
+      {
+        id: 4,
+        title: "2026 年度活動籌備中",
+        date: "2026-02-20",
+        cover: "/assets/news/news_1-2.jpg",
+        href: "/news",
+        excerpt: "年度賽事、推廣課程與合作交流活動正在規劃中，後續將於最新消息頁面陸續公布。",
+        placeholder: true
+      },
+      {
+        id: 5,
+        title: "協會招募志工與合作夥伴",
+        date: "2026-02-05",
+        cover: "/assets/news/news_1-1.jpeg",
+        href: "/news",
+        excerpt: "歡迎對黑白棋推廣、活動攝影、內容編輯有興趣的朋友，持續關注協會最新公告。",
+        placeholder: true
+      }
+    ];
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]));
+    }
+
+    function formatNewsDate(dateStr) {
+      const d = new Date(dateStr + 'T00:00:00');
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${y}.${m}.${day}`;
+    }
+
+    function createNewsDropdownHtml() {
+      const items = newsItems.slice().sort((a, b) => b.date.localeCompare(a.date));
+      return `
+        <div class="news-cta-wrap">
+          <div class="news-dropdown" id="news-dropdown">
+            <button class="news-dropdown-btn" type="button" aria-expanded="false">最新消息</button>
+            <div class="news-dropdown-panel">
+              ${items.map(item => `
+                <a class="news-dropdown-item" href="${item.href}" data-link>
+                  <img class="news-dropdown-thumb" src="${item.cover}" alt="${escapeHtml(item.title)}">
+                  <div class="news-dropdown-meta">
+                    <div class="news-dropdown-title">${escapeHtml(item.title)}</div>
+                    <div class="news-dropdown-date">${formatNewsDate(item.date)}</div>
+                  </div>
+                </a>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function createHomeNewsHtml() {
+      const items = newsItems.slice().sort((a, b) => b.date.localeCompare(a.date)).slice(0, 5);
+      return `
+        ${createNewsDropdownHtml()}
+        <section class="news-hero" aria-label="最新消息精選">
+          <div class="news-slider" id="home-news-slider">
+            <div class="news-slider-track">
+              ${items.map(item => `
+                <a class="news-slide" href="${item.href}" data-link>
+                  <div class="news-slide-media"><img src="${item.cover}" alt="${escapeHtml(item.title)}"></div>
+                  <div class="news-slide-body">
+                    <div class="news-kicker">最新消息｜${formatNewsDate(item.date)}</div>
+                    <h3 class="news-slide-title">${escapeHtml(item.title)}</h3>
+                    <p class="news-slide-excerpt">${escapeHtml(item.excerpt)}</p>
+                    <div class="news-slide-dots">
+                      ${items.map((_, index) => `<button class="news-slide-dot ${index === 0 ? 'active' : ''}" type="button" data-slide-to="${index}" aria-label="切換到第 ${index + 1} 則消息"></button>`).join('')}
+                    </div>
+                  </div>
+                </a>
+              `).join('')}
+            </div>
+            <div class="news-slide-actions">
+              <button class="news-slide-btn" type="button" data-slide-dir="prev" aria-label="上一則">‹</button>
+              <button class="news-slide-btn" type="button" data-slide-dir="next" aria-label="下一則">›</button>
+            </div>
+          </div>
+          <aside class="news-side-panel">
+            <h3 class="news-side-title">近期消息</h3>
+            ${items.slice(0, 3).map(item => `
+              <a class="news-side-card" href="${item.href}" data-link>
+                <img src="${item.cover}" alt="${escapeHtml(item.title)}">
+                <div>
+                  <h4>${escapeHtml(item.title)}</h4>
+                  <p>${formatNewsDate(item.date)}｜${escapeHtml(item.excerpt)}</p>
+                </div>
+              </a>
+            `).join('')}
+          </aside>
+        </section>
+      `;
+    }
+
+
+    function setupNewsDropdown(scope) {
+      const dropdown = scope.querySelector('#news-dropdown');
+      if (!dropdown) return;
+      const btn = dropdown.querySelector('.news-dropdown-btn');
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const open = dropdown.classList.toggle('open');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+      document.addEventListener('click', () => {
+        dropdown.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+      }, { once: true });
+      dropdown.querySelector('.news-dropdown-panel')?.addEventListener('click', (e) => e.stopPropagation());
+    }
+
+    function setupHomeSlider(scope) {
+      const slider = scope.querySelector('#home-news-slider');
+      if (!slider) return;
+      const track = slider.querySelector('.news-slider-track');
+      const slides = Array.from(slider.querySelectorAll('.news-slide'));
+      const allDotRows = Array.from(slider.querySelectorAll('.news-slide-dots'));
+      let current = 0;
+      function paint() {
+        track.style.transform = `translateX(-${current * 100}%)`;
+        allDotRows.forEach(row => {
+          row.querySelectorAll('.news-slide-dot').forEach((dot, idx) => {
+            dot.classList.toggle('active', idx === current);
+          });
+        });
+      }
+      slider.addEventListener('click', (e) => {
+        const dirBtn = e.target.closest('[data-slide-dir]');
+        const dot = e.target.closest('[data-slide-to]');
+        if (dirBtn) {
+          e.preventDefault();
+          current = dirBtn.dataset.slideDir === 'next' ? (current + 1) % slides.length : (current - 1 + slides.length) % slides.length;
+          paint();
+          return;
+        }
+        if (dot) {
+          e.preventDefault();
+          current = Number(dot.dataset.slideTo || 0);
+          paint();
+        }
+      });
+      paint();
+    }
+
+
+    function matchRoute(pathname) {
+      if (routes[pathname]) return pathname;
+      if (pathname.length > 1 && pathname.endsWith("/")) {
+        const p2 = pathname.slice(0, -1);
+        if (routes[p2]) return p2;
+      }
+      return "/";
+    }
+
+    function setActiveNav(pathname) {
+      document.querySelectorAll("nav a[data-link]").forEach(a => {
+        const url = new URL(a.getAttribute("href"), window.location.origin);
+        a.classList.toggle("active", url.pathname === pathname);
+      });
+    }
+    function setLearnMode(isOn) {
+      document.body.classList.toggle("learn-mode", isOn);
+    }
+
+    const pageCache = new Map();
+    async function loadFragment(file) {
+      if (pageCache.has(file)) return pageCache.get(file);
+
+      const res = await fetch(file, { cache: "no-store" });
+      if (!res.ok) throw new Error(`載入失敗：${res.status} ${res.statusText}（${file}）`);
+
+      const html = await res.text();
+      pageCache.set(file, html);
+      return html;
+    }
+
+    async function render(pathname) {
+      const key = matchRoute(pathname);
+      const r = routes[key];
+      setLearnMode(key === "/resources/learning");
+      document.getElementById("page-title").textContent = r.title;
+      document.getElementById("page-subtitle").textContent = r.subtitle || "";
+      setActiveNav(key);
+      document.title = `台灣黑白棋協會｜${r.title}`;
+
+      const app = document.getElementById("app");
+      app.innerHTML = `<p class="loading">載入中…</p>`;
+
+      try {
+        if (typeof r.render === "function") {
+          app.innerHTML = r.render();
+          setupNewsDropdown(app);
+          setupHomeSlider(app);
+          return;
+        }
+
+        const html = await loadFragment(r.file);
+        await injectHtmlAndRunScripts(app, html);
+
+        if (key === "/") {
+          const newsWrap = document.createElement("div");
+          newsWrap.innerHTML = createHomeNewsHtml();
+          app.prepend(newsWrap);
+          setupNewsDropdown(app);
+          setupHomeSlider(app);
+        }
+      } catch (err) {
+        app.innerHTML = `
+          <p class="error">內容載入失敗。</p>
+          <p class="hint">${String(err.message || err)}</p>
+          <p class="hint">請確認檔案存在：<code>${r.file || "inline renderer"}</code></p>
+        `;
+      }
+    }
+
+    async function injectHtmlAndRunScripts(container, htmlText) {
+      const tpl = document.createElement("template");
+      tpl.innerHTML = htmlText;
+
+      const scripts = Array.from(tpl.content.querySelectorAll("script"));
+      scripts.forEach(s => s.remove());
+      container.innerHTML = "";
+      container.appendChild(tpl.content);
+
+      for (const old of scripts) {
+        const s = document.createElement("script");
+        for (const attr of Array.from(old.attributes)) {
+          s.setAttribute(attr.name, attr.value);
+        }
+        if (!old.src) s.textContent = old.textContent;
+
+        document.body.appendChild(s);
+
+        if (old.src) {
+          await new Promise((res, rej) => {
+            s.onload = res;
+            s.onerror = () => rej(new Error(`Script 載入失敗：${old.src}`));
+          });
+        }
+      }
+    }
+
+    document.addEventListener("click", (e) => {
+      const a = e.target.closest("a[data-link]");
+      if (!a) return;
+      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      e.preventDefault();
+      const href = a.getAttribute("href");
+      window.history.pushState(null, "", href);
+      render(window.location.pathname);
+    });
+    window.addEventListener("popstate", () => render(window.location.pathname));
+    render(window.location.pathname);
+  </script>
+</body>
+</html>
