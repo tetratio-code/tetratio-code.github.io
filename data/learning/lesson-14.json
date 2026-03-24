@@ -5,12 +5,14 @@
   "positions": [
     {
       "title": "基本型",
-      "meta": "123",
+      "meta": "TOF (Three of Four)，即為角上四格下到其中三格的手筋。\n成立條件為滿足下列三項之任兩項：\n1.控制對角線\n2.其中一邊為敵方中邊純色，或己方炸彈形\n3.另外一邊為敵方中邊純色",
       "startTurn": "B",
       "startBoard": "......../......../..BWWWWW/..WBBWBW/..WBBWBW/..WWWWWW/..WWWW../..WWWW..",
       "record": "g7c2g8h8h7",
       "comments": {
-        "1": ""
+        "1": "TOF 的第一手是下在 X 位，此時白棋不能直接拿角，必須先下在外面切斷對角線",
+        "3": "當白棋「切斷」對角線之後、「馬上」下在相鄰的 C 位",
+        "5": "如此一來黑棋下到角落四手中的三手棋"
       }
     },
     {
@@ -29,6 +31,16 @@
       "startTurn": "B",
       "startBoard": "......../......../..WWWWWW/..WBBWBW/..WBBWBW/..WWWWWW/..WWWW../..WWWW..",
       "record": "g7h8g8h7",
+      "comments": {
+        "1": ""
+      }
+    },
+    {
+      "title": "失敗例",
+      "meta": "123",
+      "startTurn": "B",
+      "startBoard": "......../......../..BBWWWW/..WBBWBW/..WBBWBW/..WWWWWW/..WWWW../..WWWW..",
+      "record": "g7e2g8h8",
       "comments": {
         "1": ""
       }
