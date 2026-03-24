@@ -1,0 +1,137 @@
+{
+  "type": "lesson",
+  "id": "lesson-14",
+  "title": "尾盤進階：TOF",
+  "positions": [
+    {
+      "title": "基本型",
+      "meta": "123",
+      "startTurn": "B",
+      "startBoard": "......../......../..BWWWWW/..WBBWBW/..WBBWBW/..WWWWWW/..WWWW../..WWWW..",
+      "record": "",
+      "comments": {
+        "1": ""
+      }
+    },
+    {
+      "title": "失敗例",
+      "meta": "123",
+      "startTurn": "B",
+      "startBoard": "......../......../..BWWWWW/..WBBWBW/..WBBWBW/..WWWWWW/..WWWW../..WWWW..",
+      "record": "",
+      "comments": {
+        "1": ""
+      }
+    },
+    {
+      "title": "失敗例",
+      "meta": "123",
+      "startTurn": "B",
+      "startBoard": "......../......../..WWWWWW/..WBBWBW/..WBBWBW/..WWWWWW/..WWWW../..WWWW..",
+      "record": "",
+      "comments": {
+        "1": ""
+      }
+    },
+    {
+      "title": "純色",
+      "meta": "123",
+      "startTurn": "B",
+      "startBoard": "......../......../..WWWWWW/..WBBWWW/..WBBWWW/..WWWWWW/..WWWW../..WWWW..",
+      "record": "",
+      "comments": {
+        "1": ""
+      }
+    },
+    {
+      "title": "炸彈",
+      "meta": "123",
+      "startTurn": "B",
+      "startBoard": "......../......../..WWWWWW/..WBBWBB/..WBBWBB/..WWWWWW/..WWWW../..WWWW..",
+      "record": "",
+      "comments": {
+        "1": ""
+      }
+    },
+    {
+      "title": "炸彈",
+      "meta": "123",
+      "startTurn": "B",
+      "startBoard": "......../......../..BWWWWW/..WBBWBB/..WBBWBB/..WWWWWW/..WBBW../..WWWW..",
+      "record": "",
+      "comments": {
+        "1": ""
+      }
+    },
+    {
+      "title": "半TOF",
+      "meta": "123",
+      "startTurn": "B",
+      "startBoard": "......../......../..WWWWWW/..WWWWBB/..WWWWBB/..WWWWWW/......../........",
+      "record": "",
+      "comments": {
+        "1": ""
+      }
+    },
+    {
+      "title": "變形",
+      "meta": "123",
+      "startTurn": "B",
+      "startBoard": "......../......../..WWWWWW/..WBBWBW/..WBBWBW/..WBWWWW/..WBWWB./..WWW...",
+      "record": "",
+      "comments": {
+        "1": ""
+      }
+    },
+    {
+      "title": "變形",
+      "meta": "123",
+      "startTurn": "B",
+      "startBoard": "......../......../..BWWWWW/..WBBWWW/..WBBWWW/..WBBWWW/..WWWW../..WWW...",
+      "record": "",
+      "comments": {
+        "1": ""
+      }
+    },
+    {
+      "title": "變形",
+      "meta": "123",
+      "startTurn": "B",
+      "startBoard": "......../......../..BWWWWW/..WBBWWW/..WBBWWW/..WBBWWW/..WBWW../.WWWW...",
+      "record": "",
+      "comments": {
+        "1": ""
+      }
+    },
+    {
+      "title": "變形",
+      "meta": "123",
+      "startTurn": "B",
+      "startBoard": "......../......../..BWWWWW/..WBBBWW/..WBBBWW/..WWWWWW/..WWWW../..WW..W.",
+      "record": "",
+      "comments": {
+        "1": ""
+      }
+    },
+    {
+      "title": "破解",
+      "meta": "123",
+      "startTurn": "B",
+      "startBoard": "......../......../..BBWWWW/..WBBWBW/..WBBWBW/..WWWWWW/..WWWW../..WWWW..",
+      "record": "",
+      "comments": {
+        "1": ""
+      }
+    },
+    {
+      "title": "破解",
+      "meta": "123",
+      "startTurn": "B",
+      "startBoard": "...B..../...B..../...BBWWW/..BBBWBW/..WBBWBW/..WWWWWW/..WWWW../..WWWW..",
+      "record": "",
+      "comments": {
+        "1": ""
+      }
+    }
+  ]
+}
