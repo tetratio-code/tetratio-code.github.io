@@ -5,7 +5,7 @@
   "positions": [
     {
       "title": "基本型：成功例",
-      "meta": "TOF (Three of Four)，即為角上四格下到其中三格的手筋。\n成立條件為滿足下列三項之任兩項：\n1.控制對角線\n2.其中一邊為敵方中邊純色，或己方炸彈形\n3.另外一邊為敵方中邊純色",
+      "meta": "TOF (Three of Four)，即為角上四格下到其中三格的手筋。\n成立條件為滿足下列三項之任兩項：\n1. 控制對角線\n2. 其中一邊為敵方中邊純色，或己方炸彈形\n3. 另外一邊為敵方中邊純色",
       "startTurn": "B",
       "startBoard": "......../......../..BWWWWW/..WBBWBW/..WBBWBW/..WWWWWW/..WWWW../..WWWW..",
       "record": "g7c2g8h8h7",
@@ -88,16 +88,16 @@
     },
     {
       "title": "炸彈型：半TOF",
-      "meta": "123",
+      "meta": "如果黑棋有炸彈形，即使另一邊完全空著，TOF 也成立",
       "startTurn": "B",
       "startBoard": "......../......../..WWWWWW/..WWWWBB/..WWWWBB/..WWWWWW/......../........",
       "record": "g7h8h7",
       "comments": {
-        "1": ""
+        "3": "黑棋藉由引爆炸彈下到 H7。F7 與 G8 因為黑棋控線，白棋無法下。\n\n這種特殊棋型在後中盤常常成為兼顧手數與穩定子的致勝手筋。"
       }
     },
     {
-      "title": "變形",
+      "title": "TOF 特殊型：彎型 TOF",
       "meta": "123",
       "startTurn": "B",
       "startBoard": "......../......../..WWWWWW/..WBBWBW/..WBBWBW/..WBWWWW/..WBWWB./..WWW...",
@@ -107,7 +107,7 @@
       }
     },
     {
-      "title": "變形",
+      "title": "TOF 特殊型：FOF",
       "meta": "123",
       "startTurn": "B",
       "startBoard": "......../......../..BWWWWW/..WBBWWW/..WBBWWW/..WBBWWW/..WWWW../..WWW...",
@@ -117,7 +117,7 @@
       }
     },
     {
-      "title": "變形",
+      "title": "TOF 特殊型：頂X位",
       "meta": "123",
       "startTurn": "B",
       "startBoard": "......../......../..BWWWWW/..WBBWWW/..WBBWWW/..WBBWWW/..WBWW../.WWWW...",
@@ -127,7 +127,7 @@
       }
     },
     {
-      "title": "變形",
+      "title": "TOF 特殊型：龍型 FOF",
       "meta": "123",
       "startTurn": "B",
       "startBoard": "......../......../..BWWWWW/..WBBBWW/..WBBBWW/..WWWWWW/..WWWW../..WW..W.",
@@ -137,23 +137,26 @@
       }
     },
     {
-      "title": "破解",
-      "meta": "123",
+      "title": "TOF 破解",
+      "meta": "破解 TOF 必須找到一手棋同時達成下列兩條件：\n1. 切斷對角線\n2. 消除對方下在相鄰C位的棋種",
       "startTurn": "B",
       "startBoard": "......../......../..BBWWWW/..WBBWBW/..WBBWBW/..WWWWWW/..WWWW../..WWWW..",
       "record": "g7d2b4a4b6h8",
       "comments": {
-        "1": ""
+        "1": "白棋切斷對角線，並消除 D5 棋種",
+        "2": "黑棋重新控制對角線，並製造 C4 棋種",
+        "3": "白棋切斷對角線，並消除 C4 棋種。此時黑棋已經無計可施"
       }
     },
     {
-      "title": "破解",
-      "meta": "123",
+      "title": "TOF 破解：陷阱",
+      "meta": "如果對方還沒切斷對角線就下C位會失敗，而如果是自己通的對角線也會失敗",
       "startTurn": "B",
       "startBoard": "...B..../...B..../...BBWWW/..BBBWBW/..WBBWBW/..WWWWWW/..WWWW../..WWWW..",
       "record": "g7e2g8b4c3h8",
       "comments": {
-        "1": ""
+        "3": "至此 TOF 正常進行",
+        "4": "白棋這一手雖然看似留下了 C3 弱點，但是這是會讓 TOF 失效的陷阱"
       }
     }
   ]
