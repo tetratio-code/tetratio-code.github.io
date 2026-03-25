@@ -11,38 +11,38 @@
       "record": "g7c2g8h8h7",
       "comments": {
         "1": "TOF 的第一手是下在 X 位，此時白棋不能直接拿角，必須先下在外面切斷對角線",
-        "3": "當白棋「切斷」對角線之後、「馬上」下在相鄰的 C 位",
+        "3": "當白棋切斷對角線之後、立即下在相鄰的 C 位",
         "5": "如此一來黑棋下到角落四手中的三手棋"
       }
     },
     {
-      "title": "失敗例",
-      "meta": "123",
+      "title": "失敗例一",
+      "meta": "如果白棋切斷對角線之後，未立即下在相鄰的 C 位，則 TOF 失敗",
       "startTurn": "B",
       "startBoard": "......../......../..BWWWWW/..WBBWBW/..WBBWBW/..WWWWWW/..WWWW../..WWWW..",
       "record": "g7c2d2h8g8h7",
       "comments": {
-        "1": ""
+        "4": "被白棋下到角，這樣角上剩餘兩手只能一人一手"
       }
     },
     {
-      "title": "失敗例",
-      "meta": "123",
+      "title": "失敗例二",
+      "meta": "如果沒有控制對角線，被白棋直接拿角，則 TOF 失敗",
       "startTurn": "B",
       "startBoard": "......../......../..WWWWWW/..WBBWBW/..WBBWBW/..WWWWWW/..WWWW../..WWWW..",
       "record": "g7h8g8h7",
       "comments": {
-        "1": ""
+        "2": "白棋下一手就可以直接拿角，在手數上沒有佔到便宜"
       }
     },
     {
-      "title": "失敗例",
-      "meta": "123",
+      "title": "失敗例三",
+      "meta": "如果白棋還沒切斷對角線就下在相鄰的 C 位，也會因為被對手連下而失敗",
       "startTurn": "B",
       "startBoard": "......../......../..BBWWWW/..WBBWBW/..WBBWBW/..WWWWWW/..WWWW../..WWWW..",
       "record": "g7e2g8h8",
       "comments": {
-        "1": ""
+        "4": "白棋藉由黑棋純色對角線，形成「流星連下」"
       }
     },
     {
