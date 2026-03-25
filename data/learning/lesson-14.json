@@ -98,42 +98,45 @@
     },
     {
       "title": "TOF 特殊型：彎型 TOF",
-      "meta": "123",
+      "meta": "此棋型為彎型 TOF，成立條件不需要對角線",
       "startTurn": "B",
       "startBoard": "......../......../..WWWWWW/..WBBWBW/..WBBWBW/..WBWWWW/..WBWWB./..WWW...",
       "record": "g8h8f8h7",
       "comments": {
-        "1": ""
+        "1": "第一手是鉤在C位，需要注意 H6 不能是黑棋，否則白棋打在 F8 導致 TOF 失敗",
+        "2": "白棋拿角之後，黑棋必須卡進 F8，因此 D6 的棋種為必要"
       }
     },
     {
       "title": "TOF 特殊型：FOF",
-      "meta": "123",
+      "meta": "FOF (Four of Five)，即為角上五格下到其中四格的手筋。常以純色刀把五的形式出現",
       "startTurn": "B",
       "startBoard": "......../......../..BWWWWW/..WBBWWW/..WBBWWW/..WBBWWW/..WWWW../..WWW...",
       "record": "g7c2g8h8f8h7",
       "comments": {
-        "1": ""
+        "2": "下在X位等白棋切斷對角線之後，則退化形成彎形TOF。"
       }
     },
     {
       "title": "TOF 特殊型：頂X位",
-      "meta": "123",
+      "meta": "如果 FOF 的棋型無法先下在 X 位，也可以先下在 C 位",
       "startTurn": "B",
       "startBoard": "......../......../..BWWWWW/..WBBWWW/..WBBWWW/..WBBWWW/..WBWW../.WWWW...",
       "record": "g8c2g7h8f8h7",
       "comments": {
-        "1": ""
+        "1": "由於下在X位會翻動 E7 與 F7，因此先下C位在下方形成雙方佔C",
+        "3": "白棋切斷對角線之後再頂X位還原手筋，這個頂X位的手筋也經常在其他純色中邊時出現。"
       }
     },
     {
       "title": "TOF 特殊型：龍型 FOF",
-      "meta": "123",
+      "meta": "同樣是五格下到其中四格的棋型，稍微少見一些",
       "startTurn": "B",
       "startBoard": "......../......../..BWWWWW/..WBBBWW/..WBBBWW/..WWWWWW/..WWWW../..WW..W.",
       "record": "g7c2e8h8f8h7",
       "comments": {
-        "1": ""
+        "1": "第一步同樣是下在X位",
+        "3": "下方兩格空要打在遠的一側，白棋回吃 F8 會失角"
       }
     },
     {
