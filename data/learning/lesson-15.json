@@ -1,0 +1,17 @@
+{
+  "type": "lesson",
+  "id": "lesson-15",
+  "title": "尾盤進階：斯通那陷阱",
+  "positions": [
+    {
+      "title": "123",
+      "meta": "",
+      "startTurn": "B",
+      "startBoard": "......../......../..BWWWWW/..WBBWBW/..WBBWBW/..WWWWWW/..WWWW.W/.WWWW...",
+      "record": "",
+      "comments": {
+        "1": "123"
+      }
+    }
+  ]
+}
