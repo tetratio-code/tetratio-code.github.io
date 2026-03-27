@@ -47,7 +47,7 @@
     },
     {
       "title": "直式3:1：成功例",
-      "meta": "",
+      "meta": "若是對方為3:1形，則由棋形本身決定黑棋是否可以下在 E8 攻擊。",
       "startTurn": "B",
       "startBoard": "......../......../..BWWWWW/..WBBWBW/..WBBWBW/..WWWWWW/..WWWB.W/.WWW.B..",
       "record": "g7c2e8h8g8",
@@ -57,7 +57,7 @@
     },
     {
       "title": "直式3:1：失敗例",
-      "meta": "",
+      "meta": "若無法下到雙方中央的一格空，則斯通納不成立。",
       "startTurn": "B",
       "startBoard": "......../......../..BWWWWW/..WBBWBW/..WBBWBW/..WWWWWW/..WBBB.W/.WWW.B..",
       "record": "g7c2",
@@ -67,7 +67,7 @@
     },
     {
       "title": "斜式斯通那",
-      "meta": "",
+      "meta": "斜式與直式斯通納陷阱的差別在邊上少一顆子，斜式斯通納陷阱成立的條件較為寬鬆：\n1. H6 一子是白棋\n2. 下方三子的棋形黑棋可以打在 E8",
       "startTurn": "B",
       "startBoard": "......../......../..BWWWWW/..WBBWBW/..WBBWBW/..WWWWWW/..WWWW.W/.WWW....",
       "record": "g7c2e8f8h8",
