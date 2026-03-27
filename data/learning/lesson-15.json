@@ -4,10 +4,120 @@
   "title": "尾盤進階：斯通那陷阱",
   "positions": [
     {
-      "title": "123",
+      "title": "直式",
       "meta": "",
       "startTurn": "B",
       "startBoard": "......../......../..BWWWWW/..WBBWBW/..WBBWBW/..WWWWWW/..WWWW.W/.WWWW...",
+      "record": "",
+      "comments": {
+        "1": "123"
+      }
+    },
+    {
+      "title": "失敗例",
+      "meta": "",
+      "startTurn": "B",
+      "startBoard": "......../......../..WWWWWW/..WBBWBW/..WBBWBW/..WWWWWW/..WWWW.W/.WWWW...",
+      "record": "",
+      "comments": {
+        "1": "123"
+      }
+    },
+    {
+      "title": "失敗例",
+      "meta": "",
+      "startTurn": "B",
+      "startBoard": "......../......../..BWWWWW/..WBBWBW/..WBBWBW/..WWWWWW/..WBWW.W/.WWWW...",
+      "record": "",
+      "comments": {
+        "1": "123"
+      }
+    },
+    {
+      "title": "失敗例",
+      "meta": "",
+      "startTurn": "B",
+      "startBoard": "......../......../..BWWWBW/..WBBWBW/..WBBWBW/..WWWWWW/..WWWW.W/.WWWW...",
+      "record": "",
+      "comments": {
+        "1": "123"
+      }
+    },
+    {
+      "title": "3:1成立",
+      "meta": "",
+      "startTurn": "B",
+      "startBoard": "......../......../..BWWWWW/..WBBWBW/..WBBWBW/..WWWWWW/..WWWB.W/.WWW.B..",
+      "record": "",
+      "comments": {
+        "1": "123"
+      }
+    },
+    {
+      "title": "3:1失敗",
+      "meta": "",
+      "startTurn": "B",
+      "startBoard": "......../......../..BWWWWW/..WBBWBW/..WBBWBW/..WWWWWW/..WBBB.W/.WWW.B..",
+      "record": "",
+      "comments": {
+        "1": "123"
+      }
+    },
+    {
+      "title": "斜式",
+      "meta": "",
+      "startTurn": "B",
+      "startBoard": "......../......../..BWWWWW/..WBBWBW/..WBBWBW/..WWWWWW/..WWWW.W/.WWW....",
+      "record": "",
+      "comments": {
+        "1": "123"
+      }
+    },
+    {
+      "title": "失敗例",
+      "meta": "",
+      "startTurn": "B",
+      "startBoard": "......../......../..BWWWWW/..WBBWBW/..WBBWBW/..WWWWWW/..WBWW.W/.WWW....",
+      "record": "",
+      "comments": {
+        "1": "123"
+      }
+    },
+    {
+      "title": "失敗例",
+      "meta": "",
+      "startTurn": "B",
+      "startBoard": "......../......../..BWWWBB/..WBBWBB/..WBBWBB/..WWWWWB/..WWWW.B/.WWW....",
+      "record": "",
+      "comments": {
+        "1": "123"
+      }
+    },
+    {
+      "title": "成功例",
+      "meta": "",
+      "startTurn": "B",
+      "startBoard": "......../......../..BWWWBW/..WBBWBW/..WBBWBW/..WWWWWW/..WWWW.W/.WWW....",
+      "record": "",
+      "comments": {
+        "1": "123"
+      }
+    },
+    {
+      "title": "成功例",
+      "meta": "",
+      "startTurn": "B",
+      "startBoard": "......../......../..WWWWWW/..WBBWBW/..WBBWBW/..WWWWWW/..WWWW.W/.WWW....",
+      "record": "",
+      "comments": {
+        "1": "123"
+      }
+    },
+    {
+      "title": "破解與復活",
+      "meta": "",
+      "startTurn": "B",
+      "startBoard": ".WWWW.../..WBBB../WWWWBBB./WWBBBBB./WBWWBBBB/WWWWWWWW/W..WBW../...WWWW.",
       "record": "",
       "comments": {
         "1": "123"
