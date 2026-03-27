@@ -20,7 +20,7 @@
       "meta": "若黑棋對角線不通，白棋可以直接拿角，則斯通納陷阱不成立。",
       "startTurn": "B",
       "startBoard": "......../......../..WWWWWW/..WBBWBW/..WBBWBW/..WWWWWW/..WWWW.W/.WWWW...",
-      "record": "g7h8f8g8",
+      "record": "g7h8",
       "comments": {
         "1": ""
       }
