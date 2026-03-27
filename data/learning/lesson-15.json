@@ -50,7 +50,7 @@
       "meta": "若是對方為3:1形，則由棋形本身決定黑棋是否可以下在 E8 攻擊。",
       "startTurn": "B",
       "startBoard": "......../......../..BWWWWW/..WBBWBW/..WBBWBW/..WWWWWW/..WWWB.W/.WWW.B..",
-      "record": "g7c2e8h8g8",
+      "record": "g7c2e8g8h8",
       "comments": {
         "1": "123"
       }
