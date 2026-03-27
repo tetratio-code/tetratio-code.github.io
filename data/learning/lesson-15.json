@@ -77,7 +77,7 @@
     },
     {
       "title": "斜式斯通那：失敗例一",
-      "meta": "",
+      "meta": "若下方棋形黑棋無法打在 E8，則斯通納不成立。",
       "startTurn": "B",
       "startBoard": "......../......../..BWWWWW/..WBBWBW/..WBBWBW/..WWWWWW/..WBWW.W/.WWW....",
       "record": "g7c2",
@@ -87,7 +87,7 @@
     },
     {
       "title": "斜式斯通那：失敗例二",
-      "meta": "",
+      "meta": "若下方白棋反吃 F8 之後不會翻動 X 位的棋子，則斯通納不成立。",
       "startTurn": "B",
       "startBoard": "......../......../..BWWWBB/..WBBWBB/..WBBWBB/..WWWWWB/..WWWW.B/.WWW....",
       "record": "g7c2e8f8",
@@ -97,7 +97,7 @@
     },
     {
       "title": "斜式斯通那：成功例一",
-      "meta": "",
+      "meta": "即使右方中邊變成黑棋純色，因為斜式斯通納陷阱不依靠中邊翻棋，斯通納依然成立。",
       "startTurn": "B",
       "startBoard": "......../......../..BWWWBW/..WBBWBW/..WBBWBW/..WWWWWW/..WWWW.W/.WWW....",
       "record": "g7c2e8f8h8",
@@ -107,7 +107,7 @@
     },
     {
       "title": "斜式斯通那：成功例二",
-      "meta": "",
+      "meta": "即使對角線不通，白棋可以立即拿角，但由於下邊為奇數空，黑棋撲入E8之後，白棋亦必然失去A8一角。",
       "startTurn": "B",
       "startBoard": "......../......../..WWWWWW/..WBBWBW/..WBBWBW/..WWWWWW/..WWWW.W/.WWW....",
       "record": "g7h8e8f8g8",
