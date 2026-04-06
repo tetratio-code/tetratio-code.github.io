@@ -116,11 +116,11 @@
       }
     },
     {
-      "title": "斯通那破解 (範例待改)",
+      "title": "斯通那破解",
       "meta": "",
       "startTurn": "B",
-      "startBoard": ".WWWW.../..WBBB../WWWWBBB./WWBBBBB./WBWWBBBB/WWWWWWWW/W..WBW../...WWWW.",
-      "record": "b7h3g2h4",
+      "startBoard": "......../......../..BBWWBB/..BBBWWB/WWBBBWWB/WWBBWWBB/..WWW..B/.WWWW...",
+      "record": "g7b4a4a3b3d2",
       "comments": {
         "1": "123"
       }
